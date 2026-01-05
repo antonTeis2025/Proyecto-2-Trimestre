@@ -1,12 +1,13 @@
 package anton.teis.incidencias.entity.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-// TODO la tabla se implementará de forma SingleTable
 @Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "privilegios")
 public abstract class UsuarioBase {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String nombre;

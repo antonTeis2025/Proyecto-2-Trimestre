@@ -7,12 +7,12 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDateTime;
 
-// TODO la herencia se implementará de forma Table per class
-
 @Entity
 @Data
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Incidencia {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
