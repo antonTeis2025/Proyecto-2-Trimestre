@@ -61,6 +61,7 @@ classDiagram
     class Incidencia {
         <<Abstract>>
         +Long id
+        +Usuario usuario
         +String descripcion
         +String IP
         +Tipo tipo

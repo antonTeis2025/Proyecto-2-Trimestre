@@ -6,6 +6,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
+
+/**
+ * La incidencia está siendo revisada por un técnico
+ */
 @Entity
 public class IncidenciaEnProceso extends Incidencia {
 

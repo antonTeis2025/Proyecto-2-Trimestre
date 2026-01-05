@@ -8,6 +8,9 @@ import jakarta.persistence.ManyToMany;
 
 import java.util.List;
 
+/**
+ * La incidencia fue resuelta
+ */
 @Entity
 public class IncidenciaResuelta extends Incidencia{
     // Lista de técnicos que han trabajado en cierta incidencia
@@ -18,4 +21,6 @@ public class IncidenciaResuelta extends Incidencia{
             inverseJoinColumns = @JoinColumn(name = "id_tecnico")
     )
     private List<Tecnico> tecnico;
+    // Descripcion de la solución de la incidencia
+    private String solucion;
 }
