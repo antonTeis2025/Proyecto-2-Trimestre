@@ -92,3 +92,9 @@ classDiagram
     Incidencia <|-- IncidenciaResuelta
     Incidencia <|-- IncidenciaCerrada
 ```
+
+---
+
+# Diagrama entidad-relación
+
+![entidad-relacion.png](img/entidad-relacion.png)
