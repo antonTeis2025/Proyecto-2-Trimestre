@@ -1,12 +1,14 @@
 package anton.teis.incidencias.entity.incidencia;
 
 import anton.teis.incidencias.entity.user.Tecnico;
+import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
 import java.util.List;
 
+@Entity
 public class IncidenciaResuelta extends Incidencia{
     // Lista de técnicos que han trabajado en cierta incidencia
     @ManyToMany
