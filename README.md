@@ -13,3 +13,79 @@ Habrá 3 tipos de usuario:
 - **Usuarios**: Pueden iniciar sesión con sus credenciales y reportar una incidencia mediante un formulario. Los usuarios no pueden registrarse de ninguna manera, pues es una aplicación diseñada para uso corporativo.
 - **Técnicos**: Podrán visualizar una lista de incidencias pendientes, teniendo opción de ordenarlas por tipo y/o fecha. El técnico podrá asignarse una incidencia para resolverla él y no colisionar con sus compañeros. También podrá visualizar a qué técnico le fue asignada cada incidencia así como su estado.
 - **Administradores**: Tendrán capacidad de gestionar todo tipo de datos, pudiendo borrar por completo incidencias y administrar tanto usuarios como sus respectivos roles. Existirá también una funcionalidad para importar usuarios / técnicos masivamente desde CSV.
+
+---
+# Diagramas de clases
+
+### Usuarios
+```mermaid
+classDiagram
+    direction TB
+
+    %% Clase abstracta
+    class Usuarios {
+        <<Abstract>>
+        +Long id
+        +String nombre
+        +String apellidos
+        +String username
+        +String password
+    }
+
+    %% Subclases
+    class Administrador {
+    }
+
+    class Tecnico {
+        +List~IncidenciaResuelta~ resueltas
+        +List~IncidenciaResuelta~ cerradas
+        +List~IncidenciaEnProceso~ en_proceso
+    }
+
+    class Usuario {
+        +List~Incidencia~ incidencias
+    }
+
+    %% Herencia
+    Usuarios <|-- Administrador
+    Usuarios <|-- Tecnico
+    Usuarios <|-- Usuario
+```
+
+### Incidencias
+```mermaid
+classDiagram
+    direction TB
+
+    %% Clase abstracta
+    class Incidencia {
+        <<Abstract>>
+        +Long id
+        +String descripcion
+        +String IP
+        +Tipo tipo
+        +LocalDateTime momento
+    }
+
+    %% Subclases
+    class IncidenciaAbierta {
+    }
+
+    class IncidenciaEnProceso {
+        +Tecnico tecnico
+    }
+
+    class IncidenciaResuelta {
+        +List~Tecnico~ tecnico
+    }
+
+    class IncidenciaCerrada {
+        +List~Tecnico~ tecnico
+    }
+
+    %% Herencia
+    Incidencia <|-- IncidenciaAbierta
+    Incidencia <|-- IncidenciaEnProceso
+    Incidencia <|-- IncidenciaResuelta
+    Incidencia <|-- IncidenciaCerrada
+```
