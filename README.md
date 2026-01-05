@@ -78,10 +78,12 @@ classDiagram
 
     class IncidenciaResuelta {
         +List~Tecnico~ tecnico
+        +String solucion
     }
 
     class IncidenciaCerrada {
         +List~Tecnico~ tecnico
+        +String problema
     }
 
     %% Herencia
