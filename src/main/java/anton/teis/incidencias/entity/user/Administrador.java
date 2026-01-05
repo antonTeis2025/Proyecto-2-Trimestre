@@ -1,7 +1,9 @@
 package anton.teis.incidencias.entity.user;
 
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Administrador extends UsuarioBase{
+@DiscriminatorValue("administrador")
+public class Administrador extends Usuarios {
 }

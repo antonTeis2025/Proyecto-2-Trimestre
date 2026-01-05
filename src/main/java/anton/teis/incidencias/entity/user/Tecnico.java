@@ -1,17 +1,25 @@
 package anton.teis.incidencias.entity.user;
 
-import anton.teis.incidencias.entity.incidencia.Incidencia;
-import jakarta.persistence.Entity;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import anton.teis.incidencias.entity.incidencia.IncidenciaEnProceso;
+import anton.teis.incidencias.entity.incidencia.IncidenciaResuelta;
+import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
-public class Tecnico extends UsuarioBase{
+@DiscriminatorValue("tecnico")
+public class Tecnico extends Usuarios {
     // TODO: relaciones
 
     // Lista de incidencias resueltas (ManyToMany)
-    private List<Incidencia> resueltas;
+    @ManyToMany(mappedBy = "tecnico")
+    private List<IncidenciaResuelta> resueltas;
+
+    // Lista de incidencias cerradas (ManyToMany)
+    @ManyToMany(mappedBy = "tecnico")
+    private List<IncidenciaResuelta> cerradas;
+
     // Lista de incidencias en proceso (ManyToOne)
-    private List<Incidencia> en_proceso;
+    @OneToMany(mappedBy = "tecnico")
+    private List<IncidenciaEnProceso> en_proceso;
 }
