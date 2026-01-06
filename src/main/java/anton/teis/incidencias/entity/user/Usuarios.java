@@ -1,10 +1,7 @@
 package anton.teis.incidencias.entity.user;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Entity
 @Data
@@ -22,16 +19,6 @@ public abstract class Usuarios {
     private String username;
     private String password;
 
-    /**
-     * Constructor para cuando se actualiza un usuario
-     */
-    public Usuarios(
-            String nombre,
-            String apellidos,
-            String username
-    ) {
-        this.nombre = nombre;
-        this.apellidos = apellidos;
-        this.username = username;
-    }
+    private boolean alta = true; // si no esta dado de alta no aparecerá en el front-end
+
 }

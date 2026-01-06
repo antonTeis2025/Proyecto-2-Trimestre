@@ -76,8 +76,14 @@ public class Test implements CommandLineRunner {
 
     }
 
+    private void testAltaYBaja() {
+        usuarioService.darDeBaja(2);
+        usuarioService.getTecnicos().forEach(System.out::println);
+        usuarioService.reactivar(2);
+        usuarioService.getTecnicos().forEach(System.out::println);
+    }
     @Override
     public void run(String... args) throws Exception {
-        testActualizarUsuarios();
+
     }
 }

@@ -28,8 +28,11 @@ public class UsuarioService {
     public List<Usuarios> getAll() {
         return usuarioRepository.findAll();
     }
+    public List<Usuarios> getActivos() {
+        return usuarioRepository.findAll().stream().filter(Usuarios::isAlta).toList();
+    }
     public List<Tecnico> getTecnicos() {
-        return usuarioRepository.findAllTecnicos();
+        return usuarioRepository.findAllTecnicos().stream().filter(Tecnico::isAlta).toList();
     }
     public Usuarios getByUsername(String username) {
         return usuarioRepository.findByUsername(username);
@@ -58,5 +61,15 @@ public class UsuarioService {
         Usuarios old = usuarioRepository.findById(id).get();
         old.setPassword(newPassword);
         return usuarioRepository.save(old);
+    }
+    public Usuarios darDeBaja(long id) {
+        Usuarios u = usuarioRepository.findById(id).get();
+        u.setAlta(false);
+        return usuarioRepository.save(u);
+    }
+    public Usuarios reactivar(long id) {
+        Usuarios u = usuarioRepository.findById(id).get();
+        u.setAlta(true);
+        return usuarioRepository.save(u);
     }
 }
