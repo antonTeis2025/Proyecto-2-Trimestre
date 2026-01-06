@@ -61,8 +61,23 @@ public class Test implements CommandLineRunner {
         System.out.println(usuarioService.getByUsername("laura_tec").toString());
     }
 
+    private void testActualizarUsuarios() {
+        Usuarios u1 = usuarioService.getById(1);
+        System.out.println("----------------------------");
+        System.out.println(u1.toString());
+        System.out.println("----------------------------");
+        usuarioService.update(1,
+                "jdacosta",
+                "juan",
+                "dacosta"
+        );
+        usuarioService.changePassword(1, "asd123");
+        System.out.println(usuarioService.checkPassword(1, "asd123"));
+
+    }
+
     @Override
     public void run(String... args) throws Exception {
-        testLeerUsuarios();
+        testActualizarUsuarios();
     }
 }

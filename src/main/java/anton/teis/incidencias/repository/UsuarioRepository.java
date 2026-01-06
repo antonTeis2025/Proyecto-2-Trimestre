@@ -12,4 +12,5 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Long> {
     Usuarios findByUsername(String username);
     @Query("SELECT u FROM Usuarios u WHERE TYPE(u) = Tecnico")
     List<Tecnico> findAllTecnicos();
+
 }

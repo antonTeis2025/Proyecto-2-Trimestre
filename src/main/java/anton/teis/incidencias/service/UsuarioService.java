@@ -35,4 +35,28 @@ public class UsuarioService {
         return usuarioRepository.findByUsername(username);
     }
 
+    // Metodos para actualizar datos de los usuarios
+    public Usuarios update(
+            long id,
+            String username,
+            String nombre,
+            String apellidos
+    ) {
+        Usuarios old = usuarioRepository.findById(id).get();
+        old.setUsername(username);
+        old.setNombre(nombre);
+        old.setApellidos(apellidos);
+
+        return usuarioRepository.save(old);
+    }
+    public boolean checkPassword(long id, String password) { // verificar si la contraseña antigua es correcta antes de cambiarla
+        Usuarios u = usuarioRepository.findById(id).get();
+        return u.getPassword().equals(password);
+    }
+    // TODO: Implementar cambio de contraseña con el cifrador de spring security
+    public Usuarios changePassword(long id, String newPassword) {
+        Usuarios old = usuarioRepository.findById(id).get();
+        old.setPassword(newPassword);
+        return usuarioRepository.save(old);
+    }
 }
