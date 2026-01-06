@@ -1,9 +1,12 @@
 package anton.teis.incidencias;
 
+import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
+import anton.teis.incidencias.entity.incidencia.Tipo;
 import anton.teis.incidencias.entity.user.Administrador;
 import anton.teis.incidencias.entity.user.Tecnico;
 import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
+import anton.teis.incidencias.service.IncidenciaService;
 import anton.teis.incidencias.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,6 +17,8 @@ public class Test implements CommandLineRunner {
 
     @Autowired
     private UsuarioService usuarioService;
+    @Autowired
+    private IncidenciaService incidenciaService;
 
     private void testCrearUsuarios() {
         System.out.println("🔧 === EJECUTANDO PRUEBA RÁPIDA ===");
@@ -82,8 +87,34 @@ public class Test implements CommandLineRunner {
         usuarioService.reactivar(2);
         usuarioService.getTecnicos().forEach(System.out::println);
     }
+
+    private long testAbrirIncidencia() {
+        IncidenciaAbierta incidencia = new IncidenciaAbierta();
+
+        incidencia.setIP("127.0.0.1");
+        incidencia.setTipo(Tipo.OTRO);
+        incidencia.setDescripcion("No me va esto que esta pasando");
+        incidencia.setUsuario((Usuario) usuarioService.getById(1));
+
+        incidenciaService.abrirIncidencia(incidencia);
+
+        return incidencia.getId();
+
+    }
+
+    private long testAsignarIncidencia(long id) {
+
+        Tecnico t = usuarioService.getTecnicos().get(0);
+
+        return incidenciaService.asignarIncidencia(id, t).getId();
+
+    }
+
+    private void testAsignarIncidencia() {}
+
     @Override
     public void run(String... args) throws Exception {
-
+        // long id = testAbrirIncidencia();
+        // testAsignarIncidencia(id);
     }
 }

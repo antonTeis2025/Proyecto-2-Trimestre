@@ -5,12 +5,14 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
 
 
 /**
  * La incidencia está siendo revisada por un técnico
  */
 @Entity
+@Data
 public class IncidenciaEnProceso extends Incidencia {
 
     @ManyToOne(fetch = FetchType.LAZY)
