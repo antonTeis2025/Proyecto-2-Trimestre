@@ -121,6 +121,7 @@ public class IncidenciaService {
         if (tecnicos == null) {
             // si no se especifica lista de técnicos poner el que ya estaba
             Tecnico t = incidencia.getTecnico();
+
             List<Tecnico> ts = new ArrayList<>();
             ts.add(t);
             incidenciaCerrada.setTecnicos(ts);

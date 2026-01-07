@@ -1,5 +1,6 @@
 package anton.teis.incidencias.entity.user;
 
+import anton.teis.incidencias.entity.incidencia.IncidenciaCerrada;
 import anton.teis.incidencias.entity.incidencia.IncidenciaEnProceso;
 import anton.teis.incidencias.entity.incidencia.IncidenciaResuelta;
 import jakarta.persistence.*;
@@ -17,7 +18,7 @@ public class Tecnico extends Usuarios {
 
     // Lista de incidencias cerradas (ManyToMany)
     @ManyToMany(mappedBy = "tecnicos")
-    private List<IncidenciaResuelta> cerradas;
+    private List<IncidenciaCerrada> cerradas;
 
     // Lista de incidencias en proceso (ManyToOne)
     @OneToMany(mappedBy = "tecnico")
