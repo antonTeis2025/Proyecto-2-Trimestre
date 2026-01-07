@@ -98,3 +98,7 @@ classDiagram
 # Diagrama entidad-relación
 
 ![entidad-relacion.png](img/entidad-relacion.png)
+
+---
+# Flujo incidencias
+![flujo incidencias.drawio.png](img/flujo%20incidencias.drawio.png)
