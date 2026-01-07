@@ -50,11 +50,11 @@ public class IncidenciaService {
 
         incidenciaEnProceso.copiarDatos(incidencia);
 
-        Incidencia saved = incidenciaRepository.save(incidenciaEnProceso);
+        // Incidencia saved = incidenciaRepository.save(incidenciaEnProceso);
 
         deleteById(incidencia.getId());
 
-        return saved;
+        return incidenciaRepository.save(incidenciaEnProceso);
     }
 
     /**
@@ -114,9 +114,6 @@ public class IncidenciaService {
         incidenciaCerrada.setMotivo(motivo);
         incidenciaCerrada.copiarDatos(incidencia);
 
-        // 1️⃣ Guardar primero sin técnicos
-        incidenciaCerrada = incidenciaRepository.saveAndFlush(incidenciaCerrada);
-
         // todo: refactor para el historico
         if (tecnicos == null) {
             // si no se especifica lista de técnicos poner el que ya estaba
@@ -129,13 +126,10 @@ public class IncidenciaService {
             incidenciaCerrada.setTecnicos(tecnicos);
         }
 
-        // 3️⃣ Guardar nuevamente
-        incidenciaCerrada = incidenciaRepository.saveAndFlush(incidenciaCerrada);
-
         // se borra la incidencia en proceso
         deleteById(incidencia.getId());
 
-        return incidenciaCerrada;
+        return incidenciaRepository.save(incidenciaCerrada);
     }
 
 

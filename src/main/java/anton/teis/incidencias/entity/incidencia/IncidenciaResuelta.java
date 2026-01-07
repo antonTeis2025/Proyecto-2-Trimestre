@@ -18,7 +18,7 @@ public class IncidenciaResuelta extends Incidencia{
     // Lista de técnicos que han trabajado en cierta incidencia
     @ManyToMany
     @JoinTable(
-            name = "incidencia_tecnico",
+            name = "resueltas_tecnico",
             joinColumns = @JoinColumn(name = "id_incidencia"),
             inverseJoinColumns = @JoinColumn(name = "id_tecnico")
     )
