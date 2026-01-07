@@ -144,6 +144,17 @@ public class Test implements CommandLineRunner {
         incidenciaService.cerrarIncidencia(id, null, "no se que mas hacer");
     }
 
+    private void testHistoricos() {
+        testCrearUsuarios();
+
+        long id = testAbrirIncidencia();
+        long id2 = testAsignarIncidencia(id);
+
+        incidenciaService.pasarIncidencia(id2, usuarioService.getTecnicos().get(1));
+
+        testResolverIncidencia(id2);
+    }
+
     /*
             TESTS (todo):
                 X Resolver incidencia
@@ -152,15 +163,9 @@ public class Test implements CommandLineRunner {
      */
 
 
+
     @Override
     public void run(String... args) throws Exception {
-        testCrearUsuarios();
-        long id = testAbrirIncidencia();
-        long id2 = testAsignarIncidencia(id);
-
-        incidenciaService.pasarIncidencia(id2, usuarioService.getTecnicos().get(1));
-
-        testResolverIncidencia(id2);
 
 
         // testSetup();
