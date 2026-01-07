@@ -20,8 +20,15 @@ public class Test implements CommandLineRunner {
     @Autowired
     private IncidenciaService incidenciaService;
 
+    // con esta funcion inserto datos de prueba para el desarollo de la app
+    private void testSetup() {
+        testCrearUsuarios();
+        long id = testAbrirIncidencia();
+        testAsignarIncidencia(id);
+    }
+
     private void testCrearUsuarios() {
-        System.out.println("🔧 === EJECUTANDO PRUEBA RÁPIDA ===");
+        System.out.println("🔧 === Creando usuarios ===");
 
         // 1. Guardar un Usuario normal
         Usuario u = new Usuario();
@@ -66,8 +73,9 @@ public class Test implements CommandLineRunner {
         System.out.println(usuarioService.getByUsername("laura_tec").toString());
     }
 
-    private void testActualizarUsuarios() {
-        Usuarios u1 = usuarioService.getById(1);
+    private void testActualizarUsuarios(long id) {
+        System.out.println("------ Modificando usuario ------");
+        Usuarios u1 = usuarioService.getById(id);
         System.out.println("----------------------------");
         System.out.println(u1.toString());
         System.out.println("----------------------------");
@@ -81,14 +89,16 @@ public class Test implements CommandLineRunner {
 
     }
 
-    private void testAltaYBaja() {
-        usuarioService.darDeBaja(2);
+    private void testAltaYBaja(long id) {
+        System.out.println("------ Dando de baja y reactivando técnico ------");
+        usuarioService.darDeBaja(id);
         usuarioService.getTecnicos().forEach(System.out::println);
-        usuarioService.reactivar(2);
+        usuarioService.reactivar(id);
         usuarioService.getTecnicos().forEach(System.out::println);
     }
 
     private long testAbrirIncidencia() {
+        System.out.println("------ Abriendo incidencia ------");
         IncidenciaAbierta incidencia = new IncidenciaAbierta();
 
         incidencia.setIP("127.0.0.1");
@@ -110,11 +120,18 @@ public class Test implements CommandLineRunner {
 
     }
 
-    private void testAsignarIncidencia() {}
+    /*
+            TESTS (todo):
+                - Resolver incidencia
+                - Cerrar incidencia
+                - Re-abrir incidencia cerrada
+     */
+
 
     @Override
     public void run(String... args) throws Exception {
         // long id = testAbrirIncidencia();
         // testAsignarIncidencia(id);
+        testSetup();
     }
 }

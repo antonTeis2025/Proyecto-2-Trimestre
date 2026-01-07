@@ -29,7 +29,8 @@ public class IncidenciaService {
     }
 
     // Funcion para asignar una incidencia a un técnico
-    @Transactional
+    @Transactional // esta anotación hace que puedas acceder a la entidad "usuario"
+                //    vinculada a la propia incidencia
     public Incidencia asignarIncidencia(long id, Tecnico tecnico) {
         Incidencia incidencia = incidenciaRepository.getOne(id);
         IncidenciaEnProceso incidenciaEnProceso = new IncidenciaEnProceso();
@@ -45,5 +46,7 @@ public class IncidenciaService {
 
         return incidenciaRepository.save(incidenciaEnProceso);
     }
+
+
 
 }
