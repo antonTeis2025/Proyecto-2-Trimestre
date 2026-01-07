@@ -1,6 +1,8 @@
 package anton.teis.incidencias;
 
+import anton.teis.incidencias.entity.incidencia.Incidencia;
 import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
+import anton.teis.incidencias.entity.incidencia.IncidenciaEnProceso;
 import anton.teis.incidencias.entity.incidencia.Tipo;
 import anton.teis.incidencias.entity.user.Administrador;
 import anton.teis.incidencias.entity.user.Tecnico;
@@ -45,6 +47,15 @@ public class Test implements CommandLineRunner {
         t.setUsername("laura_tec");
         t.setPassword("456");
         usuarioService.guardar(t);
+
+        // 2. Guardar un Técnico
+        Tecnico t2 = new Tecnico();
+        t.setNombre("Laura");
+        t.setApellidos("Fernández");
+        t.setUsername("laura_tec2");
+        t.setPassword("456");
+        usuarioService.guardar(t2);
+
 
         // 3. Guardar un Administrador
         Administrador a = new Administrador();
@@ -143,10 +154,23 @@ public class Test implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // testCrearUsuarios();
+        testCrearUsuarios();
         long id = testAbrirIncidencia();
         long id2 = testAsignarIncidencia(id);
-        System.out.println(id2);
+
+        Incidencia incidenciaBase = incidenciaService.getById(id2);
+
+        if (!(incidenciaBase instanceof IncidenciaEnProceso ip)) {
+            throw new IllegalStateException(
+                    "Solo se puede cerrar una incidencia en proceso"
+            );
+        }
+
+        // deberia añadir un tecnico
+        ip.setTecnico(usuarioService.getTecnicos().get(1));
+
+
+
         // testSetup();
         // testResolverIncidencia(2);
         // testCerrarIncidencia(id2);

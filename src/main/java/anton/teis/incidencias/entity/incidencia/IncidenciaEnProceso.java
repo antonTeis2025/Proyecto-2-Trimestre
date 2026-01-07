@@ -1,14 +1,12 @@
 package anton.teis.incidencias.entity.incidencia;
 
 import anton.teis.incidencias.entity.user.Tecnico;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +25,33 @@ public class IncidenciaEnProceso extends Incidencia {
     private Tecnico tecnico;
 
     // TODO: impl historial al abrir una incidencia
-    // private List<RegistroHistorial> historial; // se guardarán los ID para simplificar el proceso
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<RegistroHistorial> historial = new ArrayList<>();
+
+
+    public void setTecnico(Tecnico tecnico){
+        this.tecnico = tecnico;
+        this.addTecnico(tecnico);
+    }
+
+    public void addTecnico(Tecnico tecnico) {
+        this.historial.add(new RegistroHistorial(
+                LocalDateTime.now(),
+                tecnico
+        ));
+    }
+
+    public List<Tecnico> historialToTecnicoList() {
+
+        List<RegistroHistorial> historico = this.getHistorial();
+        List<Tecnico> tecnicos = new ArrayList<>();
+
+        historico.forEach(registro -> {
+            tecnicos.add(registro.getTecnico());
+        });
+
+        return tecnicos;
+
+    }
 
 }

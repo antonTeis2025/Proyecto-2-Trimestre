@@ -78,15 +78,16 @@ public class IncidenciaService {
         IncidenciaResuelta incidenciaResuelta = new IncidenciaResuelta();
 
         // todo: refactor para el historico
-        if (tecnicos == null) {
-            // si no se especifica lista de técnicos poner el que ya estaba
-            Tecnico t = incidencia.getTecnico();
-            List<Tecnico> ts = new ArrayList<>();
-            ts.add(t);
-            incidenciaResuelta.setTecnicos(ts);
-        } else {
-            incidenciaResuelta.setTecnicos(tecnicos);
-        }
+//        if (tecnicos == null) {
+//            // si no se especifica lista de técnicos poner el que ya estaba
+//            Tecnico t = incidencia.getTecnico();
+//            List<Tecnico> ts = new ArrayList<>();
+//            ts.add(t);
+//            incidenciaResuelta.setTecnicos(ts);
+//        } else {
+//            incidenciaResuelta.setTecnicos(tecnicos);
+//        }
+        incidenciaResuelta.setTecnicos(incidencia.historialToTecnicoList());
 
         incidenciaResuelta.setSolucion(solucion);
 
@@ -115,22 +116,25 @@ public class IncidenciaService {
         incidenciaCerrada.copiarDatos(incidencia);
 
         // todo: refactor para el historico
-        if (tecnicos == null) {
-            // si no se especifica lista de técnicos poner el que ya estaba
-            Tecnico t = incidencia.getTecnico();
+//        if (tecnicos == null) {
+//            // si no se especifica lista de técnicos poner el que ya estaba
+//            Tecnico t = incidencia.getTecnico();
+//
+//            List<Tecnico> ts = new ArrayList<>();
+//            ts.add(t);
+//            incidenciaCerrada.setTecnicos(ts);
+//        } else {
+//            incidenciaCerrada.setTecnicos(tecnicos);
+//        }
 
-            List<Tecnico> ts = new ArrayList<>();
-            ts.add(t);
-            incidenciaCerrada.setTecnicos(ts);
-        } else {
-            incidenciaCerrada.setTecnicos(tecnicos);
-        }
+        incidenciaCerrada.setTecnicos(incidencia.historialToTecnicoList());
 
         // se borra la incidencia en proceso
         deleteById(incidencia.getId());
 
         return incidenciaRepository.save(incidenciaCerrada);
     }
+
 
 
 
