@@ -21,7 +21,19 @@ public abstract class Incidencia {
     private String descripcion;
     private String IP;
     private Tipo tipo;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO: Comprobar que funcione
     private LocalDateTime momento;
+
+    /**
+     * Esta funcion copia los datos base de otra incidencia
+     * @param i Incidencia de la que se quiere copiar
+     */
+    public void copiarDatos(Incidencia i) {
+        this.setUsuario(i.getUsuario());
+        this.setDescripcion(i.getDescripcion());
+        this.setIP(i.getIP());
+        this.setTipo(i.getTipo());
+        this.setMomento(i.getMomento());
+    }
 
 }

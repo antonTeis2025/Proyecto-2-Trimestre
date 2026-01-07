@@ -1,9 +1,12 @@
 package anton.teis.incidencias.entity.user;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Data
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@NoArgsConstructor
 @DiscriminatorColumn(name = "privilegios")
 public abstract class Usuarios {
     @Id
@@ -15,5 +18,7 @@ public abstract class Usuarios {
 
     private String username;
     private String password;
+
+    private boolean alta = true; // si no esta dado de alta no aparecerá en el front-end
 
 }
