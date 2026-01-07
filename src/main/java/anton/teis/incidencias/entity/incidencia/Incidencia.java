@@ -21,7 +21,7 @@ public abstract class Incidencia {
     private String descripcion;
     private String IP;
     private Tipo tipo;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") // TODO: Comprobar que funcione
     private LocalDateTime momento;
 
     /**

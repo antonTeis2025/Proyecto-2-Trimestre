@@ -12,11 +12,11 @@ public class Tecnico extends Usuarios {
     // TODO: relaciones
 
     // Lista de incidencias resueltas (ManyToMany)
-    @ManyToMany(mappedBy = "tecnico")
+    @ManyToMany(mappedBy = "tecnicos")
     private List<IncidenciaResuelta> resueltas;
 
     // Lista de incidencias cerradas (ManyToMany)
-    @ManyToMany(mappedBy = "tecnico")
+    @ManyToMany(mappedBy = "tecnicos")
     private List<IncidenciaResuelta> cerradas;
 
     // Lista de incidencias en proceso (ManyToOne)

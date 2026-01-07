@@ -20,7 +20,7 @@ public class IncidenciaCerrada extends Incidencia{
             joinColumns = @JoinColumn(name = "id_incidencia"),
             inverseJoinColumns = @JoinColumn(name = "id_tecnico")
     )
-    private List<Tecnico> tecnico;
+    private List<Tecnico> tecnicos;
     // aqui se describe porque la incidencia se ha cerrado
     private String problema;
 }

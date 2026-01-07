@@ -114,9 +114,17 @@ public class Test implements CommandLineRunner {
 
     private long testAsignarIncidencia(long id) {
 
-        Tecnico t = usuarioService.getTecnicos().get(0);
+        System.out.println("-------- Asignando incidencia ---------");
+
+        Tecnico t = usuarioService.getTecnicos().getFirst();
 
         return incidenciaService.asignarIncidencia(id, t).getId();
+
+    }
+
+    private void testResolverIncidencia(long id) {
+        System.out.println("-------- Resolviendo incidencia ---------");
+        incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede");
 
     }
 
@@ -132,6 +140,7 @@ public class Test implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // long id = testAbrirIncidencia();
         // testAsignarIncidencia(id);
-        testSetup();
+        // testSetup();
+        testResolverIncidencia(2);
     }
 }
