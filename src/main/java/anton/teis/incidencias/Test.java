@@ -135,7 +135,7 @@ public class Test implements CommandLineRunner {
 
     private void testResolverIncidencia(long id) {
         System.out.println("-------- Resolviendo incidencia ---------");
-        incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede");
+        System.out.println(incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede").toString());
 
     }
 
@@ -158,17 +158,9 @@ public class Test implements CommandLineRunner {
         long id = testAbrirIncidencia();
         long id2 = testAsignarIncidencia(id);
 
-        Incidencia incidenciaBase = incidenciaService.getById(id2);
+        incidenciaService.pasarIncidencia(id2, usuarioService.getTecnicos().get(1));
 
-        if (!(incidenciaBase instanceof IncidenciaEnProceso ip)) {
-            throw new IllegalStateException(
-                    "Solo se puede cerrar una incidencia en proceso"
-            );
-        }
-
-        // deberia añadir un tecnico
-        ip.setTecnico(usuarioService.getTecnicos().get(1));
-
+        testResolverIncidencia(id2);
 
 
         // testSetup();

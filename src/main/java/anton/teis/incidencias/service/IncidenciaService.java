@@ -2,7 +2,9 @@ package anton.teis.incidencias.service;
 
 import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
+import anton.teis.incidencias.repository.IncidenciaEnProcesoRepository;
 import anton.teis.incidencias.repository.IncidenciaRepository;
+import anton.teis.incidencias.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,10 @@ public class IncidenciaService {
 
     @Autowired
     private IncidenciaRepository incidenciaRepository;
+    @Autowired
+    private IncidenciaEnProcesoRepository incidenciaEnProcesoRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
     /**
      * Funcion para crear nueva incidencia
@@ -135,7 +141,19 @@ public class IncidenciaService {
         return incidenciaRepository.save(incidenciaCerrada);
     }
 
+    /**
+     * Pasa la incidencia a otro técnico
+     * @param id_incidencia
+     * @param tecnico
+     * @return
+     */
+    @Transactional
+    public Incidencia pasarIncidencia(long id_incidencia, Tecnico tecnico) {
 
+        IncidenciaEnProceso ip = incidenciaEnProcesoRepository.getById(id_incidencia);
+        ip.setTecnico(tecnico);
+        return incidenciaEnProcesoRepository.save(ip);
+    }
 
 
 }

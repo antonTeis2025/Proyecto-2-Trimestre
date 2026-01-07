@@ -25,6 +25,9 @@ public class UsuarioService {
     public Usuarios getById(long id) {
         return usuarioRepository.findById(id).get();
     }
+    public Tecnico getTecnicoById(long id) {
+        return usuarioRepository.findTecnicoById(id);
+    }
     public List<Usuarios> getAll() {
         return usuarioRepository.findAll();
     }
