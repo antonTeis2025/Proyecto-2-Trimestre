@@ -56,8 +56,6 @@ public class IncidenciaService {
 
         incidenciaEnProceso.copiarDatos(incidencia);
 
-        // Incidencia saved = incidenciaRepository.save(incidenciaEnProceso);
-
         deleteById(incidencia.getId());
 
         return incidenciaRepository.save(incidenciaEnProceso);
@@ -83,16 +81,6 @@ public class IncidenciaService {
 
         IncidenciaResuelta incidenciaResuelta = new IncidenciaResuelta();
 
-        // todo: refactor para el historico
-//        if (tecnicos == null) {
-//            // si no se especifica lista de técnicos poner el que ya estaba
-//            Tecnico t = incidencia.getTecnico();
-//            List<Tecnico> ts = new ArrayList<>();
-//            ts.add(t);
-//            incidenciaResuelta.setTecnicos(ts);
-//        } else {
-//            incidenciaResuelta.setTecnicos(tecnicos);
-//        }
         incidenciaResuelta.setTecnicos(incidencia.historialToTecnicoList());
 
         incidenciaResuelta.setSolucion(solucion);
@@ -120,18 +108,6 @@ public class IncidenciaService {
         IncidenciaCerrada incidenciaCerrada = new IncidenciaCerrada();
         incidenciaCerrada.setMotivo(motivo);
         incidenciaCerrada.copiarDatos(incidencia);
-
-        // todo: refactor para el historico
-//        if (tecnicos == null) {
-//            // si no se especifica lista de técnicos poner el que ya estaba
-//            Tecnico t = incidencia.getTecnico();
-//
-//            List<Tecnico> ts = new ArrayList<>();
-//            ts.add(t);
-//            incidenciaCerrada.setTecnicos(ts);
-//        } else {
-//            incidenciaCerrada.setTecnicos(tecnicos);
-//        }
 
         incidenciaCerrada.setTecnicos(incidencia.historialToTecnicoList());
 
