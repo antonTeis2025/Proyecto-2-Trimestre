@@ -29,11 +29,11 @@ public abstract class Incidencia {
      * @param i Incidencia de la que se quiere copiar
      */
     public void copiarDatos(Incidencia i) {
-        this.usuario = i.usuario;
-        this.descripcion = i.descripcion;
-        this.IP = i.IP;
-        this.tipo = i.tipo;
-        this.momento = i.momento;
+        this.setUsuario(i.getUsuario());
+        this.setDescripcion(i.getDescripcion());
+        this.setIP(i.getIP());
+        this.setTipo(i.getTipo());
+        this.setMomento(i.getMomento());
     }
 
 }
