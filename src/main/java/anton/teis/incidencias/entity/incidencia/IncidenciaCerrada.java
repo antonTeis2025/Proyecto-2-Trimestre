@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Data;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * Este tipo de incidencias no se pudieron resolver y se cerraron
  */
 @Entity
+@Data
 public class IncidenciaCerrada extends Incidencia{
     // Esta lista permitirá ver el historial de técnicos que han trabajado en una incidencia.
     @ManyToMany
@@ -22,5 +24,5 @@ public class IncidenciaCerrada extends Incidencia{
     )
     private List<Tecnico> tecnicos;
     // aqui se describe porque la incidencia se ha cerrado
-    private String problema;
+    private String motivo;
 }

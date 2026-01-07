@@ -1,9 +1,6 @@
 package anton.teis.incidencias.service;
 
-import anton.teis.incidencias.entity.incidencia.Incidencia;
-import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
-import anton.teis.incidencias.entity.incidencia.IncidenciaEnProceso;
-import anton.teis.incidencias.entity.incidencia.IncidenciaResuelta;
+import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
 import anton.teis.incidencias.repository.IncidenciaRepository;
 import jakarta.transaction.Transactional;
@@ -78,6 +75,7 @@ public class IncidenciaService {
 
         IncidenciaResuelta incidenciaResuelta = new IncidenciaResuelta();
 
+        // todo: refactor para el historico
         if (tecnicos == null) {
             // si no se especifica lista de técnicos poner el que ya estaba
             Tecnico t = incidencia.getTecnico();
@@ -96,6 +94,43 @@ public class IncidenciaService {
 
         return incidenciaRepository.save(incidenciaResuelta);
 
+    }
+
+    @Transactional
+    public Incidencia cerrarIncidencia(long id, List<Tecnico> tecnicos, String motivo) {
+        // obtener la incidenciaBase por ID
+        Incidencia incidenciaBase = getById(id);
+
+        // AQUÍ Hibernate ya sabe el tipo real, y la almacena en la variable incidencia
+        if (!(incidenciaBase instanceof IncidenciaEnProceso incidencia)) {
+            throw new IllegalStateException(
+                    "Solo se puede cerrar una incidencia en proceso"
+            );
+        }
+
+        IncidenciaCerrada incidenciaCerrada = new IncidenciaCerrada();
+
+        // todo: refactor para el historico
+        if (tecnicos == null) {
+            // si no se especifica lista de técnicos poner el que ya estaba
+            Tecnico t = incidencia.getTecnico();
+            List<Tecnico> ts = new ArrayList<>();
+            ts.add(t);
+            incidenciaCerrada.setTecnicos(ts);
+        } else {
+            incidenciaCerrada.setTecnicos(tecnicos);
+        }
+
+        incidenciaCerrada.setMotivo(motivo);
+
+        incidenciaCerrada.copiarDatos(incidencia);
+
+        Incidencia saved = incidenciaRepository.saveAndFlush(incidenciaCerrada);
+
+        // se borra la incidencia en proceso
+        deleteById(incidencia.getId());
+
+        return saved;
     }
 
 

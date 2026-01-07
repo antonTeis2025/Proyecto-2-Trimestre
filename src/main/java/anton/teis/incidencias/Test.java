@@ -128,19 +128,25 @@ public class Test implements CommandLineRunner {
 
     }
 
+    private void testCerrarIncidencia(long id) {
+        System.out.println("--------- Cerrando incidencia ------------");
+        incidenciaService.cerrarIncidencia(id, null, "no se que mas hacer");
+    }
+
     /*
             TESTS (todo):
-                - Resolver incidencia
-                - Cerrar incidencia
+                X Resolver incidencia
+                X Cerrar incidencia
                 - Re-abrir incidencia cerrada
      */
 
 
     @Override
     public void run(String... args) throws Exception {
-        // long id = testAbrirIncidencia();
-        // testAsignarIncidencia(id);
+        long id = testAbrirIncidencia();
+        long id2 = testAsignarIncidencia(id);
         // testSetup();
-        testResolverIncidencia(2);
+        // testResolverIncidencia(2);
+        testCerrarIncidencia(id2);
     }
 }
