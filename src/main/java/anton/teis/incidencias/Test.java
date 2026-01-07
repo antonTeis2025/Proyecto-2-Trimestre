@@ -143,6 +143,7 @@ public class Test implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        testCrearUsuarios();
         long id = testAbrirIncidencia();
         long id2 = testAsignarIncidencia(id);
         // testSetup();

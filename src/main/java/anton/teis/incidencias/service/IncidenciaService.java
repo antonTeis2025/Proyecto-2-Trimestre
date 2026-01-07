@@ -50,9 +50,11 @@ public class IncidenciaService {
 
         incidenciaEnProceso.copiarDatos(incidencia);
 
+        Incidencia saved = incidenciaRepository.save(incidenciaEnProceso);
+
         deleteById(incidencia.getId());
 
-        return incidenciaRepository.save(incidenciaEnProceso);
+        return saved;
     }
 
     /**
@@ -109,6 +111,11 @@ public class IncidenciaService {
         }
 
         IncidenciaCerrada incidenciaCerrada = new IncidenciaCerrada();
+        incidenciaCerrada.setMotivo(motivo);
+        incidenciaCerrada.copiarDatos(incidencia);
+
+        // 1️⃣ Guardar primero sin técnicos
+        incidenciaCerrada = incidenciaRepository.saveAndFlush(incidenciaCerrada);
 
         // todo: refactor para el historico
         if (tecnicos == null) {
@@ -121,16 +128,13 @@ public class IncidenciaService {
             incidenciaCerrada.setTecnicos(tecnicos);
         }
 
-        incidenciaCerrada.setMotivo(motivo);
-
-        incidenciaCerrada.copiarDatos(incidencia);
-
-        Incidencia saved = incidenciaRepository.saveAndFlush(incidenciaCerrada);
+        // 3️⃣ Guardar nuevamente
+        incidenciaCerrada = incidenciaRepository.saveAndFlush(incidenciaCerrada);
 
         // se borra la incidencia en proceso
         deleteById(incidencia.getId());
 
-        return saved;
+        return incidenciaCerrada;
     }
 
 
