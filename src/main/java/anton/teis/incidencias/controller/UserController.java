@@ -111,4 +111,17 @@ public class UserController {
         return "success";
     }
 
+
+
+    /*
+            TODO
+                - Cambiar contraseña (esperar a springsecurity)
+                - Dar de baja un usuario
+                - Comprobar si contraseña es correcta
+                - Lista de usuarios Json
+                - Usuario por ID
+                - Usuario por username
+     */
+
+
 }
