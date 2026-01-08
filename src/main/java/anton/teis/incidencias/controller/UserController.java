@@ -11,9 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -23,7 +21,7 @@ public class UserController {
 
 
 
-    // Request tipo POST para recibir datos de un formulario (todo: formulario)
+
     /*
     curl.exe -X POST http://localhost:8080/api/user/create `
           -d "nombre=Juan" `
@@ -31,6 +29,14 @@ public class UserController {
           -d "privilegios=tecnico" `
           -d "username=jperez" `
           -d "apellido=Perez"
+     */
+
+    /**
+     * Request tipo POST para recibir datos de un formulario (todo: formulario)
+     * @param userData
+     * @param bindingResult
+     * @param model
+     * @return
      */
     @PostMapping("/api/user/create")
     @ResponseBody // TEMPORAL -> Devolver texto plano para debugging
@@ -40,23 +46,66 @@ public class UserController {
             return "error";
         }
 
-        // crear el modelo de usuario en función del campo privilegios
-        switch (userData.getPrivilegios().toLowerCase()) {
-            case "tecnico" -> {
-                Tecnico tecnico = new Tecnico();
-                tecnico.copiarDto(userData);
-                usuarioService.guardar(tecnico);
+        try {
+            // crear el modelo de usuario en función del campo privilegios
+            switch (userData.getPrivilegios().toLowerCase()) {
+                case "tecnico" -> {
+                    Tecnico tecnico = new Tecnico();
+                    tecnico.copiarDto(userData);
+                    usuarioService.guardar(tecnico);
+                }
+                case "administrador" -> {
+                    Administrador administrador = new Administrador();
+                    administrador.copiarDto(userData);
+                    usuarioService.guardar(administrador);
+                }
+                default -> { // engloba "usuario"
+                    Usuario usuario = new Usuario();
+                    usuario.copiarDto(userData);
+                    usuarioService.guardar(usuario);
+                }
             }
-            case "administrador" -> {
-                Administrador administrador = new Administrador();
-                administrador.copiarDto(userData);
-                usuarioService.guardar(administrador);
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+
+        return "success";
+    }
+
+    /**
+     * Actualiza los datos de un usuario. NO cambia la contraseña (todo: hacer endpoint cambio contraseña)
+     * Campos: username, nombre, apellidos
+     *
+     * @param id
+     * @param userData
+     * @param bindingResult
+     * @return
+     */
+    @PutMapping("/api/user/update/{id}")
+    @ResponseBody
+    public String actualizarUsuario(@PathVariable Long id, @ModelAttribute @Valid UserData userData, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "error";
+        }
+
+        try {
+            // Buscar usuario por ID
+            Usuarios u = usuarioService.getById(id);
+            if (u == null) {
+                return "error: Usuario " + id + " no encontrado";
             }
-            default -> { // engloba "usuario"
-                Usuario usuario = new Usuario();
-                usuario.copiarDto(userData);
-                usuarioService.guardar(usuario);
+            // verificar que haya username, nombre y apellido, campos necesarios para actualizar
+            if (userData.getUsername() == null || userData.getUsername().isBlank() ||
+                    userData.getNombre() == null || userData.getNombre().isBlank() ||
+                    userData.getApellido() == null || userData.getApellido().isBlank()) {
+                return "ERROR: Los campos username, nombre y apellido son obligatorios.";
             }
+            // actualizar datos xd
+            usuarioService.update(id, userData.getUsername(), userData.getNombre(), userData.getApellido());
+
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
         }
 
         return "success";
