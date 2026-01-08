@@ -46,30 +46,32 @@ public class UserController {
             return "error";
         }
 
+        long id = -1;
+
         try {
             // crear el modelo de usuario en función del campo privilegios
             switch (userData.getPrivilegios().toLowerCase()) {
                 case "tecnico" -> {
                     Tecnico tecnico = new Tecnico();
                     tecnico.copiarDto(userData);
-                    usuarioService.guardar(tecnico);
+                    id = usuarioService.guardar(tecnico).getId();
                 }
                 case "administrador" -> {
                     Administrador administrador = new Administrador();
                     administrador.copiarDto(userData);
-                    usuarioService.guardar(administrador);
+                    id = usuarioService.guardar(administrador).getId();
                 }
                 default -> { // engloba "usuario"
                     Usuario usuario = new Usuario();
                     usuario.copiarDto(userData);
-                    usuarioService.guardar(usuario);
+                    id = usuarioService.guardar(usuario).getId();
                 }
             }
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
 
-        return "success";
+        return "success: creado con id " + id;
     }
 
     /*
