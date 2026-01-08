@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class UserController {
@@ -21,8 +22,18 @@ public class UserController {
     private UsuarioService usuarioService;
 
 
+
     // Request tipo POST para recibir datos de un formulario (todo: formulario)
-    @PostMapping
+    /*
+    curl.exe -X POST http://localhost:8080/api/user/create `
+          -d "nombre=Juan" `
+          -d "password=123456" `
+          -d "privilegios=tecnico" `
+          -d "username=jperez" `
+          -d "apellido=Perez"
+     */
+    @PostMapping("/api/user/create")
+    @ResponseBody // TEMPORAL -> Devolver texto plano para debugging
     public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
@@ -30,7 +41,7 @@ public class UserController {
         }
 
         // crear el modelo de usuario en función del campo privilegios
-        switch (userData.getPrivilegios()) {
+        switch (userData.getPrivilegios().toLowerCase()) {
             case "tecnico" -> {
                 Tecnico tecnico = new Tecnico();
                 tecnico.copiarDto(userData);
@@ -41,7 +52,7 @@ public class UserController {
                 administrador.copiarDto(userData);
                 usuarioService.guardar(administrador);
             }
-            default -> { // engloba usuario
+            default -> { // engloba "usuario"
                 Usuario usuario = new Usuario();
                 usuario.copiarDto(userData);
                 usuarioService.guardar(usuario);
