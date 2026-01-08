@@ -1,5 +1,6 @@
 package anton.teis.incidencias.entity.user;
 
+import anton.teis.incidencias.dto.UserData;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,5 +21,12 @@ public abstract class Usuarios {
     private String password;
 
     private boolean alta = true; // si no esta dado de alta no aparecerá en el front-end
+
+    public void copiarDto(UserData userData) {
+        this.setNombre(userData.getNombre());
+        this.setApellidos(userData.getApellido());
+        this.setUsername(userData.getUsername());
+        this.setPassword(userData.getPassword());
+    }
 
 }
