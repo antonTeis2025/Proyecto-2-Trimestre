@@ -106,7 +106,8 @@ classDiagram
 ---
 # Endpoints
 
-##  `/api/user/create` (**POST**)
+## (**POST**) `/api/user/create` 
+Crea un usuario en la base de datos.
  
  | Campo | Tipo | Requerido | Descripción |
   | :--- | :--- | :---: | :--- |
@@ -115,3 +116,27 @@ classDiagram
   | **nombre** | `String` | ✅ | Nombre de pila del usuario. |
   | **apellido** | `String` | ✅ | Apellido(s) del usuario. |
   | **privilegios** | `String` | ✅ | Rol en el sistema: `tecnico`, `administrador` o `usuario`. |
+
+## (**PUT**) `/api/user/update/{id}` 
+Actualiza los datos de un usuario. No actualiza la contraseña.
+
+| Campo        | Tipo     | Requerido | Descripción                                           |
+  |:-------------|:---------| :---: |:------------------------------------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a actualizar                           |
+| **username** | `String` | ✅ | Nuevo identificador único de acceso (debe ser único). |
+| **nombre**   | `String` | ✅ | Nuevo nombre de pila del usuario.                     |
+| **apellido** | `String` | ✅ | Nuevo apellido(s) del usuario.                        |
+
+## **(POST)** `/api/user/disable/{id}`
+Da de baja un usuario para que no aparezca listado.
+
+| Campo        | Tipo     | Requerido | Descripción                  |
+  |:-------------|:---------| :---: |:-----------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a dar de baja |
+
+## **(POST)** `/api/user/enable/{id}`
+Da de alta un usuario para que  aparezca listado otra vez.
+
+| Campo        | Tipo     | Requerido | Descripción                  |
+  |:-------------|:---------| :---: |:-----------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a dar de alta |
