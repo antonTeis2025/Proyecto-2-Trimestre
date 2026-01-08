@@ -72,6 +72,12 @@ public class UserController {
         return "success";
     }
 
+    /*
+    curl.exe -X PUT http://localhost:8080/api/user/update/8 `
+          -d "username=jperez_nuevo" `
+          -d "nombre=Juan" `
+          -d "apellido=Perez"
+     */
     /**
      * Actualiza los datos de un usuario. NO cambia la contraseña (todo: hacer endpoint cambio contraseña)
      * Campos: username, nombre, apellidos
@@ -111,12 +117,47 @@ public class UserController {
         return "success";
     }
 
+    // curl.exe -X POST http://localhost:8080/api/user/disable/8
+    /**
+     * Desactiva un usuario para que no aparezca listado
+     * @param id
+     * @return
+     */
+    @PostMapping("/api/user/disable/{id}")
+    @ResponseBody
+    public String darDeBaja(@PathVariable long id) {
+        try {
+            usuarioService.darDeBaja(id);
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+
+        return "success";
+    }
+
+    // curl.exe -X POST http://localhost:8080/api/user/enable/8
+    /**
+     * Reactiva un usuario que estaba de baja
+     * @param id
+     * @return
+     */
+    @PostMapping("/api/user/enable/{id}")
+    @ResponseBody
+    public String reactivar(@PathVariable long id) {
+        try {
+            usuarioService.reactivar(id);
+        } catch (Exception e) {
+            return "error: " + e.getMessage();
+        }
+
+        return "success";
+    }
 
 
     /*
             TODO
                 - Cambiar contraseña (esperar a springsecurity)
-                - Dar de baja un usuario
+                X Dar de baja / alta un usuario
                 - Comprobar si contraseña es correcta
                 - Lista de usuarios Json
                 - Usuario por ID
