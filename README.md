@@ -102,3 +102,16 @@ classDiagram
 ---
 # Flujo incidencias
 ![flujo incidencias.drawio.png](img/flujo%20incidencias.drawio.png)
+
+---
+# Endpoints
+
+##  `/api/user/create` (**POST**)
+ 
+ | Campo | Tipo | Requerido | Descripción |
+  | :--- | :--- | :---: | :--- |
+  | **username** | `String` | ✅ | Identificador único de acceso (debe ser único). |
+  | **password** | `String` | ✅ | Contraseña de seguridad. |
+  | **nombre** | `String` | ✅ | Nombre de pila del usuario. |
+  | **apellido** | `String` | ✅ | Apellido(s) del usuario. |
+  | **privilegios** | `String` | ✅ | Rol en el sistema: `tecnico`, `administrador` o `usuario`. |
