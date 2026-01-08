@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class UserController {
 
@@ -155,14 +157,53 @@ public class UserController {
         return "success";
     }
 
+    /**
+     * Lista todos los usuarios
+     * @return
+     */
+    @GetMapping("/api/user/all")
+    @ResponseBody
+    public List<Usuarios> getAll() {
+        return usuarioService.getAll();
+    }
+
+    /**
+     * Lista los usuarios activos
+     * @return
+     */
+    @GetMapping("/api/user/active")
+    @ResponseBody
+    public List<Usuarios> getActive() {
+        return usuarioService.getActivos();
+    }
+
+    /**
+     * Obtiene un usuario por su ID
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/user/{id}")
+    @ResponseBody
+    public Usuarios getById(@PathVariable long id) {
+        return usuarioService.getById(id);
+    }
+
+    /**
+     * Obtiene un usuario por su nombre de usuario
+     * @param name
+     * @return
+     */
+    @GetMapping("/api/user/name/{name}")
+    @ResponseBody
+    public Usuarios getByName(@PathVariable String name) {
+        return usuarioService.getByUsername(name);
+    }
+
 
     /*
             TODO
+                - Manejo de errores (no encuentra usuario con ID X)
                 - Cambiar contraseña (esperar a springsecurity)
-                X Dar de baja / alta un usuario
-                - Lista de usuarios Json
-                - Usuario por ID
-                - Usuario por username
      */
 
 
