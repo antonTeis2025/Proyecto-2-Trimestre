@@ -102,3 +102,65 @@ classDiagram
 ---
 # Flujo incidencias
 ![flujo incidencias.drawio.png](img/flujo%20incidencias.drawio.png)
+
+---
+# Endpoints para gestión de usuarios
+
+## (**POST**) `/api/user/create` 
+Crea un usuario en la base de datos.
+ 
+ | Campo | Tipo | Requerido | Descripción |
+  | :--- | :--- | :---: | :--- |
+  | **username** | `String` | ✅ | Identificador único de acceso (debe ser único). |
+  | **password** | `String` | ✅ | Contraseña de seguridad. |
+  | **nombre** | `String` | ✅ | Nombre de pila del usuario. |
+  | **apellido** | `String` | ✅ | Apellido(s) del usuario. |
+  | **privilegios** | `String` | ✅ | Rol en el sistema: `tecnico`, `administrador` o `usuario`. |
+
+## (**PUT**) `/api/user/update/{id}` 
+Actualiza los datos de un usuario. No actualiza la contraseña.
+
+| Campo        | Tipo     | Requerido | Descripción                                           |
+  |:-------------|:---------| :---: |:------------------------------------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a actualizar                           |
+| **username** | `String` | ✅ | Nuevo identificador único de acceso (debe ser único). |
+| **nombre**   | `String` | ✅ | Nuevo nombre de pila del usuario.                     |
+| **apellido** | `String` | ✅ | Nuevo apellido(s) del usuario.                        |
+
+## **(POST)** `/api/user/disable/{id}`
+Da de baja un usuario para que no aparezca listado.
+
+| Campo        | Tipo     | Requerido | Descripción                  |
+  |:-------------|:---------| :---: |:-----------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a dar de baja |
+
+## **(POST)** `/api/user/enable/{id}`
+Da de alta un usuario para que  aparezca listado otra vez.
+
+| Campo        | Tipo     | Requerido | Descripción                  |
+  |:-------------|:---------| :---: |:-----------------------------|
+| **id**       | `long`   | ✅ | ID del usuario a dar de alta |
+
+## (**GET**) `/api/user/all`
+Lista todos los usuarios registrados en el sistema, independientemente de su estado.
+
+*No requiere parámetros.*
+
+## (**GET**) `/api/user/active`
+Lista únicamente los usuarios que se encuentran activos en el sistema.
+
+*No requiere parámetros.*
+
+## (**GET**) `/api/user/{id}`
+Obtiene la información detallada de un usuario específico a partir de su ID.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **id** | `long` | ✅ | ID único del usuario a consultar. |
+
+## (**GET**) `/api/user/name/{name}`
+Obtiene la información detallada de un usuario específico a partir de su nombre de usuario.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **name** | `String` | ✅ | Nombre de usuario (username) a buscar. |

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class Test implements CommandLineRunner {
 
@@ -50,10 +52,10 @@ public class Test implements CommandLineRunner {
 
         // 2. Guardar un Técnico
         Tecnico t2 = new Tecnico();
-        t.setNombre("Laura");
-        t.setApellidos("Fernández");
-        t.setUsername("laura_tec2");
-        t.setPassword("456");
+        t2.setNombre("Laura");
+        t2.setApellidos("Fernández");
+        t2.setUsername("laura_tec2");
+        t2.setPassword("asd123");
         usuarioService.guardar(t2);
 
 
@@ -113,6 +115,7 @@ public class Test implements CommandLineRunner {
         IncidenciaAbierta incidencia = new IncidenciaAbierta();
 
         incidencia.setIP("127.0.0.1");
+        incidencia.setMomento(LocalDateTime.now());
         incidencia.setTipo(Tipo.OTRO);
         incidencia.setDescripcion("No me va esto que esta pasando");
         incidencia.setUsuario((Usuario) usuarioService.getById(1));
@@ -135,7 +138,9 @@ public class Test implements CommandLineRunner {
 
     private void testResolverIncidencia(long id) {
         System.out.println("-------- Resolviendo incidencia ---------");
-        System.out.println(incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede").toString());
+        Incidencia resuelta = incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede");
+        System.out.println(resuelta.toString());
+        System.out.println(resuelta.getMomento());
 
     }
 
