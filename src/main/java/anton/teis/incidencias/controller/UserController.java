@@ -5,9 +5,12 @@ import anton.teis.incidencias.entity.user.Administrador;
 import anton.teis.incidencias.entity.user.Tecnico;
 import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
+import anton.teis.incidencias.exceptions.NotFoundException;
 import anton.teis.incidencias.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,8 +23,6 @@ public class UserController {
 
     @Autowired
     private UsuarioService usuarioService;
-
-
 
 
     /*
@@ -103,7 +104,7 @@ public class UserController {
             // Buscar usuario por ID
             Usuarios u = usuarioService.getById(id);
             if (u == null) {
-                return "error: Usuario " + id + " no encontrado";
+                throw new NotFoundException();
             }
             // verificar que haya username, nombre y apellido, campos necesarios para actualizar
             if (userData.getUsername() == null || userData.getUsername().isBlank() ||
@@ -163,8 +164,12 @@ public class UserController {
      */
     @GetMapping("/api/user/all")
     @ResponseBody
-    public List<Usuarios> getAll() {
-        return usuarioService.getAll();
+    public ResponseEntity<List<Usuarios>> getAll() {
+        List<Usuarios> u = usuarioService.getAll();
+        if (u.isEmpty() || u == null) {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok(u);
     }
 
     /**
@@ -173,8 +178,12 @@ public class UserController {
      */
     @GetMapping("/api/user/active")
     @ResponseBody
-    public List<Usuarios> getActive() {
-        return usuarioService.getActivos();
+    public ResponseEntity<List<Usuarios>> getActive() {
+        List<Usuarios> u = usuarioService.getActivos();
+        if (u.isEmpty() || u == null) {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok(u);
     }
 
     /**
@@ -184,8 +193,12 @@ public class UserController {
      */
     @GetMapping("/api/user/{id}")
     @ResponseBody
-    public Usuarios getById(@PathVariable long id) {
-        return usuarioService.getById(id);
+    public ResponseEntity<Usuarios> getById(@PathVariable long id) {
+        Usuarios u = usuarioService.getById(id);
+        if (u == null) {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok(u);
     }
 
     /**
@@ -195,8 +208,12 @@ public class UserController {
      */
     @GetMapping("/api/user/name/{name}")
     @ResponseBody
-    public Usuarios getByName(@PathVariable String name) {
-        return usuarioService.getByUsername(name);
+    public ResponseEntity<Usuarios> getByName(@PathVariable String name) {
+        Usuarios u = usuarioService.getByUsername(name);
+        if (u == null) {
+            throw new NotFoundException();
+        }
+        return ResponseEntity.ok(u);
     }
 
 
