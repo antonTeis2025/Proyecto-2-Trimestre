@@ -104,7 +104,7 @@ classDiagram
 ![flujo incidencias.drawio.png](img/flujo%20incidencias.drawio.png)
 
 ---
-# Endpoints
+# Endpoints para gestión de usuarios
 
 ## (**POST**) `/api/user/create` 
 Crea un usuario en la base de datos.
@@ -140,3 +140,27 @@ Da de alta un usuario para que  aparezca listado otra vez.
 | Campo        | Tipo     | Requerido | Descripción                  |
   |:-------------|:---------| :---: |:-----------------------------|
 | **id**       | `long`   | ✅ | ID del usuario a dar de alta |
+
+## (**GET**) `/api/user/all`
+Lista todos los usuarios registrados en el sistema, independientemente de su estado.
+
+*No requiere parámetros.*
+
+## (**GET**) `/api/user/active`
+Lista únicamente los usuarios que se encuentran activos en el sistema.
+
+*No requiere parámetros.*
+
+## (**GET**) `/api/user/{id}`
+Obtiene la información detallada de un usuario específico a partir de su ID.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **id** | `long` | ✅ | ID único del usuario a consultar. |
+
+## (**GET**) `/api/user/name/{name}`
+Obtiene la información detallada de un usuario específico a partir de su nombre de usuario.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **name** | `String` | ✅ | Nombre de usuario (username) a buscar. |
