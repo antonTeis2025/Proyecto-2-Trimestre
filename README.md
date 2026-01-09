@@ -164,3 +164,15 @@ Obtiene la información detallada de un usuario específico a partir de su nombr
 | Campo | Tipo | Requerido | Descripción |
 | :--- | :--- | :---: | :--- |
 | **name** | `String` | ✅ | Nombre de usuario (username) a buscar. |
+
+# Endpoints para gestión de incidencias
+
+## (**POST**) `/api/incidencia/abrir`
+Registra una nueva incidencia abierta en el sistema vinculada a un usuario.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **username** | `String` | ✅ | Nombre de usuario que reporta la incidencia (debe tener rol de usuario). |
+| **descripcion** | `String` | ✅ | Detalle de la incidencia (Máx. 200 caracteres). |
+| **IP** | `String` | ✅ | Dirección IP del equipo afectado. |
+| **tipo** | `Enum` | ✅ | Categoría de la incidencia: `OTRO`, `HARDWARE`, `SOFTWARE`, `RED`, `ERROR`. |
