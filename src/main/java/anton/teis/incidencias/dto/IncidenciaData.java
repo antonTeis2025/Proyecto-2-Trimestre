@@ -8,13 +8,13 @@ import lombok.Data;
 
 @Data
 public class IncidenciaData {
-    @NotNull
+    @NotNull(message = "Requerido un usuario")
     private String username;
-    @NotNull
+    @NotNull(message = "Requerida una descripcion")
     @Size(min = 1, max = 200, message = "Como máximo la descripción ha de tener 200 caracteres")
     private String descripcion;
-    @NotNull
+    @NotNull(message = "Requerida una IP")
     private String IP;
     @NotNull(message = "El tipo de incidencia es obligatorio y debe ser uno de los permitidos (OTRO, HARDWARE, SOFTWARE, RED, ERROR)")
-    private Tipo tipo;
+    private String tipo;
 }

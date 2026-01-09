@@ -4,6 +4,7 @@ import anton.teis.incidencias.dto.IncidenciaData;
 import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.incidencia.Incidencia;
 import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
+import anton.teis.incidencias.entity.incidencia.Tipo;
 import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
 import anton.teis.incidencias.service.IncidenciaService;
@@ -29,7 +30,7 @@ public class IncidenciaController {
 
     @PostMapping("/api/incidencia/abrir")
     @ResponseBody
-    private Incidencia abrirIncidencia(@ModelAttribute @Valid IncidenciaData incidenciaData, BindingResult bindingResult) {
+    private Object abrirIncidencia(@ModelAttribute @Valid IncidenciaData incidenciaData, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("Error");
         }
@@ -50,10 +51,16 @@ public class IncidenciaController {
             throw new RuntimeException("Los técnicos y administradores no pueden poner incidencias");
         }
 
+        // --- VALIDACIÓN MANUAL DEL ENUM ---
+        try {
+            i.setTipo(Tipo.valueOf(incidenciaData.getTipo().toUpperCase()));
+        } catch (IllegalArgumentException e) {
+            return "Error: El tipo '" + incidenciaData.getTipo() + "' no es válido. Debe ser: OTRO, HARDWARE, SOFTWARE, RED o ERROR";
+        }
+
         // --- Añadir el resto de campos
         i.setDescripcion(incidenciaData.getDescripcion());
         i.setIP(incidenciaData.getIP());
-        i.setTipo(incidenciaData.getTipo());
         // --- Pone la fecha actual
         i.setMomento(LocalDateTime.now());
 
