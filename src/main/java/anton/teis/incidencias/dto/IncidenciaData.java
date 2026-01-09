@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class IncidenciaData {
-    private long user_id;
+    private String username;
     @NotNull
     @Size(min = 1, max = 200, message = "Como máximo la descripción ha de tener 200 caracteres")
     private String descripcion;
