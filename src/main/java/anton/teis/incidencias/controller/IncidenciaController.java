@@ -30,7 +30,7 @@ public class IncidenciaController {
 
     @PostMapping("/api/incidencia/abrir")
     @ResponseBody
-    private Object abrirIncidencia(@ModelAttribute @Valid IncidenciaData incidenciaData, BindingResult bindingResult) {
+    public Object abrirIncidencia(@ModelAttribute @Valid IncidenciaData incidenciaData, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new RuntimeException("Error");
         }
@@ -65,6 +65,7 @@ public class IncidenciaController {
         i.setMomento(LocalDateTime.now());
 
         return incidenciaService.abrirIncidencia(i);
-
     }
+
+    // To-Do Asignar incidencia
 }
