@@ -31,7 +31,7 @@ public class IncidenciaController {
                 X /cerradas
                 X /enproceso
                 X /resueltas
-                - /tipo
+                X /tipo
                 X /tecnico/id
                     Devuelve en las que est&aacute; trabajando y en las que ha participado
                 - /user/id
@@ -308,4 +308,21 @@ public class IncidenciaController {
 
     }
 
+    /**
+     * Obtiene todas las incidencias reportadas por un usuario y separadas en tipo
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/incidencia/usuario/{id}")
+    @ResponseBody
+    public Object incidenciasUsuario(@PathVariable long id) {
+        // Verifica que sea un usuario normal
+        Usuarios u = usuarioService.getById(id);
+        if (!(u instanceof Usuario)) {
+            throw new IllegalArgumentException("Solamente los usuarios normales pueden tener incidencias");
+        }
+
+        return incidenciaService.getIncidenciasByUsuario(id);
+
+    }
 }

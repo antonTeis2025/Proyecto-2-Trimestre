@@ -1,8 +1,10 @@
 package anton.teis.incidencias.service;
 
+import anton.teis.incidencias.dto.IncidenciaUsuarioResponse;
 import anton.teis.incidencias.dto.IncidenciasTecnicoResponse;
 import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
+import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.repository.incidencia.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +169,23 @@ public class IncidenciaService {
         List<IncidenciaCerrada> cerradas = incidenciaCerradaRepository.findByTecnicoId(id);
 
         return new IncidenciasTecnicoResponse(actuales, resueltas, cerradas);
+    }
+
+    /**
+     * Devuelve todas las incidencias creadas por un usuario, separadas por tipo y en formato response
+     * @param id
+     * @return
+     */
+    public IncidenciaUsuarioResponse getIncidenciasByUsuario(long id) {
+
+        Usuario u = (Usuario) usuarioService.getById(id);
+
+        List<IncidenciaEnProceso> actuales = incidenciaEnProcesoRepository.findByUsuario(u);
+        List<IncidenciaResuelta> resueltas = incidenciaResueltaRepository.findByUsuario(u);
+        List<IncidenciaCerrada> cerradas = incidenciaCerradaRepository.findByUsuario(u);
+        List<IncidenciaAbierta> abiertas = incidenciaAbiertaRepository.findByUsuario(u);
+
+        return new IncidenciaUsuarioResponse(actuales, resueltas, cerradas, abiertas);
     }
 
 }
