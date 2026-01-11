@@ -289,6 +289,11 @@ public class IncidenciaController {
 
     }
 
+    /**
+     * Obtiene todas las incidencias en las que ha trabajdo / esta trabajando un tecnico
+     * @param id
+     * @return
+     */
     @GetMapping("/api/incidencia/tecnico/{id}")
     @ResponseBody
     public Object incidenciasTecnico(@PathVariable long id) {
