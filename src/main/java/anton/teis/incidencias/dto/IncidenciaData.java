@@ -11,7 +11,7 @@ import lombok.Data;
 public class IncidenciaData {
     private String username;
     @NotBlank(message = "Requerida una descripcion")
-    @Size(min = 1, max = 200, message = "Como máximo la descripción ha de tener 200 caracteres")
+    @Size(max = 200, message = "Como máximo la descripción ha de tener 200 caracteres")
     private String descripcion;
     @NotBlank(message = "Requerida una IP")
     private String IP;
