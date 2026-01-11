@@ -68,7 +68,7 @@ public class IncidenciaService {
      * @param solucion Descripción de la solución propuesta
      * @return
      */
-    public Incidencia resolverIncidencia(long id, List<Tecnico> tecnicos, String solucion) {
+    public Incidencia resolverIncidencia(long id, String solucion) {
         // obtener la incidenciaBase por ID
         Incidencia incidenciaBase = getById(id);
 
