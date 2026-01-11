@@ -126,4 +126,27 @@ public class IncidenciaController {
 
     }
 
+    @PostMapping("/api/incidencia/resolver/{id}")
+    @ResponseBody
+    public Object resolverIncidencia(
+            @ModelAttribute @Valid ExplicacionIncidencia explicacionIncidencia,
+            @PathVariable long id
+            )
+    {
+        Incidencia i;
+        // conseguimos la incidencia con el id
+        try {
+            i = incidenciaService.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("La incidencia no existe");
+        }
+
+        // Verificamos que la incidencia sea una incidenciaEnProceso
+        if (!(i instanceof IncidenciaEnProceso)) {
+            throw new IllegalArgumentException("Solo se pueden resolver incidencias en proceso");
+        }
+
+        return incidenciaService.resolverIncidencia(id, explicacionIncidencia.getMotivo());
+
+    }
 }
