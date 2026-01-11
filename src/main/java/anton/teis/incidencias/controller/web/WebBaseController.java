@@ -1,0 +1,15 @@
+package anton.teis.incidencias.controller.web;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/web")
+public class WebBaseController {
+
+    @GetMapping
+    public String index() {
+        return "redirect:/web/usuario";
+    }
+}
