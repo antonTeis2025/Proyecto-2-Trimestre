@@ -22,22 +22,6 @@ import java.time.LocalDateTime;
 @Controller
 public class IncidenciaController {
 
-    /*
-        TODO:
-            - Endpoints para leer los datos
-                X /all
-                X /id
-                X /abiertas
-                X /cerradas
-                X /enproceso
-                X /resueltas
-                X /tipo
-                X /tecnico/id
-                    Devuelve en las que est&aacute; trabajando y en las que ha participado
-                - /user/id
-                    Devuelve todas las incidencias que genero un usuario
-     */
-
     @Autowired
     private IncidenciaService incidenciaService;
 
