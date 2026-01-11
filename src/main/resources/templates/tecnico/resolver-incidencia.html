@@ -24,8 +24,14 @@
     <div>
         <label for="motivo">Descripción de la solución:</label><br>
         <textarea id="motivo" name="motivo" rows="4" cols="50" th:field="*{motivo}"></textarea>
-        <span th:if="${#fields.hasErrors('motivo')}" style="color: red;" th:errors="*{motivo}"></span>
+        <!-- Mostrar errores de validación del campo 'motivo' -->
+        <div th:if="${#fields.hasErrors('motivo')}" class="alert alert-danger">
+            <span style="color: red" th:errors="*{motivo}">Error</span>
+        </div>
     </div>
+
+    <!-- Opcional: mostrar errores generales (los que añades con model.addAttribute("error", ...)) -->
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <div>
         <button type="submit">Resolver Incidencia</button>
     </div>
