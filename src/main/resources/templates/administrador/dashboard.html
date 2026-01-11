@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Panel de Administrador</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<h2>Panel de Administrador</h2>
+
+<div th:if="${param.success}">
+    <p style="color: green;" th:text="${param.success[0]}"></p>
+</div>
+<div th:if="${param.error}">
+    <p style="color: red;" th:text="${param.error[0]}"></p>
+</div>
+
+<div>
+    <h3>Gestión de Usuarios</h3>
+    <p><a href="/web/administrador/crear-usuario">Crear nuevo usuario</a></p>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Username</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="usuario : ${usuarios}">
+            <td th:text="${usuario.id}"></td>
+            <td th:text="${usuario.nombre}"></td>
+            <td th:text="${usuario.apellidos}"></td>
+            <td th:text="${usuario.username}"></td>
+            <td>
+                <span th:if="${usuario.rol == 'Usuario'}">Usuario</span>
+                <span th:if="${usuario.rol == 'Tecnico'}">Técnico</span>
+                <span th:if="${usuario.rol == 'Administrador'}">Administrador</span>
+            </td>
+            <td>
+                <span th:if="${usuario.alta}" style="color: green;">Activo</span>
+                <span th:if="${!usuario.alta}" style="color: red;">Inactivo</span>
+            </td>
+            <td>
+                <a th:href="@{/web/administrador/editar-usuario/{id}(id=${usuario.id})}">Editar</a>
+                <form th:if="${usuario.alta}" th:action="@{/web/administrador/dar-baja/{id}(id=${usuario.id})}" method="post" style="display: inline;">
+                    <button type="submit">Dar de baja</button>
+                </form>
+                <form th:if="${!usuario.alta}" th:action="@{/web/administrador/reactivar/{id}(id=${usuario.id})}" method="post" style="display: inline;">
+                    <button type="submit">Reactivar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

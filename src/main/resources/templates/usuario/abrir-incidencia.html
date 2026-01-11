@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Abrir Incidencia</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<h2>Abrir Nueva Incidencia</h2>
+
+<!-- Mostrar error general si lo hay -->
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<!-- Formulario con validación -->
+<form th:action="@{/web/usuario/abrir-incidencia}" th:object="${incidenciaData}" method="post">
+    <div>
+        <label for="descripcion">Descripción:</label><br>
+        <textarea id="descripcion" name="descripcion" rows="4" cols="50" th:field="*{descripcion}"></textarea>
+        <span th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <label for="IP">IP:</label><br>
+        <input type="text" id="IP" name="IP" th:field="*{IP}">
+        <span th:if="${#fields.hasErrors('IP')}" th:errors="*{IP}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <label for="tipo">Tipo de incidencia:</label><br>
+        <select id="tipo" name="tipo" th:field="*{tipo}">
+            <option th:each="tipo : ${tipos}"
+                    th:value="${tipo.name()}"
+                    th:text="${tipo}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <button type="submit">Abrir Incidencia</button>
+    </div>
+</form>
+
+<p><a href="/web/usuario">Volver al panel</a></p>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Incidencias Disponibles</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<h2>Incidencias Disponibles</h2>
+
+<div th:if="${param.success}">
+    <p style="color: green;" th:text="${param.success[0]}"></p>
+</div>
+<div th:if="${param.error}">
+    <p style="color: red;" th:text="${param.error[0]}"></p>
+</div>
+
+<h3>Incidencias Abiertas</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="incidencia : ${abiertas}">
+        <td th:text="${incidencia.id}"></td>
+        <td th:text="${incidencia.tipo}"></td>
+        <td th:text="${incidencia.descripcion}"></td>
+        <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
+        <td>
+            <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
+                <button type="submit">Asignarme esta incidencia</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Incidencias en Proceso (reasignables)</h3>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Fecha</th>
+        <th>Usuario</th>
+        <th>Técnico Actual</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="incidencia : ${enProceso}">
+        <td th:text="${incidencia.id}"></td>
+        <td th:text="${incidencia.tipo}"></td>
+        <td th:text="${incidencia.descripcion}"></td>
+        <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+        <td th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
+        <td th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
+        <td>
+            <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
+                <button type="submit">Reasignarme esta incidencia</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a href="/web/tecnico">Volver al panel</a></p>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

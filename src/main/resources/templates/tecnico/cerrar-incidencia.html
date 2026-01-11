@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cerrar Incidencia</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+<h2>Cerrar Incidencia #<span th:text="${incidencia.id}"></span></h2>
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+<div>
+    <h3>Detalles de la Incidencia</h3>
+    <p><strong>Tipo:</strong> <span th:text="${incidencia.tipo}"></span></p>
+    <p><strong>Descripción:</strong> <span th:text="${incidencia.descripcion}"></span></p>
+    <p><strong>Usuario:</strong> <span th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></span></p>
+</div>
+<form th:action="@{/web/tecnico/cerrar-incidencia/{id}(id=${incidencia.id})}" th:object="${explicacion}" method="post">
+    <div>
+        <label for="motivo">Motivo del cierre:</label><br>
+        <textarea id="motivo" name="motivo" rows="4" cols="50" th:field="*{motivo}"></textarea>
+        <span th:if="${#fields.hasErrors('motivo')}" th:errors="*{motivo}" style="color: red;"></span>
+    </div>
+    <div>
+        <button type="submit">Cerrar Incidencia</button>
+    </div>
+</form>
+<p><a href="/web/tecnico">Volver al panel</a></p>
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

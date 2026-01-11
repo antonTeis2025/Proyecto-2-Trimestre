@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Usuario</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<h2>Crear Nuevo Usuario</h2>
+
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form th:action="@{/web/administrador/crear-usuario}" th:object="${userData}" method="post">
+    <div>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" th:field="*{username}">
+        <span th:if="${#fields.hasErrors('username')}" style="color: red;" th:errors="*{username}"></span>
+    </div>
+    <div>
+        <label for="password">Contraseña:</label><br>
+        <input type="password" id="password" name="password" th:field="*{password}">
+        <span th:if="${#fields.hasErrors('password')}" style="color: red;" th:errors="*{password}"></span>
+    </div>
+    <div>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" th:field="*{nombre}">
+        <span th:if="${#fields.hasErrors('nombre')}" style="color: red;" th:errors="*{nombre}"></span>
+    </div>
+    <div>
+        <label for="apellido">Apellidos:</label><br>
+        <input type="text" id="apellido" name="apellido" th:field="*{apellido}">
+        <span th:if="${#fields.hasErrors('apellido')}" style="color: red;" th:errors="*{apellido}"></span>
+    </div>
+    <div>
+        <label for="privilegios">Rol:</label><br>
+        <select id="privilegios" name="privilegios" th:field="*{privilegios}">
+            <option th:each="tipo : ${tiposUsuario}" th:value="${tipo}" th:text="${tipo}"></option>
+        </select>
+        <span th:if="${#fields.hasErrors('privilegios')}" style="color: red;" th:errors="*{privilegios}"></span>
+    </div>
+    <div>
+        <button type="submit">Crear Usuario</button>
+    </div>
+</form>
+
+<p><a href="/web/administrador">Volver al panel</a></p>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>
