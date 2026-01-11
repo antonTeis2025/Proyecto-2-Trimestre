@@ -18,7 +18,7 @@ Habrá 3 tipos de usuario:
 
 # Enlaces
 
-[Documentación de la API](Documentacion API.md)
+[Documentación de la API](Documentacion%20API.md)
 
 ---
 # Diagramas de clases
