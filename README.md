@@ -4,10 +4,10 @@ En este proyecto, estoy haciendo una página de gestión de incidencias informá
 
 Estas incidencias constarán de una **estado, descripción, tipo, fecha y hora, y IP del equipo afectado**.
 Podrán tener 4 estados:
-- Abierta: Aún no se ha asignado a ningún técnico.
-- En proceso: La incidencia tendrá un técnico asignado y estará en proceso de ser resuelta.
-- Resuelta: La incidencia ha sido resuelta, y se almacenará el ténico que la resolvió, la fecha, y una breve descripción de cómo se logró.
-- Cerrada: La incidencia no pudo ser resuelta, se almacenará qué técnico intentó hacerlo, en qué fecha y hora y una breve descripción de la problemática. Estas incidencias podrán ser re-abiertas para resolverlas en otro momento.
+- **Abierta**: Aún no se ha asignado a ningún técnico.
+- **En proces**o: La incidencia tendrá un técnico asignado y estará en proceso de ser resuelta.
+- **Resuelta**: La incidencia ha sido resuelta, y se almacenará el ténico que la resolvió, la fecha, y una breve descripción de cómo se logró.
+- **Cerrada**: La incidencia no pudo ser resuelta, se almacenará qué técnico intentó hacerlo, en qué fecha y hora y una breve descripción de la problemática. Estas incidencias podrán ser re-abiertas para resolverlas en otro momento.
 
 Habrá 3 tipos de usuario:
 - **Usuarios**: Pueden iniciar sesión con sus credenciales y reportar una incidencia mediante un formulario. Los usuarios no pueden registrarse de ninguna manera, pues es una aplicación diseñada para uso corporativo.
@@ -164,3 +164,15 @@ Obtiene la información detallada de un usuario específico a partir de su nombr
 | Campo | Tipo | Requerido | Descripción |
 | :--- | :--- | :---: | :--- |
 | **name** | `String` | ✅ | Nombre de usuario (username) a buscar. |
+
+# Endpoints para gestión de incidencias
+
+## (**POST**) `/api/incidencia/abrir`
+Registra una nueva incidencia abierta en el sistema vinculada a un usuario.
+
+| Campo | Tipo | Requerido | Descripción |
+| :--- | :--- | :---: | :--- |
+| **username** | `String` | ✅ | Nombre de usuario que reporta la incidencia (debe tener rol de usuario). |
+| **descripcion** | `String` | ✅ | Detalle de la incidencia (Máx. 200 caracteres). |
+| **IP** | `String` | ✅ | Dirección IP del equipo afectado. |
+| **tipo** | `Enum` | ✅ | Categoría de la incidencia: `OTRO`, `HARDWARE`, `SOFTWARE`, `RED`, `ERROR`. |

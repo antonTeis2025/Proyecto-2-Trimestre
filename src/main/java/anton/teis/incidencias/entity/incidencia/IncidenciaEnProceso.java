@@ -34,7 +34,7 @@ public class IncidenciaEnProceso extends Incidencia {
         this.addTecnico(tecnico);
     }
 
-    public void addTecnico(Tecnico tecnico) {
+    private void addTecnico(Tecnico tecnico) {
         this.historial.add(new RegistroHistorial(
                 LocalDateTime.now(),
                 tecnico
