@@ -48,6 +48,23 @@ public class IncidenciaController {
     @Autowired
     private UsuarioService usuarioService;
 
+
+    /**
+     * Obtiene un listado de todas las incidencias
+     * @return
+     */
+    @GetMapping("/api/incidencia/all")
+    @ResponseBody
+    public Object getAll() {
+        try {
+            return incidenciaService.getAll();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    
+
     /**
      * Abre una incidencia nueva
      * @param incidenciaData
