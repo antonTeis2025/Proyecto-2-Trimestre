@@ -2,8 +2,7 @@ package anton.teis.incidencias.service;
 
 import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
-import anton.teis.incidencias.repository.incidencia.IncidenciaEnProcesoRepository;
-import anton.teis.incidencias.repository.incidencia.IncidenciaRepository;
+import anton.teis.incidencias.repository.incidencia.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,13 @@ public class IncidenciaService {
     @Autowired
     private IncidenciaRepository incidenciaRepository;
     @Autowired
+    private IncidenciaAbiertaRepository incidenciaAbiertaRepository;
+    @Autowired
     private IncidenciaEnProcesoRepository incidenciaEnProcesoRepository;
+    @Autowired
+    private IncidenciaResueltaRepository incidenciaResueltaRepository;
+    @Autowired
+    private IncidenciaCerradaRepository incidenciaCerradaRepository;
     @Autowired
     private UsuarioService usuarioService;
 
@@ -36,6 +41,20 @@ public class IncidenciaService {
     public Incidencia getById(long id) {
         return incidenciaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
+    }
+
+    // GET ALL DE TODOS LOS TIPOS DE INCIDENCIA
+    public List<IncidenciaAbierta> getAllAbiertas() {
+        return incidenciaAbiertaRepository.findAll();
+    }
+    public List<IncidenciaEnProceso> getAllEnProceso() {
+        return incidenciaEnProcesoRepository.findAll();
+    }
+    public List<IncidenciaResuelta> getAllResueltas() {
+        return incidenciaResueltaRepository.findAll();
+    }
+    public List<IncidenciaCerrada> getAllCerradas() {
+        return incidenciaCerradaRepository.findAll();
     }
 
     private void deleteById(long id) {
