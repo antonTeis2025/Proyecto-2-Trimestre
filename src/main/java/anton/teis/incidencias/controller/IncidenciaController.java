@@ -134,6 +134,12 @@ public class IncidenciaController {
 
     }
 
+    /**
+     * Resuelve una incidencia y le da una descripción de la solución
+     * @param explicacionIncidencia
+     * @param id
+     * @return
+     */
     @PostMapping("/api/incidencia/resolver/{id}")
     @ResponseBody
     public Object resolverIncidencia(
