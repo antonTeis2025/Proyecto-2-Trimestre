@@ -27,14 +27,14 @@ public class IncidenciaController {
     /*
         TODO:
             - Endpoints para leer los datos
-                - /all
-                - /id
-                - /abiertas
-                - /cerradas
-                - /enproceso
-                - /resueltas
+                X /all
+                X /id
+                X /abiertas
+                X /cerradas
+                X /enproceso
+                X /resueltas
                 - /tecnico/id
-                    Devuelve en las que está trabajando y en las que ha participado
+                    Devuelve en las que est&aacute; trabajando y en las que ha participado
                 - /user/id
                     Devuelve todas las incidencias que genero un usuario
      */
@@ -60,7 +60,77 @@ public class IncidenciaController {
         }
     }
 
-    
+    /**
+     * Obtiene una incidencia por su ID
+     * @param id
+     * @return
+     */
+    @GetMapping("/api/incidencia/{id}")
+    @ResponseBody
+    public Object getById(@PathVariable long id) {
+        try {
+            return incidenciaService.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    /**
+     * Obtiene todas las incidencias en estado abiertas
+     * @return
+     */
+    @GetMapping("/api/incidencia/abiertas")
+    @ResponseBody
+    public Object getAbiertas() {
+        try {
+            return incidenciaService.getAllAbiertas();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Obtiene todas las incidencias en proceso
+     * @return
+     */
+    @GetMapping("/api/incidencia/enproceso")
+    @ResponseBody
+    public Object getEnProceso() {
+        try {
+            return incidenciaService.getAllEnProceso();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Obtiene todas las incidencias resueltas
+     * @return
+     */
+    @GetMapping("/api/incidencia/resueltas")
+    @ResponseBody
+    public Object getResueltas() {
+        try {
+            return incidenciaService.getAllResueltas();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Obtiene todas las incidencias cerradas
+     * @return
+     */
+    @GetMapping("/api/incidencia/cerradas")
+    @ResponseBody
+    public Object getCerradas() {
+        try {
+            return incidenciaService.getAllCerradas();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     /**
      * Abre una incidencia nueva
