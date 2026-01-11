@@ -56,17 +56,17 @@ public class UserController {
                 case "tecnico" -> {
                     Tecnico tecnico = new Tecnico();
                     tecnico.copiarDto(userData);
-                    return usuarioService.guardar(tecnico).getId();
+                    return usuarioService.guardar(tecnico);
                 }
                 case "administrador" -> {
                     Administrador administrador = new Administrador();
                     administrador.copiarDto(userData);
-                    return usuarioService.guardar(administrador).getId();
+                    return usuarioService.guardar(administrador);
                 }
                 default -> { // engloba "usuario"
                     Usuario usuario = new Usuario();
                     usuario.copiarDto(userData);
-                    return usuarioService.guardar(usuario).getId();
+                    return usuarioService.guardar(usuario);
                 }
             }
         } catch (Exception e) {
