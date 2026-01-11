@@ -31,6 +31,10 @@ public class IncidenciaService {
         return incidenciaRepository.save(incidencia);
     }
 
+    public List<Incidencia> getAll() {
+        return incidenciaRepository.findAll();
+    }
+
     public Incidencia getById(long id) {
         return incidenciaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
