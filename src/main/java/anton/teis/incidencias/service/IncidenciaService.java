@@ -93,7 +93,7 @@ public class IncidenciaService {
     }
 
     @Transactional
-    public Incidencia cerrarIncidencia(long id, List<Tecnico> tecnicos, String motivo) {
+    public Incidencia cerrarIncidencia(long id, String motivo) {
         // obtener la incidenciaBase por ID
         Incidencia incidenciaBase = getById(id);
 

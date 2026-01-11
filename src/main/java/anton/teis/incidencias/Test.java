@@ -138,7 +138,7 @@ public class Test implements CommandLineRunner {
 
     private void testResolverIncidencia(long id) {
         System.out.println("-------- Resolviendo incidencia ---------");
-        Incidencia resuelta = incidenciaService.resolverIncidencia(id, null, "Conectar cable de rede");
+        Incidencia resuelta = incidenciaService.resolverIncidencia(id,  "Conectar cable de rede");
         System.out.println(resuelta.toString());
         System.out.println(resuelta.getMomento());
 
@@ -146,7 +146,7 @@ public class Test implements CommandLineRunner {
 
     private void testCerrarIncidencia(long id) {
         System.out.println("--------- Cerrando incidencia ------------");
-        incidenciaService.cerrarIncidencia(id, null, "no se que mas hacer");
+        incidenciaService.cerrarIncidencia(id, "no se que mas hacer");
     }
 
     private void testHistoricos() {
