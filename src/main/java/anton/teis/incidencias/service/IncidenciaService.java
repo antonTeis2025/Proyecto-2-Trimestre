@@ -64,7 +64,6 @@ public class IncidenciaService {
     /**
      *  Funcion para marcar una incidencia como resuelta
      * @param id
-     * @param tecnicos Entidades Técnico que resolvieron la incidencia (null para el que ya estaba)
      * @param solucion Descripción de la solución propuesta
      * @return
      */
