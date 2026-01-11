@@ -8,6 +8,10 @@ import anton.teis.incidencias.entity.user.Administrador;
 import anton.teis.incidencias.entity.user.Tecnico;
 import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
+import anton.teis.incidencias.repository.incidencia.IncidenciaAbiertaRepository;
+import anton.teis.incidencias.repository.incidencia.IncidenciaCerradaRepository;
+import anton.teis.incidencias.repository.incidencia.IncidenciaEnProcesoRepository;
+import anton.teis.incidencias.repository.incidencia.IncidenciaResueltaRepository;
 import anton.teis.incidencias.service.IncidenciaService;
 import anton.teis.incidencias.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +27,19 @@ public class Test implements CommandLineRunner {
     private UsuarioService usuarioService;
     @Autowired
     private IncidenciaService incidenciaService;
+    @Autowired
+    private IncidenciaEnProcesoRepository incidenciaEnProcesoRepository;
+    @Autowired
+    private IncidenciaResueltaRepository incidenciaResueltaRepository;
+    @Autowired
+    private IncidenciaCerradaRepository incidenciaCerradaRepository;
+    @Autowired
+    private IncidenciaAbiertaRepository incidenciaAbiertaRepository;
 
     // con esta funcion inserto datos de prueba para el desarollo de la app
     private void testSetup() {
         testCrearUsuarios();
-        long id = testAbrirIncidencia();
+        long id = testAbrirIncidencia(Tipo.OTRO);
         testAsignarIncidencia(id);
     }
 
@@ -110,13 +122,13 @@ public class Test implements CommandLineRunner {
         usuarioService.getTecnicos().forEach(System.out::println);
     }
 
-    private long testAbrirIncidencia() {
+    private long testAbrirIncidencia(Tipo t) {
         System.out.println("------ Abriendo incidencia ------");
         IncidenciaAbierta incidencia = new IncidenciaAbierta();
 
         incidencia.setIP("127.0.0.1");
         incidencia.setMomento(LocalDateTime.now());
-        incidencia.setTipo(Tipo.OTRO);
+        incidencia.setTipo(t);
         incidencia.setDescripcion("No me va esto que esta pasando");
         incidencia.setUsuario((Usuario) usuarioService.getById(1));
 
@@ -152,7 +164,7 @@ public class Test implements CommandLineRunner {
     private void testHistoricos() {
         testCrearUsuarios();
 
-        long id = testAbrirIncidencia();
+        long id = testAbrirIncidencia(Tipo.OTRO);
         long id2 = testAsignarIncidencia(id);
 
         incidenciaService.pasarIncidencia(id2, usuarioService.getTecnicos().get(1));
@@ -160,19 +172,20 @@ public class Test implements CommandLineRunner {
         testResolverIncidencia(id2);
     }
 
-    /*
-            TESTS (todo):
-                X Resolver incidencia
-                X Cerrar incidencia
-                - Re-abrir incidencia cerrada
-     */
-
-
-
     @Override
     public void run(String... args) throws Exception {
-
-
+//
+//        testAbrirIncidencia(Tipo.ERROR);
+//        testAbrirIncidencia(Tipo.ERROR);
+//
+//        testAbrirIncidencia(Tipo.HARDWARE);
+//
+//        incidenciaAbiertaRepository.findByTipo(Tipo.ERROR).forEach(System.out::println);
+        //        incidenciaResueltaRepository.findByTecnicoId(2L).forEach(System.out::println);
+//        incidenciaCerradaRepository.findByTecnicoId(3L).forEach(System.out::println);
+//        long id1 = testAbrirIncidencia();
+//        testAsignarIncidencia(id1);
+//        incidenciaEnProcesoRepository.findByTecnico_Id(2L).forEach(System.out::println);
         // testSetup();
         // testResolverIncidencia(2);
         // testCerrarIncidencia(id2);
