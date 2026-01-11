@@ -31,7 +31,8 @@ public class IncidenciaController {
                 X /cerradas
                 X /enproceso
                 X /resueltas
-                - /tecnico/id
+                - /tipo
+                X /tecnico/id
                     Devuelve en las que est&aacute; trabajando y en las que ha participado
                 - /user/id
                     Devuelve todas las incidencias que genero un usuario
@@ -85,6 +86,25 @@ public class IncidenciaController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Obtiene todas las incidencias en estado abiertas de un tipo determinado
+     * @return
+     */
+    @GetMapping("/api/incidencia/abiertas/{tipo}")
+    @ResponseBody
+    public Object getAbiertasByTipo(@PathVariable String tipo) {
+        // Verificamos que el tipo esté dentro del ENUM
+        Tipo t;
+        try {
+            t = Tipo.valueOf(tipo.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("El tipo solo puede ser: OTRO, HARDWARE, SOFTWARE, RED, ERROR");
+        }
+
+        return incidenciaService.getAbiertasByTipo(t);
+
     }
 
     /**
