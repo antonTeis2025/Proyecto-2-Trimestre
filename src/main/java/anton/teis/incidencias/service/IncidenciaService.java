@@ -1,5 +1,6 @@
 package anton.teis.incidencias.service;
 
+import anton.teis.incidencias.dto.IncidenciasTecnicoResponse;
 import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
 import anton.teis.incidencias.repository.incidencia.*;
@@ -151,5 +152,17 @@ public class IncidenciaService {
         return incidenciaEnProcesoRepository.save(ip);
     }
 
+    /**
+     * Devuelve todas las incidencias de un tecnico, separadas por tipo y en formato respuesta JSON
+     * @param id
+     * @return
+     */
+    public IncidenciasTecnicoResponse getIncidenciasByTecnico(long id) {
+        List<IncidenciaEnProceso> actuales = incidenciaEnProcesoRepository.findByTecnico_Id(id);
+        List<IncidenciaResuelta> resueltas = incidenciaResueltaRepository.findByTecnicoId(id);
+        List<IncidenciaCerrada> cerradas = incidenciaCerradaRepository.findByTecnicoId(id);
+
+        return new IncidenciasTecnicoResponse(actuales, resueltas, cerradas);
+    }
 
 }

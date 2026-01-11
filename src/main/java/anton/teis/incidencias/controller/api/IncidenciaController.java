@@ -268,4 +268,19 @@ public class IncidenciaController {
         return incidenciaService.cerrarIncidencia(id, explicacionIncidencia.getMotivo());
 
     }
+
+    @GetMapping("/api/incidencia/tecnico/{id}")
+    @ResponseBody
+    public Object incidenciasTecnico(@PathVariable long id) {
+
+        // Verifica si el usuario es tecnico
+        Usuarios u = usuarioService.getById(id);
+        if (!(u instanceof Tecnico)) {
+            throw new IllegalArgumentException("El usuario ha de ser un tecnico");
+        }
+
+        return incidenciaService.getIncidenciasByTecnico(id);
+
+    }
+
 }
