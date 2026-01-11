@@ -43,7 +43,7 @@ public class UserController {
      */
     @PostMapping("/api/user/create")
     @ResponseBody // TEMPORAL -> Devolver texto plano para debugging
-    public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
+    public Object crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             return "error";
@@ -57,24 +57,23 @@ public class UserController {
                 case "tecnico" -> {
                     Tecnico tecnico = new Tecnico();
                     tecnico.copiarDto(userData);
-                    id = usuarioService.guardar(tecnico).getId();
+                    return usuarioService.guardar(tecnico).getId();
                 }
                 case "administrador" -> {
                     Administrador administrador = new Administrador();
                     administrador.copiarDto(userData);
-                    id = usuarioService.guardar(administrador).getId();
+                    return usuarioService.guardar(administrador).getId();
                 }
                 default -> { // engloba "usuario"
                     Usuario usuario = new Usuario();
                     usuario.copiarDto(userData);
-                    id = usuarioService.guardar(usuario).getId();
+                    return usuarioService.guardar(usuario).getId();
                 }
             }
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
 
-        return "success: creado con id " + id;
     }
 
     /*
@@ -94,7 +93,7 @@ public class UserController {
      */
     @PutMapping("/api/user/update/{id}")
     @ResponseBody
-    public String actualizarUsuario(@PathVariable Long id, @ModelAttribute @Valid UserData userData, BindingResult bindingResult) {
+    public Object actualizarUsuario(@PathVariable Long id, @ModelAttribute @Valid UserData userData, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return "error";
@@ -113,13 +112,12 @@ public class UserController {
                 return "ERROR: Los campos username, nombre y apellido son obligatorios.";
             }
             // actualizar datos xd
-            usuarioService.update(id, userData.getUsername(), userData.getNombre(), userData.getApellido());
+            return usuarioService.update(id, userData.getUsername(), userData.getNombre(), userData.getApellido());
 
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
 
-        return "success";
     }
 
     // curl.exe -X POST http://localhost:8080/api/user/disable/8
@@ -130,7 +128,7 @@ public class UserController {
      */
     @PostMapping("/api/user/disable/{id}")
     @ResponseBody
-    public String darDeBaja(@PathVariable long id) {
+    public Object darDeBaja(@PathVariable long id) {
         try {
             usuarioService.darDeBaja(id);
         } catch (Exception e) {
@@ -148,14 +146,12 @@ public class UserController {
      */
     @PostMapping("/api/user/enable/{id}")
     @ResponseBody
-    public String reactivar(@PathVariable long id) {
+    public Object reactivar(@PathVariable long id) {
         try {
-            usuarioService.reactivar(id);
+            return usuarioService.reactivar(id);
         } catch (Exception e) {
             return "error: " + e.getMessage();
         }
-
-        return "success";
     }
 
     /**
