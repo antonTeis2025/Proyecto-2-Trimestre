@@ -44,6 +44,10 @@ public class IncidenciaService {
                 .orElseThrow(() -> new RuntimeException("Incidencia no encontrada"));
     }
 
+    public List<IncidenciaAbierta> getAbiertasByTipo(Tipo tipo) {
+        return incidenciaAbiertaRepository.findByTipo(tipo);
+    }
+
     // GET ALL DE TODOS LOS TIPOS DE INCIDENCIA
     public List<IncidenciaAbierta> getAllAbiertas() {
         return incidenciaAbiertaRepository.findAll();
