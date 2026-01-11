@@ -147,6 +147,11 @@ public class IncidenciaController {
             throw new RuntimeException("Error");
         }
 
+        // Verificar que existe el usuaruio
+        if (incidenciaData.getUsername().isBlank()) {
+            throw new RuntimeException("Error, el usuario no ha sido especificado");
+        }
+
         IncidenciaAbierta i = new IncidenciaAbierta();
 
         // --- Añadir usuario
