@@ -163,4 +163,27 @@ public class IncidenciaController {
         return incidenciaService.resolverIncidencia(id, explicacionIncidencia.getMotivo());
 
     }
+
+    @PostMapping("/api/incidencia/cerrar/{id}")
+    @ResponseBody
+    public Object cerrarIncidencia(
+            @ModelAttribute @Valid ExplicacionIncidencia explicacionIncidencia,
+            @PathVariable long id
+    ) {
+        // conseguir la incidencia y verificar que existe
+        Incidencia i;
+        try {
+            i = incidenciaService.getById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("No se ha encontrado la incidencia");
+        }
+
+        // verificar que el tipo de incidencia es en proceso
+        if (!(i instanceof IncidenciaEnProceso)) {
+            throw new IllegalArgumentException("Solo se pueden cerrar incidencias en proceso");
+        }
+
+        return incidenciaService.cerrarIncidencia(id, explicacionIncidencia.getMotivo());
+
+    }
 }
