@@ -2,14 +2,12 @@ package anton.teis.incidencias.service;
 
 import anton.teis.incidencias.entity.incidencia.*;
 import anton.teis.incidencias.entity.user.Tecnico;
-import anton.teis.incidencias.repository.IncidenciaEnProcesoRepository;
-import anton.teis.incidencias.repository.IncidenciaRepository;
-import anton.teis.incidencias.repository.UsuarioRepository;
+import anton.teis.incidencias.repository.incidencia.IncidenciaEnProcesoRepository;
+import anton.teis.incidencias.repository.incidencia.IncidenciaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
