@@ -1,5 +1,6 @@
 package anton.teis.incidencias.controller;
 
+import anton.teis.incidencias.dto.ExplicacionIncidencia;
 import anton.teis.incidencias.dto.IncidenciaData;
 import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.incidencia.Incidencia;
@@ -29,7 +30,7 @@ public class IncidenciaController {
     /*
         TODO:
             - Endpoints para leer los datos
-                -/all
+                - /all
                 - /id
                 - /abiertas
                 - /cerradas
@@ -37,6 +38,8 @@ public class IncidenciaController {
                 - /resueltas
                 - /tecnico/id
                     Devuelve en las que está trabajando y en las que ha participado
+                - /user/id
+                    Devuelve todas las incidencias que genero un usuario
      */
 
     @Autowired
@@ -101,7 +104,12 @@ public class IncidenciaController {
     public Object asignarIncidencia(@PathVariable long id_incidencia,@PathVariable long id_tecnico) {
 
         IncidenciaEnProceso incidenciaEnProceso;
-        Incidencia i = incidenciaService.getById(id_incidencia);
+        Incidencia i = null;
+        try {
+            i = incidenciaService.getById(id_incidencia);
+        } catch (Exception e) {
+            throw new RuntimeException("La incidencia no existe");
+        }
 
         Usuarios u = usuarioService.getById(id_tecnico);
         Tecnico t;
