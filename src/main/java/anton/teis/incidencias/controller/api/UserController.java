@@ -1,4 +1,4 @@
-package anton.teis.incidencias.controller;
+package anton.teis.incidencias.controller.api;
 
 import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.user.Administrador;
@@ -9,7 +9,6 @@ import anton.teis.incidencias.exceptions.NotFoundException;
 import anton.teis.incidencias.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

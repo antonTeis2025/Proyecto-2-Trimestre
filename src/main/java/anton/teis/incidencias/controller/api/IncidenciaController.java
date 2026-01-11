@@ -1,8 +1,7 @@
-package anton.teis.incidencias.controller;
+package anton.teis.incidencias.controller.api;
 
 import anton.teis.incidencias.dto.ExplicacionIncidencia;
 import anton.teis.incidencias.dto.IncidenciaData;
-import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.incidencia.Incidencia;
 import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
 import anton.teis.incidencias.entity.incidencia.IncidenciaEnProceso;
@@ -12,7 +11,6 @@ import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
 import anton.teis.incidencias.service.IncidenciaService;
 import anton.teis.incidencias.service.UsuarioService;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
