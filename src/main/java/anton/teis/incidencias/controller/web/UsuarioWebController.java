@@ -74,7 +74,8 @@ public class UsuarioWebController {
             Model model
     ) {
         // Por simplicidad, establecemos un usuario de ejemplo
-        incidenciaData.setUsername("conguchu");
+        String username = usuarioService.getById(usuarioId).getUsername();
+        incidenciaData.setUsername(username);
 
         System.out.println("Errores de validación: " + bindingResult.getAllErrors());
         // Si hay errores de validación, volvemos al formulario con los errores
