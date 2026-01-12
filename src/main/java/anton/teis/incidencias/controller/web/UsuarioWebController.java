@@ -20,6 +20,10 @@ import java.time.LocalDateTime;
 @RequestMapping("/web/usuario")
 public class UsuarioWebController {
 
+    // temporal
+    // todo: springsecurity
+    Long usuarioId = 7L;
+
     @Autowired
     private IncidenciaService incidenciaService;
 
@@ -28,8 +32,7 @@ public class UsuarioWebController {
 
     @GetMapping
     public String dashboard(Model model) {
-        // Por simplicidad, usamos un usuario de ejemplo con ID 1
-        Long usuarioId = 1L;
+
         Usuarios usuario = usuarioService.getById(usuarioId);
 
         if (!(usuario instanceof Usuario)) {
@@ -58,7 +61,7 @@ public class UsuarioWebController {
             Model model
     ) {
         // Por simplicidad, establecemos un usuario de ejemplo
-        incidenciaData.setUsername("pedro");
+        incidenciaData.setUsername("conguchu");
 
         System.out.println("Errores de validación: " + bindingResult.getAllErrors());
         // Si hay errores de validación, volvemos al formulario con los errores
@@ -88,7 +91,7 @@ public class UsuarioWebController {
 
     @GetMapping("/incidencias")
     public String verIncidencias(Model model) {
-        Long usuarioId = 1L;
+
         Usuarios usuario = usuarioService.getById(usuarioId);
 
         if (!(usuario instanceof Usuario)) {
