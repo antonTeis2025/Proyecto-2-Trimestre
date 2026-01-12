@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Usuario</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+<h2>Editar Usuario #<span th:text="${usuario.id}"></span></h2>
+
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form th:action="@{/web/administrador/editar-usuario/{id}(id=${usuario.id})}" th:object="${userData}" method="post">
+    <div>
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" th:field="*{username}" th:value="${usuario.username}">
+        <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" th:field="*{nombre}" th:value="${usuario.nombre}">
+        <span th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <label for="apellido">Apellidos:</label><br>
+        <input type="text" id="apellido" name="apellido" th:field="*{apellido}" th:value="${usuario.apellidos}">
+        <span th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <button type="submit">Actualizar Usuario</button>
+    </div>
+</form>
+
+<p><a href="/web/administrador">Volver al panel de administración</a></p>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

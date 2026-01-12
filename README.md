@@ -15,6 +15,12 @@ Habrá 3 tipos de usuario:
 - **Administradores**: Tendrán capacidad de gestionar todo tipo de datos, pudiendo borrar por completo incidencias y administrar tanto usuarios como sus respectivos roles. Existirá también una funcionalidad para importar usuarios / técnicos masivamente desde CSV.
 
 ---
+
+# Enlaces
+
+[Documentación de la API](Documentacion%20API.md)
+
+---
 # Diagramas de clases
 
 ### Usuarios

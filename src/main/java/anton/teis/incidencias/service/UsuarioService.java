@@ -75,4 +75,9 @@ public class UsuarioService {
         u.setAlta(true);
         return usuarioRepository.save(u);
     }
+
+    public boolean exists(String username) {
+        return usuarioRepository.existsByUsername(username);
+    }
+
 }

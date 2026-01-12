@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Panel de Técnico</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<h2>Bienvenido, <span th:text="${tecnico.nombre} + ' ' + ${tecnico.apellidos}"></span></h2>
+
+<div th:if="${param.success}">
+    <p style="color: green;" th:text="${param.success[0]}"></p>
+</div>
+<div th:if="${param.error}">
+    <p style="color: red;" th:text="${param.error[0]}"></p>
+</div>
+
+<div>
+    <h3>Mis Incidencias</h3>
+    <p><a href="/web/tecnico">Inicio</a></p>
+    <p><a href="/web/tecnico/incidencias-disponibles">Ver incidencias disponibles</a></p>
+    <p><a href="/web/tecnico/historial">Ver historial de incidencias</a></p>
+
+        <h4>Incidencias Resueltas</h4>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Solución</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="incidencia : ${incidencias.resueltas}">
+                <td th:text="${incidencia.id}"></td>
+                <td th:text="${incidencia.tipo}"></td>
+                <td th:text="${incidencia.descripcion}"></td>
+                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${incidencia.solucion}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h4>Incidencias Cerradas</h4>
+        <table border="1">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+                <th>Motivo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="incidencia : ${incidencias.cerradas}">
+                <td th:text="${incidencia.id}"></td>
+                <td th:text="${incidencia.tipo}"></td>
+                <td th:text="${incidencia.descripcion}"></td>
+                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${incidencia.motivo}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>
