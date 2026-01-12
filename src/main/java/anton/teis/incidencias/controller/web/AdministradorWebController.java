@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,17 @@ public class AdministradorWebController {
     }
 
     @PostMapping("/crear-usuario")
-    public String crearUsuario(@ModelAttribute @Valid UserData userData, Model model) {
+    // 1. Añadimos BindingResult justo después del objeto validado
+    public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
+
+        // 2. Comprobamos si hay errores de validación (como password corta)
+        if (bindingResult.hasErrors()) {
+            // 3. Recargamos la lista de roles para que el <select> no falle al pintar de nuevo
+            model.addAttribute("tiposUsuario", new String[]{"usuario", "tecnico", "administrador"});
+            // 4. Retornamos la vista directamente (NO redirect) para mostrar los errores
+            return "administrador/crear-usuario";
+        }
+
         try {
             Usuarios usuario = null;
 
