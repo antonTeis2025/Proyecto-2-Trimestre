@@ -54,6 +54,9 @@ public class IncidenciaService {
     public List<IncidenciaAbierta> getAllAbiertas() {
         return incidenciaAbiertaRepository.findAll();
     }
+    // GET ALL EN PROCESO QUE NO SEAN DE UN TECNICO
+    public List<IncidenciaEnProceso> getAllOtrosTecnicos(long id) { return incidenciaEnProcesoRepository.findAllOtrosTecnicos(id); }
+
     public List<IncidenciaEnProceso> getAllEnProceso() {
         return incidenciaEnProcesoRepository.findAll();
     }
