@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,7 @@ public class TecnicoWebController {
 
     // Por simplicidad, usamos un técnico de ejemplo con ID 2
     // todo: manejarlo con springSecurity
-    Long tecnicoId = 2L;
+    // Long tecnicoId = 2L;
 
     @Autowired
     private IncidenciaService incidenciaService;
@@ -29,39 +30,46 @@ public class TecnicoWebController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
-    public String dashboard(Model model) {
+    private Tecnico getLogeado(Principal principal) {
+        Usuarios u = usuarioService.getByUsername(principal.getName());
+        return (u instanceof Tecnico) ? (Tecnico) u : null;
+    }
 
-        Usuarios usuario = usuarioService.getById(tecnicoId);
+    @GetMapping
+    public String dashboard(Model model, Principal principal) {
+
+        Usuarios usuario = getLogeado(principal);
 
         if (!(usuario instanceof Tecnico)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(usuario.getId()));
         model.addAttribute("tecnico", usuario);
 
         return "tecnico/dashboard";
     }
 
     @GetMapping("/historial")
-    public String historial(Model model) {
-        Usuarios u = usuarioService.getById(tecnicoId);
+    public String historial(Model model, Principal principal) {
+        Usuarios u = getLogeado(principal);
 
         if (!(u instanceof Tecnico)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(u.getId()));
         model.addAttribute("tecnico", u);
 
         return "tecnico/historial";
     }
 
     @GetMapping("/incidencias-disponibles")
-    public String incidenciasDisponibles(Model model) {
+    public String incidenciasDisponibles(Model model, Principal principal) {
+        Tecnico t = getLogeado(principal);
+
         List<IncidenciaAbierta> incidenciasAbiertas = incidenciaService.getAllAbiertas();
-        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllOtrosTecnicos(tecnicoId);
+        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllOtrosTecnicos(t.getId());
 
         model.addAttribute("abiertas", incidenciasAbiertas);
         model.addAttribute("enProceso", incidenciasEnProceso);
@@ -69,10 +77,12 @@ public class TecnicoWebController {
     }
 
     @PostMapping("/asignar-incidencia/{id}")
-    public String asignarIncidencia(@PathVariable Long id, Model model) {
+    public String asignarIncidencia(@PathVariable Long id, Model model, Principal principal) {
+
+        Tecnico t = getLogeado(principal);
 
         try {
-            Tecnico tecnico = usuarioService.getTecnicoById(tecnicoId);
+            Tecnico tecnico = usuarioService.getTecnicoById(t.getId());
             Incidencia incidencia = incidenciaService.getById(id);
 
             if (incidencia instanceof IncidenciaAbierta) {
