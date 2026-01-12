@@ -19,6 +19,10 @@ import java.util.List;
 @RequestMapping("/web/tecnico")
 public class TecnicoWebController {
 
+    // Por simplicidad, usamos un técnico de ejemplo con ID 2
+    // todo: manejarlo con springSecurity
+    Long tecnicoId = 2L;
+
     @Autowired
     private IncidenciaService incidenciaService;
 
@@ -27,8 +31,7 @@ public class TecnicoWebController {
 
     @GetMapping
     public String dashboard(Model model) {
-        // Por simplicidad, usamos un técnico de ejemplo con ID 2
-        Long tecnicoId = 2L;
+
         Usuarios usuario = usuarioService.getById(tecnicoId);
 
         if (!(usuario instanceof Tecnico)) {
@@ -44,7 +47,7 @@ public class TecnicoWebController {
     @GetMapping("/incidencias-disponibles")
     public String incidenciasDisponibles(Model model) {
         List<IncidenciaAbierta> incidenciasAbiertas = incidenciaService.getAllAbiertas();
-        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllEnProceso();
+        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllOtrosTecnicos(tecnicoId);
 
         model.addAttribute("abiertas", incidenciasAbiertas);
         model.addAttribute("enProceso", incidenciasEnProceso);
