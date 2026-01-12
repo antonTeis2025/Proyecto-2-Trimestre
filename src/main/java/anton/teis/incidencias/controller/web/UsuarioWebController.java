@@ -1,13 +1,16 @@
 package anton.teis.incidencias.controller.web;
 
 import anton.teis.incidencias.dto.IncidenciaData;
+import anton.teis.incidencias.entity.incidencia.Incidencia;
 import anton.teis.incidencias.entity.incidencia.IncidenciaAbierta;
 import anton.teis.incidencias.entity.incidencia.Tipo;
 import anton.teis.incidencias.entity.user.Usuario;
 import anton.teis.incidencias.entity.user.Usuarios;
 import anton.teis.incidencias.service.IncidenciaService;
 import anton.teis.incidencias.service.UsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -47,11 +50,21 @@ public class UsuarioWebController {
     }
 
     @GetMapping("/abrir-incidencia")
-    public String abrirIncidenciaForm(Model model) {
-        model.addAttribute("incidenciaData", new IncidenciaData());
+    public String abrirIncidenciaForm(Model model, HttpServletRequest request) {
+
+        IncidenciaData incidenciaData = new IncidenciaData();
+        // Obtenemos la IP local del usuario
+        String ip = getUserIp(request);
+
+        // cargamos ya la IP en el DTO
+        incidenciaData.setIP(ip);
+
+        model.addAttribute("incidenciaData", incidenciaData);
         model.addAttribute("tipos", Tipo.values());
         return "usuario/abrir-incidencia";
     }
+
+
 
     @PostMapping("/abrir-incidencia")
     public String abrirIncidencia(
@@ -101,4 +114,29 @@ public class UsuarioWebController {
         model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuarioId));
         return "usuario/dashboard";
     }
+
+    private static @Nullable String getUserIp(HttpServletRequest request) {
+        // Intentamos obtener la IP del header X-Forwarded-Forç
+        // (aparese ahi cuando hay un proxy en la red)
+        String ip = request.getHeader("X-Forwarded-For");
+
+        // vemos a ver si pescamos algo
+        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip)) {
+            // si no pescamos nada obtenermos directamente la IP q nos hace la peticion
+            ip = request.getRemoteAddr();
+        }
+        // Limpieza: A veces X-Forwarded-For devuelve varias IPs (ej: "client, proxy1, proxy2")
+        // Nos quedamos con la primera
+        if (ip != null && ip.contains(",")) {
+            ip = ip.split(",")[0];
+        }
+
+        // Si estás probando en local (localhost), esto devolverá 0:0:0:0:0:0:0:1.
+        // lo cambiamos a localhost de toda la puta vida
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            ip = "localhost";
+        }
+        return ip;
+    }
+
 }
