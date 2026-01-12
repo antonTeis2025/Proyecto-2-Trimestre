@@ -44,6 +44,20 @@ public class TecnicoWebController {
         return "tecnico/dashboard";
     }
 
+    @GetMapping("/historial")
+    public String historial(Model model) {
+        Usuarios u = usuarioService.getById(tecnicoId);
+
+        if (!(u instanceof Tecnico)) {
+            return "redirect:/web";
+        }
+
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
+        model.addAttribute("tecnico", u);
+
+        return "tecnico/historial";
+    }
+
     @GetMapping("/incidencias-disponibles")
     public String incidenciasDisponibles(Model model) {
         List<IncidenciaAbierta> incidenciasAbiertas = incidenciaService.getAllAbiertas();
@@ -56,7 +70,6 @@ public class TecnicoWebController {
 
     @PostMapping("/asignar-incidencia/{id}")
     public String asignarIncidencia(@PathVariable Long id, Model model) {
-        Long tecnicoId = 2L;
 
         try {
             Tecnico tecnico = usuarioService.getTecnicoById(tecnicoId);
@@ -159,10 +172,4 @@ public class TecnicoWebController {
         }
     }
 
-    @GetMapping("/historial")
-    public String historial(Model model) {
-        Long tecnicoId = 2L;
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
-        return "tecnico/historial";
-    }
 }
