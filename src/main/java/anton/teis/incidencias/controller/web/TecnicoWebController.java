@@ -20,10 +20,6 @@ import java.util.List;
 @RequestMapping("/web/tecnico")
 public class TecnicoWebController {
 
-    // Por simplicidad, usamos un técnico de ejemplo con ID 2
-    // todo: manejarlo con springSecurity
-    // Long tecnicoId = 2L;
-
     @Autowired
     private IncidenciaService incidenciaService;
 

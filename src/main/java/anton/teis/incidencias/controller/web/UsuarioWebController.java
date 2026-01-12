@@ -24,10 +24,6 @@ import java.time.LocalDateTime;
 @RequestMapping("/web/usuario")
 public class UsuarioWebController {
 
-    // temporal
-    // todo: springsecurity
-    // Long usuarioId = 7L;
-
     @Autowired
     private IncidenciaService incidenciaService;
 

@@ -29,13 +29,14 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
-                        // usamos el login por defecto de Spring.
-                        // al loguearse exitosamente, redirigimos a una ruta base
-                        // todo: hacer que segun con que usuario te logguees salga una ruta u otra
                         .successHandler(customSuccessHandler)
                         .permitAll()
                 )
-                .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll())
+                // pagina 403 cuando no puede acceder un usuario a un recurso
+                .exceptionHandling((exception) -> exception
+                        .accessDeniedPage("/acceso-denegado")
+                );
 
         return http.build();
     }
