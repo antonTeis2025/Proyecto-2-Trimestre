@@ -1,14 +1,19 @@
 package anton.teis.incidencias.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private AuthenticationSuccessHandler customSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -27,7 +32,7 @@ public class SecurityConfig {
                         // usamos el login por defecto de Spring.
                         // al loguearse exitosamente, redirigimos a una ruta base
                         // todo: hacer que segun con que usuario te logguees salga una ruta u otra
-                        .defaultSuccessUrl("/web/usuario", true)
+                        .successHandler(customSuccessHandler)
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll());
