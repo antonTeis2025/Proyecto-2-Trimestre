@@ -17,4 +17,6 @@ public interface UsuarioRepository extends JpaRepository<Usuarios,Long> {
     @Query("SELECT t FROM Tecnico t WHERE t.id = :id")
     Tecnico findTecnicoById(long id);
 
+    boolean existsByUsername(String username);
+
 }
