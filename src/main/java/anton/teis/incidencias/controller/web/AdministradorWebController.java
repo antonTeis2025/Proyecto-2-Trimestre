@@ -37,8 +37,11 @@ public class AdministradorWebController {
     }
 
     @PostMapping("/crear-usuario")
-    // 1. Añadimos BindingResult justo después del objeto validado
     public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
+        // validacion nombre de usuario
+        if (usuarioService.exists(userData.getUsername())) {
+            bindingResult.rejectValue("username", "error.userData", "El nombre de usuario ya está en uso");
+        }
 
         // 2. Comprobamos si hay errores de validación (como password corta)
         if (bindingResult.hasErrors()) {
