@@ -43,6 +43,50 @@ public class Test implements CommandLineRunner {
         testAsignarIncidencia(id);
     }
 
+    private void crearUsuariosPrueba() {
+        String passwordComun = "asd123..";
+
+        // --- USUARIOS ---
+        Usuario u = new Usuario();
+        u.setUsername("user1");
+        u.setPassword(passwordComun);
+        u.setNombre("Juan");
+        u.setApellidos("Pérez");
+        usuarioService.guardar(u);
+
+        Usuario u2 = new Usuario();
+        u2.setUsername("user2");
+        u2.setPassword(passwordComun);
+        u2.setNombre("María");
+        u2.setApellidos("García");
+        usuarioService.guardar(u2);
+
+        // --- TÉCNICOS ---
+        Tecnico t = new Tecnico();
+        t.setUsername("tecnico1");
+        t.setPassword(passwordComun);
+        t.setNombre("Roberto");
+        t.setApellidos("Sánchez");
+        usuarioService.guardar(t);
+
+        Tecnico t2 = new Tecnico();
+        t2.setUsername("tecnico2");
+        t2.setPassword(passwordComun);
+        t2.setNombre("Lucía");
+        t2.setApellidos("Martín");
+        usuarioService.guardar(t2);
+
+        // --- ADMINISTRADOR ---
+        Administrador a = new Administrador();
+        a.setUsername("admin");
+        a.setPassword(passwordComun);
+        a.setNombre("Admin");
+        a.setApellidos("Sistema");
+        usuarioService.guardar(a);
+
+        System.out.println("Usuarios de prueba creados exitosamente.");
+    }
+
     private void testCrearUsuarios() {
         System.out.println("🔧 === Creando usuarios ===");
 
@@ -110,7 +154,6 @@ public class Test implements CommandLineRunner {
                 "dacosta"
         );
         usuarioService.changePassword(1, "asd123");
-        System.out.println(usuarioService.checkPassword(1, "asd123"));
 
     }
 
@@ -174,6 +217,8 @@ public class Test implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        // crearUsuariosPrueba();
          // testCrearUsuarios();
 //
 //        testAbrirIncidencia(Tipo.ERROR);

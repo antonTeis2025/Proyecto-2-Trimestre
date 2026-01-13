@@ -1,5 +1,6 @@
 package anton.teis.incidencias.controller.web;
 
+import anton.teis.incidencias.dto.ContrasinalData;
 import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.user.*;
 import anton.teis.incidencias.service.UsuarioService;
@@ -139,4 +140,40 @@ public class AdministradorWebController {
         if (usuario instanceof Administrador) return "Administrador";
         return "Desconocido";
     }
+
+    // implementaciones cambio de contraseña
+
+    @GetMapping("/cambiar-contrasinal/{id}")
+    public String mostrarFormularioCambio(@PathVariable("id") Long id, Model model) {
+        Usuarios usuario = usuarioService.getById(id);
+
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("contrasinalData", new ContrasinalData());
+
+        return "administrador/cambiar-contrasinal";
+    }
+
+    @PostMapping("/cambiar-contrasinal/{id}")
+    public String actualizarContrasinal(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("contrasinalData") ContrasinalData contrasinalData,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuarioService.getById(id));
+            return "administrador/cambiar-contrasinal";
+        }
+
+        try {
+            usuarioService.changePassword(id, contrasinalData.getPass1());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return "redirect:/web/administrador?success";
+    }
+
+
 }
