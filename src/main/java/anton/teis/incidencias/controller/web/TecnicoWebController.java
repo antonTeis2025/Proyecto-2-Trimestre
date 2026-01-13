@@ -17,7 +17,7 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/tecnico")
+@RequestMapping({"/web/tecnico", "/web/tecnico/"})
 public class TecnicoWebController {
 
     @Autowired
@@ -46,7 +46,7 @@ public class TecnicoWebController {
         return "tecnico/dashboard";
     }
 
-    @GetMapping("/historial")
+    @GetMapping({"/historial", "/historial/"})
     public String historial(Model model, Principal principal) {
         Usuarios u = getLogeado(principal);
 
@@ -60,7 +60,7 @@ public class TecnicoWebController {
         return "tecnico/historial";
     }
 
-    @GetMapping("/incidencias-disponibles")
+    @GetMapping({"/incidencias-disponibles", "/incidencias-disponibles/"})
     public String incidenciasDisponibles(Model model, Principal principal) {
         Tecnico t = getLogeado(principal);
 
@@ -95,7 +95,7 @@ public class TecnicoWebController {
         return "redirect:/web/tecnico/incidencias-disponibles";
     }
 
-    @GetMapping("/resolver-incidencia/{id}")
+    @GetMapping({"/resolver-incidencia/{id}", "/resolver-incidencia/{id}/"})
     public String resolverIncidenciaForm(@PathVariable Long id, Model model) {
         try {
             Incidencia incidencia = incidenciaService.getById(id);
@@ -137,7 +137,7 @@ public class TecnicoWebController {
         }
     }
 
-    @GetMapping("/cerrar-incidencia/{id}")
+    @GetMapping({"/cerrar-incidencia/{id}", "/cerrar-incidencia/{id}/"})
     public String cerrarIncidenciaForm(@PathVariable Long id, Model model) {
         try {
             Incidencia incidencia = incidenciaService.getById(id);

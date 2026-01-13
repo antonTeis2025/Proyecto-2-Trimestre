@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/administrador")
+@RequestMapping({"/web/administrador", "/web/administrador/"})
 public class AdministradorWebController {
 
     @Autowired
@@ -30,14 +30,14 @@ public class AdministradorWebController {
         return "administrador/dashboard";
     }
 
-    @GetMapping("/crear-usuario")
+    @GetMapping({"/crear-usuario", "/crear-usuario/"})
     public String crearUsuarioForm(Model model) {
         model.addAttribute("userData", new UserData());
         model.addAttribute("tiposUsuario", new String[]{"usuario", "tecnico", "administrador"});
         return "administrador/crear-usuario";
     }
 
-    @PostMapping("/crear-usuario")
+    @PostMapping({"/crear-usuario", "/crear-usuario/"})
     public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
         // validacion nombre de usuario
         if (usuarioService.exists(userData.getUsername())) {
@@ -76,7 +76,7 @@ public class AdministradorWebController {
         }
     }
 
-    @GetMapping("/editar-usuario/{id}")
+    @GetMapping({"/editar-usuario/{id}", "/editar-usuario/{id}/"})
     public String editarUsuarioForm(@PathVariable Long id, Model model) {
         try {
             Usuarios usuario = usuarioService.getById(id);
@@ -101,7 +101,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/editar-usuario/{id}")
+    @PostMapping({"/editar-usuario/{id}", "/editar-usuario/{id}/"})
     public String editarUsuario(@PathVariable Long id, @ModelAttribute UserData userData, Model model) {
         try {
             usuarioService.update(id, userData.getUsername(), userData.getNombre(), userData.getApellido());
@@ -112,7 +112,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/dar-baja/{id}")
+    @PostMapping({"/dar-baja/{id}", "/dar-baja/{id}/"})
     public String darDeBaja(@PathVariable Long id, Model model) {
         try {
             usuarioService.darDeBaja(id);
@@ -123,7 +123,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/reactivar/{id}")
+    @PostMapping({"/reactivar/{id}", "/reactivar/{id}/"})
     public String reactivar(@PathVariable Long id, Model model) {
         try {
             usuarioService.reactivar(id);
@@ -143,7 +143,7 @@ public class AdministradorWebController {
 
     // implementaciones cambio de contraseña
 
-    @GetMapping("/cambiar-contrasinal/{id}")
+    @GetMapping({"/cambiar-contrasinal/{id}", "/cambiar-contrasinal/{id}/"})
     public String mostrarFormularioCambio(@PathVariable("id") Long id, Model model) {
         Usuarios usuario = usuarioService.getById(id);
 
@@ -154,7 +154,7 @@ public class AdministradorWebController {
         return "administrador/cambiar-contrasinal";
     }
 
-    @PostMapping("/cambiar-contrasinal/{id}")
+    @PostMapping({"/cambiar-contrasinal/{id}", "/cambiar-contrasinal/{id}/"})
     public String actualizarContrasinal(
             @PathVariable Long id,
             @Valid @ModelAttribute("contrasinalData") ContrasinalData contrasinalData,

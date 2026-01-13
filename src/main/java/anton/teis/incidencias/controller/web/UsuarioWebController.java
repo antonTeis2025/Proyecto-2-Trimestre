@@ -21,7 +21,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/web/usuario")
+@RequestMapping({"/web/usuario", "/web/usuario/"})
 public class UsuarioWebController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class UsuarioWebController {
         return "usuario/dashboard";
     }
 
-    @GetMapping("/abrir-incidencia")
+    @GetMapping({"/abrir-incidencia", "/abrir-incidencia/"})
     public String abrirIncidenciaForm(Model model, HttpServletRequest request) {
 
         IncidenciaData incidenciaData = new IncidenciaData();
@@ -106,7 +106,7 @@ public class UsuarioWebController {
         }
     }
 
-    @GetMapping("/incidencias")
+    @GetMapping({"/incidencias", "/incidencias/"})
     public String verIncidencias(Model model, Principal principal) {
 
         Usuarios usuario = usuarioService.getByUsername(principal.getName());
