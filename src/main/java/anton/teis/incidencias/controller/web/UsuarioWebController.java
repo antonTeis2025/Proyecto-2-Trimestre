@@ -51,6 +51,22 @@ public class UsuarioWebController {
         return "usuario/dashboard";
     }
 
+    @GetMapping({"/historial", "/historial/"})
+    public String historial(Model model, Principal principal) {
+
+        Usuarios usuario = getLogueado(principal);
+
+        if (!(usuario instanceof Usuario)) {
+            return "redirect:/web";
+        }
+
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuario.getId()));
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("tipos", Tipo.values());
+
+        return "usuario/cerradas";
+    }
+
     @GetMapping({"/abrir-incidencia", "/abrir-incidencia/"})
     public String abrirIncidenciaForm(Model model, HttpServletRequest request) {
 

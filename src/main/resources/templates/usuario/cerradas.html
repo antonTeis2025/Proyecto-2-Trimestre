@@ -16,12 +16,14 @@
 </div>
 
 <div>
-    <h3>Mis Incidencias</h3>
+    <h3>Historial de incidencias</h3>
+    <p><a href="/web/usuario">Dashboard</a></p>
     <p><a href="/web/usuario/abrir-incidencia">Abrir nueva incidencia</a></p>
-    <p><a href="/web/usuario/historial">Historial</a></p>
 
     <div th:if="${incidencias != null}">
-        <h4>Incidencias Abiertas</h4>
+
+
+        <h4>Incidencias Resueltas</h4>
         <table border="1">
             <thead>
             <tr>
@@ -29,19 +31,21 @@
                 <th>Tipo</th>
                 <th>Descripción</th>
                 <th>Fecha</th>
+                <th>Solución</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="incidencia : ${incidencias.abiertas}">
+            <tr th:each="incidencia : ${incidencias.resueltas}">
                 <td th:text="${incidencia.id}"></td>
                 <td th:text="${incidencia.tipo}"></td>
                 <td th:text="${incidencia.descripcion}"></td>
                 <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                <td th:text="${incidencia.solucion}"></td>
             </tr>
             </tbody>
         </table>
 
-        <h4>Incidencias en Proceso</h4>
+        <h4>Incidencias Cerradas</h4>
         <table border="1">
             <thead>
             <tr>
@@ -49,21 +53,19 @@
                 <th>Tipo</th>
                 <th>Descripción</th>
                 <th>Fecha</th>
-                <th>Técnico Asignado</th>
+                <th>Motivo</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="incidencia : ${incidencias.enProceso}">
+            <tr th:each="incidencia : ${incidencias.cerradas}">
                 <td th:text="${incidencia.id}"></td>
                 <td th:text="${incidencia.tipo}"></td>
                 <td th:text="${incidencia.descripcion}"></td>
                 <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
+                <td th:text="${incidencia.motivo}"></td>
             </tr>
             </tbody>
         </table>
-
-
     </div>
 </div>
 
