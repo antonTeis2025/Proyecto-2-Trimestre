@@ -27,13 +27,28 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        // permitir recursos estáticos (css, js, imagenes)
+                        // 1. Recursos estáticos
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-                        // rutas protegidas por rol
+
+                        // =======================================================
+                        //  PROTECCIÓN DE API
+                        // =======================================================
+                        // solo los usuarios pueden abrir incidencias
+                        .requestMatchers("/api/incidencia/abrir").hasRole("USUARIO")
+
+                        // la parte de incidencias solamente para tecnicos y admins
+                        .requestMatchers("/api/incidencia/**").hasAnyRole("TECNICO", "ADMINISTRADOR")
+                        // la parte de usuarios solo para admins
+                        .requestMatchers("/api/user/**").hasRole("ADMINISTRADOR")
+
+                        // =======================================================
+                        // 3. PROTECCIÓN WEB
+                        // =======================================================
                         .requestMatchers("/web/administrador/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/web/tecnico/**").hasRole("TECNICO")
                         .requestMatchers("/web/usuario/**").hasRole("USUARIO")
-                        // cualquier otra petición requiere autenticación
+
+                        // Cualquier otra petición requiere autenticación
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
@@ -41,9 +56,12 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout((logout) -> logout.permitAll())
-                // pagina 403 cuando no puede acceder un usuario a un recurso
                 .exceptionHandling((exception) -> exception
                         .accessDeniedPage("/acceso-denegado")
+                )
+                // deshabilitar sesiones csrf para la API
+                .csrf((csrf) -> csrf
+                        .ignoringRequestMatchers("/api/**")
                 );
 
         return http.build();
