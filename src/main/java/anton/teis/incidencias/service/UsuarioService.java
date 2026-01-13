@@ -7,6 +7,7 @@ import anton.teis.incidencias.entity.user.Usuarios;
 import anton.teis.incidencias.repository.UsuarioRepository;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,8 +17,12 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     // Metodos para crear los 3 tipos de usuario
     public Usuarios guardar(Usuarios u) {
+        u.setPassword(passwordEncoder.encode(u.getPassword()));
         return usuarioRepository.save(u);
     }
 
@@ -55,16 +60,20 @@ public class UsuarioService {
 
         return usuarioRepository.save(old);
     }
-    public boolean checkPassword(long id, String password) { // verificar si la contraseña antigua es correcta antes de cambiarla
-        Usuarios u = usuarioRepository.findById(id).get();
-        return u.getPassword().equals(password);
+    public boolean checkPassword(long id, String password) {
+
+        Usuarios u = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        return passwordEncoder.matches(password, u.getPassword());
     }
-    // TODO: Implementar cambio de contraseña con el cifrador de spring security
     public Usuarios changePassword(long id, String newPassword) {
         Usuarios old = usuarioRepository.findById(id).get();
-        old.setPassword(newPassword);
+        old.setPassword(passwordEncoder.encode(newPassword));
         return usuarioRepository.save(old);
     }
+
+
     public Usuarios darDeBaja(long id) {
         Usuarios u = usuarioRepository.findById(id).get();
         u.setAlta(false);
