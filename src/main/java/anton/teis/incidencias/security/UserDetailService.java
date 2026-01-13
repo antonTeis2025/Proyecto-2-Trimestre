@@ -36,7 +36,7 @@ public class UserDetailService implements UserDetailsService {
         // todo: quitar noop con BCryptPasswordEncoder
         return User.builder()
                 .username(username)
-                .password("{noop}" + u.getPassword())
+                .password(u.getPassword())
                 .roles(rol)
                 .build();
     }
