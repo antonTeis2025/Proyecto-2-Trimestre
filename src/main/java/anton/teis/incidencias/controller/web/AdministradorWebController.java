@@ -44,11 +44,11 @@ public class AdministradorWebController {
             bindingResult.rejectValue("username", "error.userData", "El nombre de usuario ya está en uso");
         }
 
-        // 2. Comprobamos si hay errores de validación (como password corta)
+        // Comprobamos si hay errores de validación (como password corta)
         if (bindingResult.hasErrors()) {
-            // 3. Recargamos la lista de roles para que el <select> no falle al pintar de nuevo
+            // Recargamos la lista de roles para que el <select> no falle al pintar de nuevo
             model.addAttribute("tiposUsuario", new String[]{"usuario", "tecnico", "administrador"});
-            // 4. Retornamos la vista directamente (NO redirect) para mostrar los errores
+            // Retornamos la vista directamente (NO redirect) para mostrar los errores
             return "administrador/crear-usuario";
         }
 

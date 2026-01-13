@@ -103,7 +103,7 @@ public class TecnicoWebController {
                 throw new IllegalArgumentException("Solo se pueden resolver incidencias en proceso");
             }
             model.addAttribute("incidencia", incidencia);
-            model.addAttribute("explicacion", new ExplicacionIncidencia()); // ← ¡Importante!
+            model.addAttribute("explicacion", new ExplicacionIncidencia());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/web/tecnico";
@@ -118,14 +118,14 @@ public class TecnicoWebController {
             BindingResult bindingResult,
             Model model) {
 
-        // 1. Si hay errores de validación, volver a cargar TODO el modelo
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("incidencia", incidenciaService.getById(id)); // ← Obligatorio
-            model.addAttribute("explicacion", explicacion); // ← Obligatorio (con los datos ya introducidos)
-            return "tecnico/resolver-incidencia"; // ← No redirect
+            model.addAttribute("incidencia", incidenciaService.getById(id));
+            model.addAttribute("explicacion", explicacion);
+            return "tecnico/resolver-incidencia";
         }
 
-        // 2. Si no hay errores, procesar
+
         try {
             incidenciaService.resolverIncidencia(id, explicacion.getMotivo());
             return "redirect:/web/tecnico?success=Resuelta";
@@ -145,7 +145,7 @@ public class TecnicoWebController {
                 throw new IllegalArgumentException("Solo se pueden cerrar incidencias en proceso");
             }
             model.addAttribute("incidencia", incidencia);
-            model.addAttribute("explicacion", new ExplicacionIncidencia()); // ← Obligatorio
+            model.addAttribute("explicacion", new ExplicacionIncidencia());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/web/tecnico";
@@ -161,10 +161,10 @@ public class TecnicoWebController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            // ← ¡Clave! Volver a cargar TODO el modelo
+
             model.addAttribute("incidencia", incidenciaService.getById(id));
-            model.addAttribute("explicacion", explicacion); // ← con los datos ya introducidos
-            return "tecnico/cerrar-incidencia"; // ← no redirect
+            model.addAttribute("explicacion", explicacion);
+            return "tecnico/cerrar-incidencia";
         }
 
         try {
