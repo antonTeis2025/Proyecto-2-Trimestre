@@ -2,7 +2,30 @@
 
 ---
 
+## AUTENTICACIÓN
+Para usar la API es necesario **obtener un token**, el cual se consigue haciendo una request tipo POST a `/api/auth/login` con un cuerpo de esta manera:
+
+```json
+{
+  "username": "nombre",
+  "password": "contraseña"
+}
+```
+
+Devolverá una respuesta:
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTc2ODMwNzY4MiwiZXhwIjoxNzY5MTcxNjgyfQ.GbcjXjuYU9AGskfCH7VG9agtEGA2UoL9XVtdtl8SIGY"
+}
+```
+
+Este token habrá que incluirlo en **autenticación tipo Bearer** para que deje hacer las peticiones.
+
+
 ## USUARIOS
+
+Para usar estos endpoints es necesario **ser administrador**.
 
 ---
 
@@ -124,6 +147,8 @@ Reactiva un usuario previamente desactivado.
 
 ## INCIDENCIAS
 
+Estos endpoints serán para uso de **Técnicos y administradores**.
+
 ---
 
 ### Obtener todas las incidencias
@@ -209,7 +234,10 @@ Tipos permitidos:
 
 ### Abrir incidencia
 
+
 **POST** `/api/incidencia/abrir`
+
+(solo los **usuarios normales** pueden abrir incidencias)
 
 Crea una nueva incidencia (solo usuarios normales).
 
