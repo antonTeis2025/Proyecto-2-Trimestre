@@ -9,7 +9,7 @@ import java.util.Date;
 @Component
 public class JwtUtils {
     // todo: cambiar el secret a un fichero de propiedades
-    private static final String SECRET = "IESTeis2025";
+    private static final String SECRET = "TeisTeisTeisTeisTeisTeisTeisTeisTeisTeisTeisTeis";
     private static final long EXPIRATION_TIME = 864_000_000; // expiracion de 10 días
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
