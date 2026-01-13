@@ -5,15 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -27,8 +23,7 @@ public class AuthController {
      * @param credenciales
      * @return
      */
-    
-    @PostMapping("/login")
+    @PostMapping("/api/auth/login")
     public Map<String, String> login(@RequestBody Map<String, String> credenciales) {
         String username = credenciales.get("username");
         String password = credenciales.get("password");
@@ -44,5 +39,10 @@ public class AuthController {
         } else {
             throw new RuntimeException("Credenciales inválidas");
         }
+    }
+
+    @GetMapping("cuenta-baja")
+    public String cuentaDeshabilitada() {
+        return "error/deshabilitado";
     }
 }
