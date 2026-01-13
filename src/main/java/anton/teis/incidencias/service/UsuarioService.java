@@ -62,6 +62,7 @@ public class UsuarioService {
 
         return usuarioRepository.save(old);
     }
+
     public boolean checkPassword(long id, String password) {
 
         Usuarios u = usuarioRepository.findById(id)
@@ -69,6 +70,7 @@ public class UsuarioService {
 
         return passwordEncoder.matches(password, u.getPassword());
     }
+
     public Usuarios changePassword(long id, String newPassword) {
         Usuarios old = usuarioRepository.findById(id).get();
         old.setPassword(passwordEncoder.encode(newPassword));
