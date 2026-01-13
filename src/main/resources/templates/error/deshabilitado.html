@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cuenta Deshabilitada</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+        .alert { color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 20px; display: inline-block; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="alert">
+    <h1>Acceso Denegado</h1>
+    <p>Lo sentimos, pero su cuenta ha sido <strong>dada de baja</strong> por la administración.</p>
+    <p>Si cree que esto es un error, por favor contacte con soporte.</p>
+</div>
+
+<br><br>
+<a th:href="@{/logout}">Volver al inicio de sesión</a>
+
+</body>
+</html>
