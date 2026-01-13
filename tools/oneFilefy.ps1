@@ -1,14 +1,17 @@
-# Nombre del archivo de salida
 $outputFile = "project.txt"
 
-# Obtener todos los archivos en la carpeta actual y subcarpetas (sin filtrar por extensión)
-$allFiles = Get-ChildItem -Path . -File -Recurse
+# --- MODIFICACIÓN ---
+# Se agregó el parámetro -Include para filtrar solo .java y .html
+$allFiles = Get-ChildItem -Path . -File -Recurse -Include "*.java", "*.html"
 
 # Crear o sobrescribir el archivo de salida
 Set-Content -Path $outputFile -Value "" -Encoding UTF8
 
 # Procesar cada archivo
 foreach ($file in $allFiles) {
+    # Evitar que el script se lea a sí mismo o al archivo de salida (por seguridad)
+    if ($file.FullName -eq (Resolve-Path $outputFile -ErrorAction SilentlyContinue).Path) { continue }
+
     # Calcular la ruta relativa desde el directorio actual
     $relativePath = Resolve-Path -Path $file.FullName -Relative
 
@@ -18,18 +21,16 @@ foreach ($file in $allFiles) {
     # Línea en blanco
     Add-Content -Path $outputFile -Value "" -Encoding UTF8
 
-    # Leer y escribir el contenido del archivo (como texto)
-    # Nota: Esto puede fallar o producir basura con archivos binarios.
+    # Leer y escribir el contenido del archivo
     try {
         $content = Get-Content -Path $file.FullName -Raw -ErrorAction Stop
         Add-Content -Path $outputFile -Value $content -Encoding UTF8
     } catch {
-        # Si no se puede leer como texto (ej. archivo binario), indicarlo
-        Add-Content -Path $outputFile -Value "[Contenido binario o no legible]" -Encoding UTF8
+        Add-Content -Path $outputFile -Value "[Error leyendo el archivo]" -Encoding UTF8
     }
 
     # Línea en blanco adicional entre archivos
     Add-Content -Path $outputFile -Value "" -Encoding UTF8
 }
 
-Write-Host "✅ Archivo '$outputFile' generado con $($allFiles.Count) archivos."
+Write-Host "✅ Archivo '$outputFile' generado con $($allFiles.Count) archivos (Java y HTML)."

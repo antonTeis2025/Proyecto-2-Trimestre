@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Usuario</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+<h2>Cambiar contraseña del usuario #<span th:text="${usuario.id}"></span></h2>
+
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p>
+</div>
+
+<form th:action="@{/web/administrador/cambiar-contrasinal/{id}(id=${usuario.id})}" th:object="${contrasinalData}" method="post">
+
+    <div th:if="${#fields.hasAnyErrors()}">
+        <ul>
+            <li th:each="err : ${#fields.globalErrors()}" th:text="${err}" style="color: red;"></li>
+        </ul>
+    </div>
+
+    <div>
+        <label for="pass1">Nueva contraseña:</label><br>
+        <input type="password" id="pass1" th:field="*{pass1}">
+        <span th:if="${#fields.hasErrors('pass1')}" th:errors="*{pass1}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <label for="pass2">Repetir contraseña:</label><br>
+        <input type="password" id="pass2" th:field="*{pass2}">
+        <span th:if="${#fields.hasErrors('pass2')}" th:errors="*{pass2}" style="color: red;"></span>
+    </div>
+
+    <div>
+        <button type="submit">Actualizar contraseña</button>
+    </div>
+</form>
+
+<p><a href="/web/administrador">Volver al panel de administración</a></p>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>

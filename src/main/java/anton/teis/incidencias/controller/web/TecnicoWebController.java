@@ -13,15 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/tecnico")
+@RequestMapping({"/web/tecnico", "/web/tecnico/"})
 public class TecnicoWebController {
-
-    // Por simplicidad, usamos un técnico de ejemplo con ID 2
-    // todo: manejarlo con springSecurity
-    Long tecnicoId = 2L;
 
     @Autowired
     private IncidenciaService incidenciaService;
@@ -29,39 +26,46 @@ public class TecnicoWebController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
-    public String dashboard(Model model) {
+    private Tecnico getLogeado(Principal principal) {
+        Usuarios u = usuarioService.getByUsername(principal.getName());
+        return (u instanceof Tecnico) ? (Tecnico) u : null;
+    }
 
-        Usuarios usuario = usuarioService.getById(tecnicoId);
+    @GetMapping
+    public String dashboard(Model model, Principal principal) {
+
+        Usuarios usuario = getLogeado(principal);
 
         if (!(usuario instanceof Tecnico)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(usuario.getId()));
         model.addAttribute("tecnico", usuario);
 
         return "tecnico/dashboard";
     }
 
-    @GetMapping("/historial")
-    public String historial(Model model) {
-        Usuarios u = usuarioService.getById(tecnicoId);
+    @GetMapping({"/historial", "/historial/"})
+    public String historial(Model model, Principal principal) {
+        Usuarios u = getLogeado(principal);
 
         if (!(u instanceof Tecnico)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(tecnicoId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByTecnico(u.getId()));
         model.addAttribute("tecnico", u);
 
         return "tecnico/historial";
     }
 
-    @GetMapping("/incidencias-disponibles")
-    public String incidenciasDisponibles(Model model) {
+    @GetMapping({"/incidencias-disponibles", "/incidencias-disponibles/"})
+    public String incidenciasDisponibles(Model model, Principal principal) {
+        Tecnico t = getLogeado(principal);
+
         List<IncidenciaAbierta> incidenciasAbiertas = incidenciaService.getAllAbiertas();
-        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllOtrosTecnicos(tecnicoId);
+        List<IncidenciaEnProceso> incidenciasEnProceso = incidenciaService.getAllOtrosTecnicos(t.getId());
 
         model.addAttribute("abiertas", incidenciasAbiertas);
         model.addAttribute("enProceso", incidenciasEnProceso);
@@ -69,10 +73,12 @@ public class TecnicoWebController {
     }
 
     @PostMapping("/asignar-incidencia/{id}")
-    public String asignarIncidencia(@PathVariable Long id, Model model) {
+    public String asignarIncidencia(@PathVariable Long id, Model model, Principal principal) {
+
+        Tecnico t = getLogeado(principal);
 
         try {
-            Tecnico tecnico = usuarioService.getTecnicoById(tecnicoId);
+            Tecnico tecnico = usuarioService.getTecnicoById(t.getId());
             Incidencia incidencia = incidenciaService.getById(id);
 
             if (incidencia instanceof IncidenciaAbierta) {
@@ -89,7 +95,7 @@ public class TecnicoWebController {
         return "redirect:/web/tecnico/incidencias-disponibles";
     }
 
-    @GetMapping("/resolver-incidencia/{id}")
+    @GetMapping({"/resolver-incidencia/{id}", "/resolver-incidencia/{id}/"})
     public String resolverIncidenciaForm(@PathVariable Long id, Model model) {
         try {
             Incidencia incidencia = incidenciaService.getById(id);
@@ -97,7 +103,7 @@ public class TecnicoWebController {
                 throw new IllegalArgumentException("Solo se pueden resolver incidencias en proceso");
             }
             model.addAttribute("incidencia", incidencia);
-            model.addAttribute("explicacion", new ExplicacionIncidencia()); // ← ¡Importante!
+            model.addAttribute("explicacion", new ExplicacionIncidencia());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/web/tecnico";
@@ -112,14 +118,14 @@ public class TecnicoWebController {
             BindingResult bindingResult,
             Model model) {
 
-        // 1. Si hay errores de validación, volver a cargar TODO el modelo
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("incidencia", incidenciaService.getById(id)); // ← Obligatorio
-            model.addAttribute("explicacion", explicacion); // ← Obligatorio (con los datos ya introducidos)
-            return "tecnico/resolver-incidencia"; // ← No redirect
+            model.addAttribute("incidencia", incidenciaService.getById(id));
+            model.addAttribute("explicacion", explicacion);
+            return "tecnico/resolver-incidencia";
         }
 
-        // 2. Si no hay errores, procesar
+
         try {
             incidenciaService.resolverIncidencia(id, explicacion.getMotivo());
             return "redirect:/web/tecnico?success=Resuelta";
@@ -131,7 +137,7 @@ public class TecnicoWebController {
         }
     }
 
-    @GetMapping("/cerrar-incidencia/{id}")
+    @GetMapping({"/cerrar-incidencia/{id}", "/cerrar-incidencia/{id}/"})
     public String cerrarIncidenciaForm(@PathVariable Long id, Model model) {
         try {
             Incidencia incidencia = incidenciaService.getById(id);
@@ -139,7 +145,7 @@ public class TecnicoWebController {
                 throw new IllegalArgumentException("Solo se pueden cerrar incidencias en proceso");
             }
             model.addAttribute("incidencia", incidencia);
-            model.addAttribute("explicacion", new ExplicacionIncidencia()); // ← Obligatorio
+            model.addAttribute("explicacion", new ExplicacionIncidencia());
         } catch (Exception e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/web/tecnico";
@@ -155,10 +161,10 @@ public class TecnicoWebController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
-            // ← ¡Clave! Volver a cargar TODO el modelo
+
             model.addAttribute("incidencia", incidenciaService.getById(id));
-            model.addAttribute("explicacion", explicacion); // ← con los datos ya introducidos
-            return "tecnico/cerrar-incidencia"; // ← no redirect
+            model.addAttribute("explicacion", explicacion);
+            return "tecnico/cerrar-incidencia";
         }
 
         try {

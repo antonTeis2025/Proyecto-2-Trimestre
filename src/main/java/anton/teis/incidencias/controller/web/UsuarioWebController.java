@@ -17,15 +17,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 
 @Controller
-@RequestMapping("/web/usuario")
+@RequestMapping({"/web/usuario", "/web/usuario/"})
 public class UsuarioWebController {
-
-    // temporal
-    // todo: springsecurity
-    Long usuarioId = 7L;
 
     @Autowired
     private IncidenciaService incidenciaService;
@@ -33,23 +30,28 @@ public class UsuarioWebController {
     @Autowired
     private UsuarioService usuarioService;
 
-    @GetMapping
-    public String dashboard(Model model) {
+    private Usuarios getLogueado(Principal principal) {
+        if (principal == null) { return null; }
+        return usuarioService.getByUsername(principal.getName());
+    }
 
-        Usuarios usuario = usuarioService.getById(usuarioId);
+    @GetMapping
+    public String dashboard(Model model, Principal principal) {
+
+        Usuarios usuario = getLogueado(principal);
 
         if (!(usuario instanceof Usuario)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuarioId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuario.getId()));
         model.addAttribute("usuario", usuario);
         model.addAttribute("tipos", Tipo.values());
 
         return "usuario/dashboard";
     }
 
-    @GetMapping("/abrir-incidencia")
+    @GetMapping({"/abrir-incidencia", "/abrir-incidencia/"})
     public String abrirIncidenciaForm(Model model, HttpServletRequest request) {
 
         IncidenciaData incidenciaData = new IncidenciaData();
@@ -71,10 +73,12 @@ public class UsuarioWebController {
             // @ModelAttribute @Valid IncidenciaData incidenciaData, todo: el usuario no se manda y se requiere en la validacion
             @ModelAttribute @Valid IncidenciaData incidenciaData,
             BindingResult bindingResult,
-            Model model
-    ) {
-        // Por simplicidad, establecemos un usuario de ejemplo
-        incidenciaData.setUsername("conguchu");
+            Model model,
+            Principal principal) {
+
+
+        String username = principal.getName();
+        incidenciaData.setUsername(username);
 
         System.out.println("Errores de validación: " + bindingResult.getAllErrors());
         // Si hay errores de validación, volvemos al formulario con los errores
@@ -102,16 +106,16 @@ public class UsuarioWebController {
         }
     }
 
-    @GetMapping("/incidencias")
-    public String verIncidencias(Model model) {
+    @GetMapping({"/incidencias", "/incidencias/"})
+    public String verIncidencias(Model model, Principal principal) {
 
-        Usuarios usuario = usuarioService.getById(usuarioId);
+        Usuarios usuario = usuarioService.getByUsername(principal.getName());
 
         if (!(usuario instanceof Usuario)) {
             return "redirect:/web";
         }
 
-        model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuarioId));
+        model.addAttribute("incidencias", incidenciaService.getIncidenciasByUsuario(usuario.getId()));
         return "usuario/dashboard";
     }
 

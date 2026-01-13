@@ -1,5 +1,6 @@
 package anton.teis.incidencias.controller.web;
 
+import anton.teis.incidencias.dto.ContrasinalData;
 import anton.teis.incidencias.dto.UserData;
 import anton.teis.incidencias.entity.user.*;
 import anton.teis.incidencias.service.UsuarioService;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/web/administrador")
+@RequestMapping({"/web/administrador", "/web/administrador/"})
 public class AdministradorWebController {
 
     @Autowired
@@ -29,25 +30,25 @@ public class AdministradorWebController {
         return "administrador/dashboard";
     }
 
-    @GetMapping("/crear-usuario")
+    @GetMapping({"/crear-usuario", "/crear-usuario/"})
     public String crearUsuarioForm(Model model) {
         model.addAttribute("userData", new UserData());
         model.addAttribute("tiposUsuario", new String[]{"usuario", "tecnico", "administrador"});
         return "administrador/crear-usuario";
     }
 
-    @PostMapping("/crear-usuario")
+    @PostMapping({"/crear-usuario", "/crear-usuario/"})
     public String crearUsuario(@ModelAttribute @Valid UserData userData, BindingResult bindingResult, Model model) {
         // validacion nombre de usuario
         if (usuarioService.exists(userData.getUsername())) {
             bindingResult.rejectValue("username", "error.userData", "El nombre de usuario ya está en uso");
         }
 
-        // 2. Comprobamos si hay errores de validación (como password corta)
+        // Comprobamos si hay errores de validación (como password corta)
         if (bindingResult.hasErrors()) {
-            // 3. Recargamos la lista de roles para que el <select> no falle al pintar de nuevo
+            // Recargamos la lista de roles para que el <select> no falle al pintar de nuevo
             model.addAttribute("tiposUsuario", new String[]{"usuario", "tecnico", "administrador"});
-            // 4. Retornamos la vista directamente (NO redirect) para mostrar los errores
+            // Retornamos la vista directamente (NO redirect) para mostrar los errores
             return "administrador/crear-usuario";
         }
 
@@ -75,7 +76,7 @@ public class AdministradorWebController {
         }
     }
 
-    @GetMapping("/editar-usuario/{id}")
+    @GetMapping({"/editar-usuario/{id}", "/editar-usuario/{id}/"})
     public String editarUsuarioForm(@PathVariable Long id, Model model) {
         try {
             Usuarios usuario = usuarioService.getById(id);
@@ -100,7 +101,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/editar-usuario/{id}")
+    @PostMapping({"/editar-usuario/{id}", "/editar-usuario/{id}/"})
     public String editarUsuario(@PathVariable Long id, @ModelAttribute UserData userData, Model model) {
         try {
             usuarioService.update(id, userData.getUsername(), userData.getNombre(), userData.getApellido());
@@ -111,7 +112,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/dar-baja/{id}")
+    @PostMapping({"/dar-baja/{id}", "/dar-baja/{id}/"})
     public String darDeBaja(@PathVariable Long id, Model model) {
         try {
             usuarioService.darDeBaja(id);
@@ -122,7 +123,7 @@ public class AdministradorWebController {
         }
     }
 
-    @PostMapping("/reactivar/{id}")
+    @PostMapping({"/reactivar/{id}", "/reactivar/{id}/"})
     public String reactivar(@PathVariable Long id, Model model) {
         try {
             usuarioService.reactivar(id);
@@ -139,4 +140,40 @@ public class AdministradorWebController {
         if (usuario instanceof Administrador) return "Administrador";
         return "Desconocido";
     }
+
+    // implementaciones cambio de contraseña
+
+    @GetMapping({"/cambiar-contrasinal/{id}", "/cambiar-contrasinal/{id}/"})
+    public String mostrarFormularioCambio(@PathVariable("id") Long id, Model model) {
+        Usuarios usuario = usuarioService.getById(id);
+
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("contrasinalData", new ContrasinalData());
+
+        return "administrador/cambiar-contrasinal";
+    }
+
+    @PostMapping({"/cambiar-contrasinal/{id}", "/cambiar-contrasinal/{id}/"})
+    public String actualizarContrasinal(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("contrasinalData") ContrasinalData contrasinalData,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuarioService.getById(id));
+            return "administrador/cambiar-contrasinal";
+        }
+
+        try {
+            usuarioService.changePassword(id, contrasinalData.getPass1());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return "redirect:/web/administrador?success";
+    }
+
+
 }

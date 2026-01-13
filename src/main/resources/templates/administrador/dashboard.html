@@ -48,6 +48,7 @@
             </td>
             <td>
                 <a th:href="@{/web/administrador/editar-usuario/{id}(id=${usuario.id})}">Editar</a>
+                <a th:href="@{/web/administrador/cambiar-contrasinal/{id}(id=${usuario.id})}">Cambiar credenciales</a>
                 <form th:if="${usuario.alta}" th:action="@{/web/administrador/dar-baja/{id}(id=${usuario.id})}" method="post" style="display: inline;">
                     <button type="submit">Dar de baja</button>
                 </form>

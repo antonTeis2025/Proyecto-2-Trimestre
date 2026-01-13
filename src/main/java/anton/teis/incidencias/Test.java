@@ -43,6 +43,50 @@ public class Test implements CommandLineRunner {
         testAsignarIncidencia(id);
     }
 
+    private void crearUsuariosPrueba() {
+        String passwordComun = "asd123..";
+
+        // --- USUARIOS ---
+        Usuario u = new Usuario();
+        u.setUsername("user1");
+        u.setPassword(passwordComun);
+        u.setNombre("Juan");
+        u.setApellidos("Pérez");
+        usuarioService.guardar(u);
+
+        Usuario u2 = new Usuario();
+        u2.setUsername("user2");
+        u2.setPassword(passwordComun);
+        u2.setNombre("María");
+        u2.setApellidos("García");
+        usuarioService.guardar(u2);
+
+        // --- TÉCNICOS ---
+        Tecnico t = new Tecnico();
+        t.setUsername("tecnico1");
+        t.setPassword(passwordComun);
+        t.setNombre("Roberto");
+        t.setApellidos("Sánchez");
+        usuarioService.guardar(t);
+
+        Tecnico t2 = new Tecnico();
+        t2.setUsername("tecnico2");
+        t2.setPassword(passwordComun);
+        t2.setNombre("Lucía");
+        t2.setApellidos("Martín");
+        usuarioService.guardar(t2);
+
+        // --- ADMINISTRADOR ---
+        Administrador a = new Administrador();
+        a.setUsername("admin");
+        a.setPassword(passwordComun);
+        a.setNombre("Admin");
+        a.setApellidos("Sistema");
+        usuarioService.guardar(a);
+
+        System.out.println("Usuarios de prueba creados exitosamente.");
+    }
+
     private void testCrearUsuarios() {
         System.out.println("🔧 === Creando usuarios ===");
 
@@ -50,33 +94,33 @@ public class Test implements CommandLineRunner {
         Usuario u = new Usuario();
         u.setNombre("Pedro");
         u.setApellidos("García");
-        u.setUsername("pedro");
-        u.setPassword("123");
+        u.setUsername("user2");
+        u.setPassword("abcd1234");
         usuarioService.guardar(u);
 
-        // 2. Guardar un Técnico
-        Tecnico t = new Tecnico();
-        t.setNombre("Laura");
-        t.setApellidos("Fernández");
-        t.setUsername("laura_tec");
-        t.setPassword("456");
-        usuarioService.guardar(t);
-
-        // 2. Guardar un Técnico
-        Tecnico t2 = new Tecnico();
-        t2.setNombre("Laura");
-        t2.setApellidos("Fernández");
-        t2.setUsername("laura_tec2");
-        t2.setPassword("asd123");
-        usuarioService.guardar(t2);
+//        // 2. Guardar un Técnico
+//        Tecnico t = new Tecnico();
+//        t.setNombre("Laura");
+//        t.setApellidos("Fernández");
+//        t.setUsername("tec");
+//        t.setPassword("abcd1234");
+//        usuarioService.guardar(t);
+//
+//        // 2. Guardar un Técnico
+//        Tecnico t2 = new Tecnico();
+//        t2.setNombre("Laura");
+//        t2.setApellidos("Fernández");
+//        t2.setUsername("tec2");
+//        t2.setPassword("abcd1234");
+//        usuarioService.guardar(t2);
 
 
         // 3. Guardar un Administrador
         Administrador a = new Administrador();
         a.setNombre("Jefe");
         a.setApellidos("Del Sistema");
-        a.setUsername("admin");
-        a.setPassword("admin123");
+        a.setUsername("admin2");
+        a.setPassword("abcd1234");
         usuarioService.guardar(a);
 
         System.out.println("✅ ¡Usuarios guardados! Revisa tu base de datos.");
@@ -110,7 +154,6 @@ public class Test implements CommandLineRunner {
                 "dacosta"
         );
         usuarioService.changePassword(1, "asd123");
-        System.out.println(usuarioService.checkPassword(1, "asd123"));
 
     }
 
@@ -174,6 +217,9 @@ public class Test implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+
+        // crearUsuariosPrueba();
+         // testCrearUsuarios();
 //
 //        testAbrirIncidencia(Tipo.ERROR);
 //        testAbrirIncidencia(Tipo.ERROR);

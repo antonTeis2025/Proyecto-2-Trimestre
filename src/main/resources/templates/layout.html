@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Gestor de Incidencias</title>
@@ -9,16 +10,24 @@
     <h1>Gestor de Incidencias</h1>
     <nav>
         <ul>
-            <li><a href="/web/usuario">Usuario</a></li>
-            <li><a href="/web/tecnico">Técnico</a></li>
-            <li><a href="/web/administrador">Administrador</a></li>
+
+            <li sec:authorize="isAuthenticated()">
+                <form th:action="@{/logout}" method="post" style="display:inline;">
+                    <button type="submit" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer; font-family: inherit; font-size: inherit;">
+                        Cerrar Sesión (<span sec:authentication="name">Usuario</span>)
+                    </button>
+                </form>
+            </li>
+
+            <li sec:authorize="!isAuthenticated()">
+                <a href="/login">Iniciar Sesión</a>
+            </li>
         </ul>
     </nav>
     <hr>
 </div>
 
 <div th:fragment="content">
-    <!-- El contenido específico de cada página irá aquí -->
 </div>
 
 <div th:fragment="footer">
