@@ -38,6 +38,7 @@ public class UserDetailService implements UserDetailsService {
                 .username(username)
                 .password(u.getPassword())
                 .roles(rol)
+                .disabled(!u.isAlta())
                 .build();
     }
 }
