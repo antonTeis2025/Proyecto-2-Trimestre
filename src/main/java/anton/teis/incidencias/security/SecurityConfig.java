@@ -1,6 +1,7 @@
 package anton.teis.incidencias.security;
 
 
+import anton.teis.incidencias.controller.error.DisabledHandler;
 import anton.teis.incidencias.security.jwt.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,9 @@ public class SecurityConfig {
 
     @Autowired
     private AuthenticationSuccessHandler customSuccessHandler;
+
+    @Autowired
+    private DisabledHandler disabledHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,7 +74,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Recursos estáticos
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-
+                        .requestMatchers("/cuenta-baja").permitAll()
                         // reglas de acceso a la web
                         .requestMatchers("/web/administrador/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/web/tecnico/**").hasRole("TECNICO")
@@ -84,6 +88,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         // si el login es correcto, se maneja para saber a donde redireccionar
                         .successHandler(customSuccessHandler)
+                        .failureHandler(disabledHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout.permitAll())
