@@ -240,6 +240,12 @@ public class AdministradorWebController {
                         continue;
                     }
 
+                    // comprobar que el rol es valido
+                    if (!(rol.equalsIgnoreCase("usuario") || rol.equalsIgnoreCase("tecnico") || rol.equalsIgnoreCase("administrador"))) {
+                        errores.add("El rol '" + rol + "' para el usuario '" + username + "' no es válido. (Omitido)");
+                        continue;
+                    }
+
                     // crear tipo de usuario segun rol
                     Usuarios usuario;
                     switch (rol.toLowerCase()) {
