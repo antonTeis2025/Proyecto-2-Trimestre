@@ -81,7 +81,7 @@ public class SecurityConfig {
                         .requestMatchers("/web/usuario/**").hasRole("USUARIO")
 
                         // login y acceso denegado públicos
-                        .requestMatchers("/login", "/acceso-denegado").permitAll()
+                        .requestMatchers("/api/auth/login", "/acceso-denegado", "/login").permitAll()
 
                         .anyRequest().authenticated()
                 )
