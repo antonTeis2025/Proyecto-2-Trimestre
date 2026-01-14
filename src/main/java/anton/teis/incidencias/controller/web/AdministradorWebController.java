@@ -213,7 +213,7 @@ public class AdministradorWebController {
                 // Limpieza básica de la línea
                 if (line.trim().isEmpty()) continue;
 
-                String[] datos = line.split(","); // Ojo: usa ";" si tu CSV lo requiere
+                String[] datos = line.split(";"); // Ojo: usa ";" si tu CSV lo requiere
 
                 // validacion
                 if (datos.length < 5) {
@@ -231,6 +231,12 @@ public class AdministradorWebController {
                     // ver que no exista
                     if (usuarioService.exists(username)) {
                         errores.add("El usuario '" + username + "' ya existe. (Omitido)");
+                        continue;
+                    }
+
+                    // comprobar seguiridad password
+                    if (password.length() < 8) {
+                        errores.add("La contraseña para el usuario '" + username + "' es demasiado corta. (Omitido)");
                         continue;
                     }
 
@@ -269,7 +275,7 @@ public class AdministradorWebController {
 
         // --- GESTIÓN DE LA RESPUESTA EN LA MISMA PÁGINA ---
 
-        // Añadimos las listas al modelo para mostrarlas en el HTML
+        // añadimos las listas al modelo para mostrarlas en el HTML
         if (!errores.isEmpty()) {
             model.addAttribute("listaErrores", errores);
         }
@@ -280,7 +286,7 @@ public class AdministradorWebController {
             model.addAttribute("mensajeInfo", "El archivo estaba vacío o no se encontraron usuarios válidos.");
         }
 
-        // Devolvemos la misma vista, NO un redirect
+        // devolvemos la misma vista, NO un redirect
         return "administrador/cargar-usuarios";
     }
 

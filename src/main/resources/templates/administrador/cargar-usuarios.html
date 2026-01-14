@@ -44,7 +44,7 @@
             <input type="file" id="file" name="file" accept=".csv" required style="margin-top: 5px;" />
         </div>
 
-        <button type="submit" style="padding: 10px 20px; cursor: pointer; background-color: #007bff; color: white; border: none; border-radius: 4px;">
+        <button type="submit">
             Subir y Procesar
         </button>
     </form>
@@ -52,11 +52,11 @@
     <br>
     <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px;">
         <h4>Instrucciones:</h4>
-        <p>El archivo debe ser un CSV separado por comas (<code>,</code>) con el siguiente orden:</p>
-        <pre>username,password,nombre,apellido,rol</pre>
+        <p>El archivo debe ser un CSV separado por punto y coma (;) (<code>,</code>) con el siguiente orden:</p>
+        <pre>username;password;nombre;apellido;rol</pre>
         <p>Ejemplo:</p>
-        <code>juanp,1234,Juan,Perez,usuario</code><br>
-        <code>admin1,adminpass,Admin,Sistema,administrador</code>
+        <code>juanp;1234;Juan;Perez;usuario</code><br>
+        <code>admin1;adminpass;Admin;Sistema;administrador</code>
     </div>
 </div>
 
