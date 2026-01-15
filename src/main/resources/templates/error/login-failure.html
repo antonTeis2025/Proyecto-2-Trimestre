@@ -3,12 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Error de inicio de sesión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<center>
-    <h1>Error</h1>
-    <p style="color: red;">Se ha producido un error al inciar sesión. Probablemente porque <strong>la contraseña no sea correca</strong></p>
-    <p><a href="/login">Volver a intentarlo</a></p>
-</center>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+<div class="bg-white p-8 rounded shadow-md text-center max-w-sm border border-gray-300">
+    <h1 class="text-2xl font-bold text-gray-800 mb-4">Error</h1>
+    <p class="text-red-600 mb-6 bg-red-50 p-3 rounded border border-red-100">
+        Se ha producido un error al inciar sesión.<br>
+        <span class="text-sm">Probablemente porque <strong>la contraseña no sea correcta</strong></span>
+    </p>
+    <p>
+        <a href="/login" class="text-blue-600 hover:text-blue-800 underline font-medium">Volver a intentarlo</a>
+    </p>
+</div>
 </body>
 </html>

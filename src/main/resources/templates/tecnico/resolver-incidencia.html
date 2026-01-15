@@ -2,42 +2,69 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Resolver Incidencia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Resolver Incidencia #<span th:text="${incidencia.id}"></span></h2>
+<div class="max-w-4xl mx-auto px-6 py-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">
+        Resolver Incidencia #<span th:text="${incidencia.id}"></span>
+    </h2>
 
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
-</div>
+    <div th:if="${error}" class="mb-4 bg-red-100 text-red-700 px-4 py-3 rounded border border-red-200">
+        <p th:text="${error}"></p>
+    </div>
 
-<div>
-    <h3>Detalles de la Incidencia</h3>
-    <p><strong>Tipo:</strong> <span th:text="${incidencia.tipo}"></span></p>
-    <p><strong>Descripción:</strong> <span th:text="${incidencia.descripcion}"></span></p>
-    <p><strong>Usuario:</strong> <span th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></span></p>
-    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></span></p>
-</div>
+    <div class="bg-white p-6 rounded shadow border border-gray-200 mb-6">
+        <h3 class="text-lg font-semibold text-gray-700 mb-4 border-b pb-2">Datos de la Incidencia</h3>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 text-sm">
+            <div>
+                <dt class="font-medium text-gray-500">Tipo</dt>
+                <dd class="mt-1 text-gray-900" th:text="${incidencia.tipo}"></dd>
+            </div>
+            <div>
+                <dt class="font-medium text-gray-500">Usuario</dt>
+                <dd class="mt-1 text-gray-900" th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></dd>
+            </div>
+            <div>
+                <dt class="font-medium text-gray-500">Fecha</dt>
+                <dd class="mt-1 text-gray-900" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></dd>
+            </div>
+            <div class="col-span-1 md:col-span-2">
+                <dt class="font-medium text-gray-500">Descripción Original</dt>
+                <dd class="mt-1 text-gray-900 bg-gray-50 p-3 rounded border border-gray-100" th:text="${incidencia.descripcion}"></dd>
+            </div>
+        </dl>
+    </div>
 
-<form th:action="@{/web/tecnico/resolver-incidencia/{id}(id=${incidencia.id})}" th:object="${explicacion}" method="post">
-    <div>
-        <label for="motivo">Descripción de la solución:</label><br>
-        <textarea id="motivo" name="motivo" rows="4" cols="50" th:field="*{motivo}"></textarea>
-        <!-- Mostrar errores de validación del campo 'motivo' -->
-        <div th:if="${#fields.hasErrors('motivo')}" class="alert alert-danger">
-            <span style="color: red" th:errors="*{motivo}">Error</span>
+    <form th:action="@{/web/tecnico/resolver-incidencia/{id}(id=${incidencia.id})}" th:object="${explicacion}" method="post"
+          class="bg-white p-6 rounded shadow border border-gray-200">
+
+        <div class="mb-4">
+            <label for="motivo" class="block text-sm font-semibold text-gray-700 mb-2">Descripción de la solución:</label>
+            <textarea id="motivo" name="motivo" rows="5" th:field="*{motivo}"
+                      class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Describe los pasos técnicos realizados..."></textarea>
+
+            <div th:if="${#fields.hasErrors('motivo')}" class="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">
+                <span th:errors="*{motivo}">Error</span>
+            </div>
         </div>
-    </div>
 
-    <!-- Opcional: mostrar errores generales (los que añades con model.addAttribute("error", ...)) -->
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-    <div>
-        <button type="submit">Resolver Incidencia</button>
-    </div>
-</form>
+        <div th:if="${error}" class="mb-4 text-red-600 text-sm" th:text="${error}"></div>
 
-<p><a href="/web/tecnico">Volver al panel</a></p>
+        <div>
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded shadow-sm">
+                Marcar como Resuelta
+            </button>
+        </div>
+    </form>
+
+    <p class="mt-4 text-sm">
+        <a href="/web/tecnico" class="text-blue-600 hover:underline">&larr; Volver al panel</a>
+    </p>
+</div>
 
 <div th:replace="~{layout :: footer}"></div>
 </body>

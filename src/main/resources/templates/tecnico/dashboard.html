@@ -2,52 +2,65 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Panel de Técnico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Bienvenido, <span th:text="${tecnico.nombre} + ' ' + ${tecnico.apellidos}"></span></h2>
+<div class="max-w-6xl mx-auto px-6 py-8">
+    <h2 class="text-3xl font-light text-gray-700 mb-6">
+        Bienvenido, <span th:text="${tecnico.nombre} + ' ' + ${tecnico.apellidos}" class="font-semibold"></span>
+    </h2>
 
-<div th:if="${param.success}">
-    <p style="color: green;" th:text="${param.success[0]}"></p>
-</div>
-<div th:if="${param.error}">
-    <p style="color: red;" th:text="${param.error[0]}"></p>
-</div>
+    <div th:if="${param.success}" class="mb-4 bg-green-100 border border-green-300 text-green-700 px-4 py-3 rounded">
+        <p th:text="${param.success[0]}"></p>
+    </div>
+    <div th:if="${param.error}" class="mb-4 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded">
+        <p th:text="${param.error[0]}"></p>
+    </div>
 
-<div>
-    <h3>Mis Incidencias</h3>
-    <p><a href="/web/tecnico">Inicio</a></p>
-    <p><a href="/web/tecnico/incidencias-disponibles">Ver incidencias disponibles</a></p>
-    <p><a href="/web/tecnico/historial">Ver historial de incidencias</a></p>
+    <div class="bg-white p-6 rounded shadow border border-gray-200">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h3 class="text-xl font-semibold text-gray-700">Mis Incidencias</h3>
+            <div class="space-x-4 text-sm">
+                <a href="/web/tecnico" class="text-gray-500 hover:text-gray-900">Inicio</a>
+                <a href="/web/tecnico/incidencias-disponibles" class="text-blue-600 hover:underline">Ver incidencias disponibles</a>
+                <a href="/web/tecnico/historial" class="text-blue-600 hover:underline">Ver historial</a>
+            </div>
+        </div>
 
-    <div th:if="${incidencias != null}">
-        <h4>Incidencias en Proceso</h4>
-        <table border="1">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th>Usuario</th>
-                <th>Acciones</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="incidencia : ${incidencias.enProceso}">
-                <td th:text="${incidencia.id}"></td>
-                <td th:text="${incidencia.tipo}"></td>
-                <td th:text="${incidencia.descripcion}"></td>
-                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
-                <td>
-                    <a th:href="@{/web/tecnico/resolver-incidencia/{id}(id=${incidencia.id})}">Resolver</a>
-                    <a th:href="@{/web/tecnico/cerrar-incidencia/{id}(id=${incidencia.id})}">Cerrar</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div th:if="${incidencias != null}">
+            <h4 class="font-medium text-gray-600 mb-3 uppercase text-sm tracking-wide">Incidencias en Proceso</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                    <tr class="bg-gray-100 text-gray-600 text-sm uppercase">
+                        <th class="p-3 border border-gray-300">ID</th>
+                        <th class="p-3 border border-gray-300">Tipo</th>
+                        <th class="p-3 border border-gray-300">Descripción</th>
+                        <th class="p-3 border border-gray-300">Fecha</th>
+                        <th class="p-3 border border-gray-300">Usuario</th>
+                        <th class="p-3 border border-gray-300">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                    <tr th:each="incidencia : ${incidencias.enProceso}" class="hover:bg-gray-50">
+                        <td class="p-3 border border-gray-300 font-bold" th:text="${incidencia.id}"></td>
+                        <td class="p-3 border border-gray-300" th:text="${incidencia.tipo}"></td>
+                        <td class="p-3 border border-gray-300" th:text="${incidencia.descripcion}"></td>
+                        <td class="p-3 border border-gray-300 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="p-3 border border-gray-300" th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
+                        <td class="p-3 border border-gray-300 space-x-2">
+                            <a th:href="@{/web/tecnico/resolver-incidencia/{id}(id=${incidencia.id})}" class="text-green-600 hover:text-green-800 font-semibold">Resolver</a>
+                            <span class="text-gray-300">|</span>
+                            <a th:href="@{/web/tecnico/cerrar-incidencia/{id}(id=${incidencia.id})}" class="text-red-600 hover:text-red-800 font-semibold">Cerrar</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p th:if="${incidencias.enProceso.empty}" class="text-gray-500 italic mt-4">No tienes incidencias en proceso actualmente.</p>
+        </div>
     </div>
 </div>
 

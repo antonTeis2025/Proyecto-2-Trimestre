@@ -2,41 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Editar Usuario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
-<h2>Cambiar contraseña del usuario #<span th:text="${usuario.id}"></span></h2>
 
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
+<div class="max-w-2xl mx-auto px-6 py-8">
+    <div class="bg-white rounded-md shadow-md border border-gray-200 p-8">
+        <h2 class="text-2xl font-bold text-gray-700 mb-6 border-b pb-2">
+            Cambiar contraseña del usuario #<span th:text="${usuario.id}"></span>
+        </h2>
+
+        <div th:if="${error}" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+            <p th:text="${error}"></p>
+        </div>
+
+        <form th:action="@{/web/administrador/cambiar-contrasinal/{id}(id=${usuario.id})}" th:object="${contrasinalData}" method="post" class="space-y-6">
+
+            <div th:if="${#fields.hasAnyErrors()}" class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                <ul class="list-disc list-inside text-red-600 text-sm">
+                    <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                </ul>
+            </div>
+
+            <div>
+                <label for="pass1" class="block text-sm font-semibold text-gray-700 mb-2">Nueva contraseña:</label>
+                <input type="password" id="pass1" th:field="*{pass1}"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                <span th:if="${#fields.hasErrors('pass1')}" th:errors="*{pass1}" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <div>
+                <label for="pass2" class="block text-sm font-semibold text-gray-700 mb-2">Repetir contraseña:</label>
+                <input type="password" id="pass2" th:field="*{pass2}"
+                       class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                <span th:if="${#fields.hasErrors('pass2')}" th:errors="*{pass2}" class="text-xs text-red-600 mt-1 block"></span>
+            </div>
+
+            <div class="pt-2">
+                <button type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
+                    Actualizar contraseña
+                </button>
+            </div>
+        </form>
+
+        <p class="mt-6 text-center text-sm">
+            <a href="/web/administrador" class="text-blue-500 hover:text-blue-700 hover:underline">
+                &larr; Volver al panel de administración
+            </a>
+        </p>
+    </div>
 </div>
-
-<form th:action="@{/web/administrador/cambiar-contrasinal/{id}(id=${usuario.id})}" th:object="${contrasinalData}" method="post">
-
-    <div th:if="${#fields.hasAnyErrors()}">
-        <ul>
-            <li th:each="err : ${#fields.globalErrors()}" th:text="${err}" style="color: red;"></li>
-        </ul>
-    </div>
-
-    <div>
-        <label for="pass1">Nueva contraseña:</label><br>
-        <input type="password" id="pass1" th:field="*{pass1}">
-        <span th:if="${#fields.hasErrors('pass1')}" th:errors="*{pass1}" style="color: red;"></span>
-    </div>
-
-    <div>
-        <label for="pass2">Repetir contraseña:</label><br>
-        <input type="password" id="pass2" th:field="*{pass2}">
-        <span th:if="${#fields.hasErrors('pass2')}" th:errors="*{pass2}" style="color: red;"></span>
-    </div>
-
-    <div>
-        <button type="submit">Actualizar contraseña</button>
-    </div>
-</form>
-
-<p><a href="/web/administrador">Volver al panel de administración</a></p>
 
 <div th:replace="~{layout :: footer}"></div>
 </body>
