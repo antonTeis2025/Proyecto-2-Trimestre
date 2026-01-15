@@ -2,68 +2,91 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Panel de Usuario</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Bienvenido, <span th:text="${usuario.nombre} + ' ' + ${usuario.apellidos}"></span></h2>
+<div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-light text-gray-700">
+            Hola, <span class="font-semibold" th:text="${usuario.nombre}"></span>
+        </h2>
+        <a href="/web/usuario/abrir-incidencia" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded shadow transition duration-200">
+            + Nueva Incidencia
+        </a>
+    </div>
 
-<div th:if="${param.success}">
-    <p style="color: green;" th:text="${param.success[0]}"></p>
-</div>
-<div th:if="${param.error}">
-    <p style="color: red;" th:text="${param.error[0]}"></p>
-</div>
+    <div th:if="${param.success}" class="mb-4 bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded">
+        <p th:text="${param.success[0]}"></p>
+    </div>
+    <div th:if="${param.error}" class="mb-4 bg-red-100 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <p th:text="${param.error[0]}"></p>
+    </div>
 
-<div>
-    <h3>Mis Incidencias</h3>
-    <p><a href="/web/usuario/abrir-incidencia">Abrir nueva incidencia</a></p>
-    <p><a href="/web/usuario/historial">Historial</a></p>
+    <div class="mb-6">
+        <a href="/web/usuario/historial" class="text-blue-600 hover:underline text-sm font-medium">Ver Historial Completo (Resueltas y Cerradas) &rarr;</a>
+    </div>
 
-    <div th:if="${incidencias != null}">
-        <h4>Incidencias Abiertas</h4>
-        <table border="1">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="incidencia : ${incidencias.abiertas}">
-                <td th:text="${incidencia.id}"></td>
-                <td th:text="${incidencia.tipo}"></td>
-                <td th:text="${incidencia.descripcion}"></td>
-                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div th:if="${incidencias != null}" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-        <h4>Incidencias en Proceso</h4>
-        <table border="1">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th>Técnico Asignado</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="incidencia : ${incidencias.enProceso}">
-                <td th:text="${incidencia.id}"></td>
-                <td th:text="${incidencia.tipo}"></td>
-                <td th:text="${incidencia.descripcion}"></td>
-                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="bg-white rounded-lg shadow border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-100 bg-blue-50 rounded-t-lg">
+                <h4 class="font-bold text-blue-800">Incidencias Pendientes (Abiertas)</h4>
+            </div>
+            <div class="p-0 overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                    <tr class="text-gray-500 border-b">
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Tipo</th>
+                        <th class="px-6 py-3">Descripción</th>
+                        <th class="px-6 py-3">Fecha</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="incidencia : ${incidencias.abiertas}" class="border-b last:border-0 hover:bg-blue-50 transition">
+                        <td class="px-6 py-4 font-semibold" th:text="${incidencia.id}"></td>
+                        <td class="px-6 py-4" th:text="${incidencia.tipo}"></td>
+                        <td class="px-6 py-4 text-gray-600 truncate max-w-xs" th:text="${incidencia.descripcion}" title="${incidencia.descripcion}"></td>
+                        <td class="px-6 py-4 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                    </tr>
+                    <tr th:if="${incidencias.abiertas.empty}">
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">No tienes incidencias pendientes de asignación.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-
+        <div class="bg-white rounded-lg shadow border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-100 bg-yellow-50 rounded-t-lg">
+                <h4 class="font-bold text-yellow-800">Incidencias en Proceso</h4>
+            </div>
+            <div class="p-0 overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                    <tr class="text-gray-500 border-b">
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Tipo</th>
+                        <th class="px-6 py-3">Descripción</th>
+                        <th class="px-6 py-3">Técnico</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="incidencia : ${incidencias.enProceso}" class="border-b last:border-0 hover:bg-yellow-50 transition">
+                        <td class="px-6 py-4 font-semibold" th:text="${incidencia.id}"></td>
+                        <td class="px-6 py-4" th:text="${incidencia.tipo}"></td>
+                        <td class="px-6 py-4 text-gray-600 truncate max-w-xs" th:text="${incidencia.descripcion}"></td>
+                        <td class="px-6 py-4 font-medium text-gray-700" th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
+                    </tr>
+                    <tr th:if="${incidencias.enProceso.empty}">
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-400 italic">Ninguna incidencia está siendo atendida ahora mismo.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

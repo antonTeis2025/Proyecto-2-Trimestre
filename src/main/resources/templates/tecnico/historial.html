@@ -1,69 +1,84 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Panel de Técnico</title>
+    <title>Historial - Panel de Técnico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Bienvenido, <span th:text="${tecnico.nombre} + ' ' + ${tecnico.apellidos}"></span></h2>
+<div class="max-w-6xl mx-auto px-6 py-8">
+    <div class="flex justify-between items-end mb-6">
+        <h2 class="text-2xl font-semibold text-gray-700">Historial de Incidencias</h2>
+        <span class="text-gray-500 text-sm">Técnico: <span th:text="${tecnico.nombre} + ' ' + ${tecnico.apellidos}"></span></span>
+    </div>
 
-<div th:if="${param.success}">
-    <p style="color: green;" th:text="${param.success[0]}"></p>
-</div>
-<div th:if="${param.error}">
-    <p style="color: red;" th:text="${param.error[0]}"></p>
-</div>
+    <div th:if="${param.success}" class="mb-4 bg-green-100 text-green-700 px-4 py-2 rounded">
+        <p th:text="${param.success[0]}"></p>
+    </div>
+    <div th:if="${param.error}" class="mb-4 bg-red-100 text-red-700 px-4 py-2 rounded">
+        <p th:text="${param.error[0]}"></p>
+    </div>
 
-<div>
-    <h3>Mis Incidencias</h3>
-    <p><a href="/web/tecnico">Inicio</a></p>
-    <p><a href="/web/tecnico/incidencias-disponibles">Ver incidencias disponibles</a></p>
-    <p><a href="/web/tecnico/historial">Ver historial de incidencias</a></p>
+    <div class="mb-6">
+        <div class="flex gap-4 text-sm mb-4">
+            <a href="/web/tecnico" class="text-blue-600 hover:underline">&larr; Inicio</a>
+            <a href="/web/tecnico/incidencias-disponibles" class="text-blue-600 hover:underline">Ver incidencias disponibles</a>
+        </div>
+    </div>
 
-        <h4>Incidencias Resueltas</h4>
-        <table border="1">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th>Solución</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="incidencia : ${incidencias.resueltas}">
-                <td th:text="${incidencia.id}"></td>
-                <td th:text="${incidencia.tipo}"></td>
-                <td th:text="${incidencia.descripcion}"></td>
-                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${incidencia.solucion}"></td>
-            </tr>
-            </tbody>
-        </table>
+    <div class="space-y-8">
+        <div class="bg-white p-6 rounded shadow border border-gray-200">
+            <h4 class="text-lg font-bold text-green-700 mb-4 border-b border-green-100 pb-2">Incidencias Resueltas</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">ID</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Tipo</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Descripción</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Fecha</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Solución</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                    <tr th:each="incidencia : ${incidencias.resueltas}" class="hover:bg-green-50">
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.id}"></td>
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.tipo}"></td>
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.descripcion}"></td>
+                        <td class="p-3 border border-gray-200 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="p-3 border border-gray-200 text-green-800" th:text="${incidencia.solucion}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-        <h4>Incidencias Cerradas</h4>
-        <table border="1">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Descripción</th>
-                <th>Fecha</th>
-                <th>Motivo</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="incidencia : ${incidencias.cerradas}">
-                <td th:text="${incidencia.id}"></td>
-                <td th:text="${incidencia.tipo}"></td>
-                <td th:text="${incidencia.descripcion}"></td>
-                <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-                <td th:text="${incidencia.motivo}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="bg-white p-6 rounded shadow border border-gray-200">
+            <h4 class="text-lg font-bold text-red-700 mb-4 border-b border-red-100 pb-2">Incidencias Cerradas (Sin solución)</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50">
+                    <tr>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">ID</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Tipo</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Descripción</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Fecha</th>
+                        <th class="p-3 border border-gray-200 font-semibold text-sm">Motivo</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-sm">
+                    <tr th:each="incidencia : ${incidencias.cerradas}" class="hover:bg-red-50">
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.id}"></td>
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.tipo}"></td>
+                        <td class="p-3 border border-gray-200" th:text="${incidencia.descripcion}"></td>
+                        <td class="p-3 border border-gray-200 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td class="p-3 border border-gray-200 text-red-800 italic" th:text="${incidencia.motivo}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 

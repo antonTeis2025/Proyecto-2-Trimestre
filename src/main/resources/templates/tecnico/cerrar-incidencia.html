@@ -2,45 +2,56 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Cerrar Incidencia</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Cerrar Incidencia #<span th:text="${incidencia.id}"></span></h2>
+<div class="max-w-4xl mx-auto px-6 py-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">
+        Cerrar Incidencia #<span th:text="${incidencia.id}"></span>
+    </h2>
 
-<div th:if="${error}" style="color: red;">
-    <p th:text="${error}"></p>
-</div>
+    <div th:if="${error}" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <p th:text="${error}"></p>
+    </div>
 
-<div>
-    <h3>Detalles de la Incidencia</h3>
-    <p><strong>Tipo:</strong> <span th:text="${incidencia.tipo}"></span></p>
-    <p><strong>Descripción:</strong> <span th:text="${incidencia.descripcion}"></span></p>
-    <p><strong>Usuario:</strong> <span th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></span></p>
-    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></span></p>
-</div>
-
-<form th:action="@{/web/tecnico/cerrar-incidencia/{id}(id=${incidencia.id})}"
-      th:object="${explicacion}" method="post">
-
-    <div>
-        <label for="motivo">Motivo del cierre:</label><br>
-        <textarea id="motivo" name="motivo" rows="4" cols="50" th:field="*{motivo}"></textarea>
-        <!-- Mostrar errores de validación del campo 'motivo' -->
-        <div th:if="${#fields.hasErrors('motivo')}" class="alert alert-danger">
-            <span style="color: red" th:errors="*{motivo}"></span>
+    <div class="bg-white p-6 rounded shadow border border-gray-200 mb-6">
+        <h3 class="text-lg font-bold mb-4 border-b pb-2 text-gray-600">Detalles de la Incidencia</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p><strong class="text-gray-600">Tipo:</strong> <span th:text="${incidencia.tipo}"></span></p>
+            <p><strong class="text-gray-600">Usuario:</strong> <span th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></span></p>
+            <p><strong class="text-gray-600">Fecha:</strong> <span th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></span></p>
+            <p class="col-span-1 md:col-span-2"><strong class="text-gray-600">Descripción:</strong> <span th:text="${incidencia.descripcion}" class="block mt-1 p-2 bg-gray-50 rounded border border-gray-100"></span></p>
         </div>
     </div>
 
-    <!-- Errores generales (no de validación) -->
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <form th:action="@{/web/tecnico/cerrar-incidencia/{id}(id=${incidencia.id})}"
+          th:object="${explicacion}" method="post" class="bg-white p-6 rounded shadow border border-gray-200">
 
-    <div>
-        <button type="submit">Cerrar Incidencia</button>
-    </div>
-</form>
+        <div class="mb-4">
+            <label for="motivo" class="block text-sm font-medium text-gray-700 mb-2">Motivo del cierre:</label>
+            <textarea id="motivo" name="motivo" rows="4" th:field="*{motivo}"
+                      class="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
 
-<p><a href="/web/tecnico">Volver al panel</a></p>
+            <div th:if="${#fields.hasErrors('motivo')}" class="mt-2 text-sm text-red-600 bg-red-50 p-2 rounded">
+                <span th:errors="*{motivo}"></span>
+            </div>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger text-red-600 mb-4" th:text="${error}"></div>
+
+        <div>
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                Cerrar Incidencia
+            </button>
+        </div>
+    </form>
+
+    <p class="mt-4">
+        <a href="/web/tecnico" class="text-blue-600 hover:underline text-sm">&larr; Volver al panel</a>
+    </p>
+</div>
 
 <div th:replace="~{layout :: footer}"></div>
 </body>

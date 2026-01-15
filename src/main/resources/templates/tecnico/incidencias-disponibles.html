@@ -2,78 +2,105 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Incidencias Disponibles</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
 <div th:replace="~{layout :: menu}"></div>
 
-<h2>Incidencias Disponibles</h2>
+<div class="max-w-6xl mx-auto px-6 py-8">
+    <h2 class="text-2xl font-semibold text-gray-700 mb-6">Incidencias Disponibles</h2>
 
-<div th:if="${param.success}">
-    <p style="color: green;" th:text="${param.success[0]}"></p>
+    <div th:if="${param.success}" class="mb-4 bg-green-100 text-green-700 px-4 py-2 rounded">
+        <p th:text="${param.success[0]}"></p>
+    </div>
+    <div th:if="${param.error}" class="mb-4 bg-red-100 text-red-700 px-4 py-2 rounded">
+        <p th:text="${param.error[0]}"></p>
+    </div>
+
+    <div class="bg-white rounded shadow-md border border-gray-200 mb-8 overflow-hidden">
+        <div class="bg-blue-50 px-6 py-3 border-b border-blue-100">
+            <h3 class="text-lg font-bold text-blue-800">Incidencias Abiertas</h3>
+        </div>
+        <div class="p-0">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-600 text-sm">
+                <tr>
+                    <th class="p-4 border-b">ID</th>
+                    <th class="p-4 border-b">Tipo</th>
+                    <th class="p-4 border-b">Descripción</th>
+                    <th class="p-4 border-b">Fecha</th>
+                    <th class="p-4 border-b">Usuario</th>
+                    <th class="p-4 border-b">Acciones</th>
+                </tr>
+                </thead>
+                <tbody class="text-sm">
+                <tr th:each="incidencia : ${abiertas}" class="hover:bg-blue-50 border-b last:border-0 transition">
+                    <td class="p-4 font-bold text-gray-700" th:text="${incidencia.id}"></td>
+                    <td class="p-4" th:text="${incidencia.tipo}"></td>
+                    <td class="p-4 text-gray-600" th:text="${incidencia.descripcion}"></td>
+                    <td class="p-4 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td class="p-4 font-medium" th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
+                    <td class="p-4">
+                        <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1 px-3 rounded uppercase tracking-wide">
+                                Asignarme
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${abiertas.empty}">
+                    <td colspan="6" class="p-4 text-center text-gray-500 italic">No hay incidencias nuevas.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="bg-white rounded shadow-md border border-gray-200 overflow-hidden">
+        <div class="bg-yellow-50 px-6 py-3 border-b border-yellow-100">
+            <h3 class="text-lg font-bold text-yellow-800">Incidencias en Proceso (Reasignables)</h3>
+        </div>
+        <div class="p-0">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 text-gray-600 text-sm">
+                <tr>
+                    <th class="p-4 border-b">ID</th>
+                    <th class="p-4 border-b">Tipo</th>
+                    <th class="p-4 border-b">Descripción</th>
+                    <th class="p-4 border-b">Fecha</th>
+                    <th class="p-4 border-b">Usuario</th>
+                    <th class="p-4 border-b">Técnico Actual</th>
+                    <th class="p-4 border-b">Acciones</th>
+                </tr>
+                </thead>
+                <tbody class="text-sm">
+                <tr th:each="incidencia : ${enProceso}" class="hover:bg-yellow-50 border-b last:border-0 transition">
+                    <td class="p-4 font-bold text-gray-700" th:text="${incidencia.id}"></td>
+                    <td class="p-4" th:text="${incidencia.tipo}"></td>
+                    <td class="p-4 text-gray-600" th:text="${incidencia.descripcion}"></td>
+                    <td class="p-4 whitespace-nowrap" th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td class="p-4" th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
+                    <td class="p-4 text-gray-500 italic" th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
+                    <td class="p-4">
+                        <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
+                            <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white text-xs font-bold py-1 px-3 rounded uppercase tracking-wide">
+                                Reasignarme
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${enProceso.empty}">
+                    <td colspan="7" class="p-4 text-center text-gray-500 italic">No hay incidencias en proceso de otros técnicos.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <p class="mt-6">
+        <a href="/web/tecnico" class="text-blue-600 hover:underline text-sm">&larr; Volver al panel</a>
+    </p>
 </div>
-<div th:if="${param.error}">
-    <p style="color: red;" th:text="${param.error[0]}"></p>
-</div>
-
-<h3>Incidencias Abiertas</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Tipo</th>
-        <th>Descripción</th>
-        <th>Fecha</th>
-        <th>Usuario</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="incidencia : ${abiertas}">
-        <td th:text="${incidencia.id}"></td>
-        <td th:text="${incidencia.tipo}"></td>
-        <td th:text="${incidencia.descripcion}"></td>
-        <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
-        <td>
-            <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
-                <button type="submit">Asignarme esta incidencia</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<h3>Incidencias en Proceso (reasignables)</h3>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Tipo</th>
-        <th>Descripción</th>
-        <th>Fecha</th>
-        <th>Usuario</th>
-        <th>Técnico Actual</th>
-        <th>Acciones</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="incidencia : ${enProceso}">
-        <td th:text="${incidencia.id}"></td>
-        <td th:text="${incidencia.tipo}"></td>
-        <td th:text="${incidencia.descripcion}"></td>
-        <td th:text="${#temporals.format(incidencia.momento, 'yyyy-MM-dd HH:mm')}"></td>
-        <td th:text="${incidencia.usuario.nombre} + ' ' + ${incidencia.usuario.apellidos}"></td>
-        <td th:text="${incidencia.tecnico.nombre} + ' ' + ${incidencia.tecnico.apellidos}"></td>
-        <td>
-            <form th:action="@{/web/tecnico/asignar-incidencia/{id}(id=${incidencia.id})}" method="post">
-                <button type="submit">Reasignarme esta incidencia</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<p><a href="/web/tecnico">Volver al panel</a></p>
 
 <div th:replace="~{layout :: footer}"></div>
 </body>
