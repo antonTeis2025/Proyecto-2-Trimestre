@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Acceso Denegado</title>
-    <style>
-        body { font-family: sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #e74c3c; }
-        .btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px;}
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>403 - Acceso Denegado</h1>
-<p>Lo sentimos, no tienes permisos para acceder a esta página.</p>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<div class="text-center p-10 bg-white rounded-lg shadow-xl max-w-lg border border-gray-200">
+    <h1 class="text-6xl font-bold text-red-500 mb-4">403</h1>
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Acceso Denegado</h2>
+    <p class="text-gray-600 mb-8">Lo sentimos, no tienes permisos suficientes para acceder a esta página.</p>
 
-<a href="/" class="btn">Volver al Inicio</a>
+    <a href="/" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded transition duration-200">
+        Volver al Inicio
+    </a>
+</div>
 </body>
 </html>
