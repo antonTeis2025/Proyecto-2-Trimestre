@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  app-incidencias:
+    build: .
+    container_name: gestor-incidencias
+    ports:
+      - "80:8080"
+    environment:
+      # --- Conexión a Azure SQL ---
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://incidencias.database.windows.net:1433;database=incidencias;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+      - SPRING_DATASOURCE_USERNAME=administrador@incidencias
+      - SPRING_DATASOURCE_PASSWORD=<contraseña>
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+
+      # --- Configuración JPA / Hibernate ---
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.SQLServerDialect
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+      # --- Otras Configuraciones ---
+      - SPRING_APPLICATION_NAME=Gestor de incidencias
+      - SPRING_MVC_HIDDENMETHOD_FILTER_ENABLED=true
+
+    restart: unless-stopped
