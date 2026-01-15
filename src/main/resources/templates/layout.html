@@ -4,37 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestor de Incidencias</title>
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div th:fragment="menu">
-    <h1>Gestor de Incidencias</h1>
-    <nav>
-        <ul>
+<body class="bg-gray-100 text-gray-800 font-sans">
 
-            <li sec:authorize="isAuthenticated()">
-                <form th:action="@{/logout}" method="post" style="display:inline;">
-                    <button type="submit" style="background: none; border: none; padding: 0; color: blue; text-decoration: underline; cursor: pointer; font-family: inherit; font-size: inherit;">
-                        Cerrar Sesión (<span sec:authentication="name">Usuario</span>)
-                    </button>
-                </form>
-            </li>
+<div th:fragment="menu" class="bg-white border-b border-gray-300">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+        <h1 class="text-2xl font-semibold text-gray-700">
+            Gestor de Incidencias
+        </h1>
 
-            <li sec:authorize="!isAuthenticated()">
-                <a href="/login">Iniciar Sesión</a>
-            </li>
-        </ul>
-    </nav>
-    <hr>
+        <nav>
+            <ul class="flex items-center gap-4 text-sm">
+
+                <li sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" class="inline">
+                        <button type="submit"
+                                class="text-blue-600 hover:text-blue-800 underline cursor-pointer">
+                            Cerrar Sesión
+                            (<span sec:authentication="name" class="font-medium">Usuario</span>)
+                        </button>
+                    </form>
+                </li>
+
+                <li sec:authorize="!isAuthenticated()">
+                    <a href="/login"
+                       class="text-blue-600 hover:text-blue-800 underline">
+                        Iniciar Sesión
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
 </div>
 
-<div th:fragment="content">
+<div th:fragment="content" class="max-w-6xl mx-auto px-6 py-8 bg-white mt-6 border border-gray-300">
 </div>
 
-<div th:fragment="footer">
-    <hr>
-    <footer>
-        <p>Hecho por Antón Davila - 2º DAM - IES Teis</p>
+<div th:fragment="footer" class="mt-10 border-t border-gray-300 bg-gray-50">
+    <footer class="max-w-6xl mx-auto px-6 py-4 text-sm text-gray-600">
+        <p>
+            Hecho por Antón Davila - 2º DAM - IES Teis
+        </p>
     </footer>
 </div>
+
 </body>
 </html>
