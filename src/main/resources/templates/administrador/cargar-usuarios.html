@@ -3,56 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>Carga Masiva de Usuarios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-800">
+
 <div th:replace="~{layout :: menu}"></div>
 
-<div style="padding: 20px; max-width: 800px; margin: 0 auto;">
-    <p><a href="/web/administrador">Inicio</a></p>
-    <p><a href="/web/administrador/crear-usuario">Crear nuevo usuario</a></p>
+<div class="max-w-4xl mx-auto px-6 py-8">
 
-    <h2>Carga Masiva de Usuarios (CSV)</h2>
-
-    <div th:if="${mensajeExito}">
-        <strong th:text="${mensajeExito}" style="color: green;"></strong>
+    <div class="mb-4 text-sm space-x-4">
+        <a href="/web/administrador"
+           class="text-blue-600 hover:text-blue-800 underline">
+            Inicio
+        </a>
+        <a href="/web/administrador/crear-usuario"
+           class="text-blue-600 hover:text-blue-800 underline">
+            Crear nuevo usuario
+        </a>
     </div>
 
-    <div th:if="${mensajeInfo}"  style="color: green;" th:text="${mensajeInfo}"></div>
+    <h2 class="text-2xl font-semibold mb-6">
+        Carga Masiva de Usuarios (CSV)
+    </h2>
 
-    <div th:if="${errorGlobal}" style="color: red;" th:text="${errorGlobal}"></div>
+    <div th:if="${mensajeExito}" class="mb-4">
+        <strong th:text="${mensajeExito}"
+                class="block text-green-700 bg-green-100 border border-green-300 px-4 py-2 rounded"></strong>
+    </div>
 
-    <div th:if="${listaErrores != null and !listaErrores.isEmpty()}" style="color: red;">
-        <strong>Se encontraron los siguientes errores:</strong>
-        <ul>
-            <li th:each="err : ${listaErrores}" th:text="${err}" style="color: red;"></li>
+    <div th:if="${mensajeInfo}"
+         class="mb-4 text-green-700 bg-green-50 border border-green-200 px-4 py-2 rounded"
+         th:text="${mensajeInfo}">
+    </div>
+
+    <div th:if="${errorGlobal}"
+         class="mb-4 text-red-700 bg-red-100 border border-red-300 px-4 py-2 rounded"
+         th:text="${errorGlobal}">
+    </div>
+
+    <div th:if="${listaErrores != null and !listaErrores.isEmpty()}"
+         class="mb-6 bg-red-50 border border-red-300 rounded p-4 text-sm text-red-700">
+        <strong class="block mb-2">
+            Se encontraron los siguientes errores:
+        </strong>
+        <ul class="list-disc list-inside space-y-1">
+            <li th:each="err : ${listaErrores}"
+                th:text="${err}"></li>
         </ul>
     </div>
 
-    <hr>
+    <div class="bg-white border border-gray-300 rounded p-6 mb-6">
 
-    <form method="post" th:action="@{/web/administrador/cargar-usuarios}" enctype="multipart/form-data">
+        <form method="post"
+              th:action="@{/web/administrador/cargar-usuarios}"
+              enctype="multipart/form-data"
+              class="space-y-4">
 
-        <div style="margin-bottom: 15px;">
-            <label for="file" style="font-weight: bold;">Selecciona el archivo CSV:</label><br>
-            <input type="file" id="file" name="file" accept=".csv" required style="margin-top: 5px;" />
-        </div>
+            <div>
+                <label for="file"
+                       class="block text-sm font-medium mb-1">
+                    Selecciona el archivo CSV:
+                </label>
+                <input type="file"
+                       id="file"
+                       name="file"
+                       accept=".csv"
+                       required
+                       class="block w-full text-sm border border-gray-300 rounded px-3 py-2 bg-white">
+            </div>
 
-        <button type="submit">
-            Subir y Procesar
-        </button>
-    </form>
+            <div>
+                <button type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded text-sm hover:bg-blue-700">
+                    Subir y Procesar
+                </button>
+            </div>
 
-    <br>
-    <div style="background-color: #f8f9fa; padding: 15px;">
-        <h4>Instrucciones:</h4>
-        <p>El archivo debe ser un CSV separado por punto y coma (;) (<code>,</code>) con el siguiente orden:</p>
-        <pre>username;password;nombre;apellido;rol</pre>
-        <p>Ejemplo:</p>
-        <code>juanp;1234;Juan;Perez;usuario</code><br>
-        <code>admin1;adminpass;Admin;Sistema;administrador</code>
+        </form>
+
     </div>
+
+    <div class="bg-gray-50 border border-gray-300 rounded p-4 text-sm">
+        <h4 class="font-semibold mb-2">
+            Instrucciones:
+        </h4>
+        <p class="mb-2">
+            El archivo debe ser un CSV separado por punto y coma (<code class="bg-gray-200 px-1">;</code>)
+            con el siguiente orden:
+        </p>
+        <pre class="bg-gray-200 p-2 rounded mb-2 text-xs">username;password;nombre;apellido;rol</pre>
+        <p class="mb-1">Ejemplo:</p>
+        <code class="block text-xs">juanp;1234;Juan;Perez;usuario</code>
+        <code class="block text-xs">admin1;adminpass;Admin;Sistema;administrador</code>
+        <br>
+        <p class="mb-1">Los roles pueden ser: </p>
+        <code class="block text-xs">administrador, tecnico, usuario</code>
+
+    </div>
+
 </div>
 
 <div th:replace="~{layout :: footer}"></div>
+
 </body>
 </html>
