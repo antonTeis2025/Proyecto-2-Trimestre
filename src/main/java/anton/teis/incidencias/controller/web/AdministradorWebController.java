@@ -10,7 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -173,6 +178,122 @@ public class AdministradorWebController {
         }
 
         return "redirect:/web/administrador?success";
+    }
+
+
+    @GetMapping("/cargar-usuarios")
+    public String cargarUsuariosForm(Model model) {
+        return "administrador/cargar-usuarios";
+    }
+
+    @PostMapping("/cargar-usuarios")
+    public String procesarArchivoCsv(@RequestParam("file") MultipartFile file, Model model) {
+        // Validación inicial del archivo
+        if (file.isEmpty()) {
+            model.addAttribute("errorGlobal", "Por favor, selecciona un archivo para subir.");
+            return "administrador/cargar-usuarios";
+        }
+
+        List<String> errores = new ArrayList<>();
+        List<String> exitos = new ArrayList<>();
+        int lineasProcesadas = 0;
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+            String line;
+            boolean isHeader = true;
+
+            while ((line = br.readLine()) != null) {
+                // salta cabecera si la hay
+                if (isHeader && line.toLowerCase().startsWith("username")) {
+                    isHeader = false;
+                    continue;
+                }
+                isHeader = false;
+
+                // Limpieza básica de la línea
+                if (line.trim().isEmpty()) continue;
+
+                String[] datos = line.split(";"); // Ojo: usa ";" si tu CSV lo requiere
+
+                // validacion
+                if (datos.length < 5) {
+                    errores.add("Fila mal formada (faltan columnas): " + line);
+                    continue;
+                }
+
+                String username = datos[0].trim();
+                String password = datos[1].trim();
+                String nombre = datos[2].trim();
+                String apellido = datos[3].trim();
+                String rol = datos[4].trim();
+
+                try {
+                    // ver que no exista
+                    if (usuarioService.exists(username)) {
+                        errores.add("El usuario '" + username + "' ya existe. (Omitido)");
+                        continue;
+                    }
+
+                    // comprobar seguiridad password
+                    if (password.length() < 8) {
+                        errores.add("La contraseña para el usuario '" + username + "' es demasiado corta. (Omitido)");
+                        continue;
+                    }
+
+                    // comprobar que el rol es valido
+                    if (!(rol.equalsIgnoreCase("usuario") || rol.equalsIgnoreCase("tecnico") || rol.equalsIgnoreCase("administrador"))) {
+                        errores.add("El rol '" + rol + "' para el usuario '" + username + "' no es válido. (Omitido)");
+                        continue;
+                    }
+
+                    // crear tipo de usuario segun rol
+                    Usuarios usuario;
+                    switch (rol.toLowerCase()) {
+                        case "tecnico":
+                            usuario = new Tecnico();
+                            break;
+                        case "administrador":
+                            usuario = new Administrador();
+                            break;
+                        default:
+                            usuario = new Usuario();
+                    }
+
+                    // asignar datos
+                    usuario.setUsername(username);
+                    usuario.setNombre(nombre);
+                    usuario.setApellidos(apellido);
+                    usuario.setPassword(password);
+
+                    usuarioService.guardar(usuario);
+                    lineasProcesadas++;
+                    exitos.add("Usuario '" + username + "' creado correctamente.");
+
+                } catch (Exception e) {
+                    errores.add("Error al guardar '" + username + "': " + e.getMessage());
+                }
+            }
+
+        } catch (Exception e) {
+            model.addAttribute("errorGlobal", "Error crítico al leer el archivo: " + e.getMessage());
+            return "administrador/cargar-usuarios";
+        }
+
+        // --- GESTIÓN DE LA RESPUESTA EN LA MISMA PÁGINA ---
+
+        // añadimos las listas al modelo para mostrarlas en el HTML
+        if (!errores.isEmpty()) {
+            model.addAttribute("listaErrores", errores);
+        }
+
+        if (lineasProcesadas > 0) {
+            model.addAttribute("mensajeExito", "Se han procesado " + lineasProcesadas + " usuarios correctamente.");
+        } else if (errores.isEmpty()) {
+            model.addAttribute("mensajeInfo", "El archivo estaba vacío o no se encontraron usuarios válidos.");
+        }
+
+        // devolvemos la misma vista, NO un redirect
+        return "administrador/cargar-usuarios";
     }
 
 

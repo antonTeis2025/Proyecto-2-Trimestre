@@ -21,7 +21,7 @@ public class DisabledHandler extends SimpleUrlAuthenticationFailureHandler {
             setDefaultFailureUrl("/cuenta-baja"); // Redirigir a la página específica
         } else {
             // Para cualquier otro error (contraseña mal, usuario no existe), comportamiento normal
-            setDefaultFailureUrl("/login?error");
+            setDefaultFailureUrl("/login-failure");
         }
 
         super.onAuthenticationFailure(request, response, exception);

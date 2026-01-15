@@ -43,6 +43,11 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/login-failure")
+    public String loginFailure() {
+        return "error/login-failure";
+    }
+
     @GetMapping("cuenta-baja")
     public String cuentaDeshabilitada() {
         return "error/deshabilitado";

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Carga Masiva de Usuarios</title>
+</head>
+<body>
+<div th:replace="~{layout :: menu}"></div>
+
+<div style="padding: 20px; max-width: 800px; margin: 0 auto;">
+    <p><a href="/web/administrador">Inicio</a></p>
+    <p><a href="/web/administrador/crear-usuario">Crear nuevo usuario</a></p>
+
+    <h2>Carga Masiva de Usuarios (CSV)</h2>
+
+    <div th:if="${mensajeExito}">
+        <strong th:text="${mensajeExito}" style="color: green;"></strong>
+    </div>
+
+    <div th:if="${mensajeInfo}"  style="color: green;" th:text="${mensajeInfo}"></div>
+
+    <div th:if="${errorGlobal}" style="color: red;" th:text="${errorGlobal}"></div>
+
+    <div th:if="${listaErrores != null and !listaErrores.isEmpty()}" style="color: red;">
+        <strong>Se encontraron los siguientes errores:</strong>
+        <ul>
+            <li th:each="err : ${listaErrores}" th:text="${err}" style="color: red;"></li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <form method="post" th:action="@{/web/administrador/cargar-usuarios}" enctype="multipart/form-data">
+
+        <div style="margin-bottom: 15px;">
+            <label for="file" style="font-weight: bold;">Selecciona el archivo CSV:</label><br>
+            <input type="file" id="file" name="file" accept=".csv" required style="margin-top: 5px;" />
+        </div>
+
+        <button type="submit">
+            Subir y Procesar
+        </button>
+    </form>
+
+    <br>
+    <div style="background-color: #f8f9fa; padding: 15px;">
+        <h4>Instrucciones:</h4>
+        <p>El archivo debe ser un CSV separado por punto y coma (;) (<code>,</code>) con el siguiente orden:</p>
+        <pre>username;password;nombre;apellido;rol</pre>
+        <p>Ejemplo:</p>
+        <code>juanp;1234;Juan;Perez;usuario</code><br>
+        <code>admin1;adminpass;Admin;Sistema;administrador</code>
+    </div>
+</div>
+
+<div th:replace="~{layout :: footer}"></div>
+</body>
+</html>
